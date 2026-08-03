@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>MOTIC | Universiti Utara Malaysia</title>
+  <meta
+    name="description"
+    content="Persatuan Pengurusan Teknologi (MOTIC) — the official Management of Technology Intelligence Club at Universiti Utara Malaysia. Discover activities, leadership opportunities and student initiatives."
+  >
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MOTIC | Universiti Utara Malaysia">
+  <meta
+    property="og:description"
+    content="Persatuan Pengurusan Teknologi (MOTIC) — the official Management of Technology Intelligence Club at Universiti Utara Malaysia."
+  >
+  <meta property="og:image" content="assets/images/og-cover.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/home-data.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="institution-bar">
+      <div class="container institution-bar__content">
+        <div class="institution-bar__identity">
+          <span>Universiti Utara Malaysia</span>
+          <span class="institution-bar__divider" aria-hidden="true"></span>
+          <span>School of Technology Management and Logistics</span>
+        </div>
+
+        <nav class="institution-bar__links" aria-label="Social links">
+          <a href="https://www.facebook.com/share/1ERZcn2C2W/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://www.instagram.com/motic_uum?igsh=MXA2d3ljcnQ3ZzBzcg==" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@motic_uum?_r=1&_t=ZS-98YWH0HeZYw" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://youtube.com/@motic_uum?si=BqoHyurB2vP5TEdb" target="_blank" rel="noopener">YouTube</a>
+        </nav>
+      </div>
+    </div>
+
+    <nav class="main-navigation" aria-label="Main navigation">
+      <div class="container main-navigation__content">
+        <a class="club-brand" href="index.html" aria-label="MOTIC UUM home">
+          <img class="club-brand__logo" src="assets/images/motic-logo-full-trimmed.png" alt="MOTIC — Persatuan Pengurusan Teknologi, Universiti Utara Malaysia">
+        </a>
+
+        <button
+          class="menu-button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="navigation-menu"
+        >
+          <span class="menu-button__icon" aria-hidden="true"></span>
+          <span>Menu</span>
+        </button>
+
+        <div class="navigation-menu" id="navigation-menu">
+          <div class="mobile-menu-header">
+            <strong>Navigation</strong>
+
+            <button class="menu-close" type="button" aria-label="Close menu">
+              ×
+            </button>
+          </div>
+
+          <a class="navigation-link active" href="index.html" aria-current="page">
+            Home
+          </a>
+
+          <div class="nav-dropdown">
+            <a class="navigation-link nav-dropdown__link" href="pages/about.html">
+              About Us
+            </a>
+            <button
+              class="nav-dropdown__toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="about-dropdown-menu"
+              aria-label="Show About Us submenu"
+            >
+              <span class="nav-dropdown__chevron" aria-hidden="true"></span>
+            </button>
+
+            <div class="nav-dropdown__menu" id="about-dropdown-menu">
+              <a href="pages/about.html#president-message">President's Message</a>
+              <a href="pages/about.html#vision-mission">Vision, Mission &amp; Objectives</a>
+              <a href="pages/about.html#our-team">Our Team</a>
+            </div>
+          </div>
+
+          <a class="navigation-link" href="pages/achievement.html">Achievement</a>
+
+          <a class="button button--secondary navigation-cta" href="pages/join.html">
+            Join the Club
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="menu-overlay" hidden></div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <p class="eyebrow">Official Student Club of Universiti Utara Malaysia</p>
+
+          <h1>Learn together. Lead with purpose. Create lasting impact.</h1>
+
+          <p class="hero__description">
+            Persatuan Pengurusan Teknologi (MOTIC) is the premier academic body for
+            Technology Management students at UUM, building students' skills, network
+            and readiness for the future of work.
+          </p>
+
+          <div class="hero__actions">
+            <a class="button button--primary" href="pages/join.html">
+              Become a Member
+            </a>
+
+            <a class="button button--outlined" href="pages/achievement.html">
+              Explore Achievements
+            </a>
+          </div>
+
+          <dl class="hero__highlights">
+            <div>
+              <dt>[NUMBER]+</dt>
+              <dd>Active members</dd>
+            </div>
+            <div>
+              <dt>[YEAR]</dt>
+              <dd>Club established</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="hero__visual">
+          <div class="hero__image-placeholder">
+            <span>Authentic student-life photograph</span>
+          </div>
+
+          <article class="next-event-card">
+            <p class="next-event-card__label">Next event</p>
+            <h2>[UPCOMING EVENT NAME]</h2>
+            <p>[DATE] · [TIME]</p>
+            <p>[VENUE]</p>
+            <a href="pages/achievement.html">View details →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro">
+      <div class="container intro__grid">
+        <div class="intro__lede">
+          <p class="eyebrow">Who We Are</p>
+          <h2>The academic home for Technology Management students at UUM.</h2>
+        </div>
+
+        <div class="intro__body">
+          <p>
+            Persatuan Pengurusan Teknologi (MOTIC) is the premier academic body for
+            Technology Management students, established under the School of
+            Technology Management and Logistics. Our ongoing purpose is to enhance
+            the academic experience and future readiness of our students.
+          </p>
+          <a class="text-link" href="pages/about.html">Read our full story →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="logo-strip" aria-label="Our university and school">
+      <div class="container logo-strip__inner">
+        <span class="logo-strip__label">Operating under</span>
+        <div class="logo-strip__marks">
+          <span class="logo-strip__item">Universiti Utara Malaysia</span>
+          <span class="logo-strip__item">School of Technology Management and Logistics</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer__grid">
+      <div class="footer__about">
+        <div class="club-brand club-brand--footer">
+          <img class="club-brand__mark" src="assets/images/motic-crest.png" alt="MOTIC crest" width="48" height="48">
+          <span class="club-brand__text">
+            <strong>MOTIC</strong>
+            <small>Persatuan Pengurusan Teknologi</small>
+          </span>
+        </div>
+        <p>
+          School of Technology Management and Logistics, UUM College of Business,
+          Universiti Utara Malaysia, 06010 Sintok, Kedah Darul Aman, Malaysia.
+        </p>
+      </div>
+
+      <nav class="footer__links" aria-label="Quick links">
+        <h3>Quick Links</h3>
+        <a href="index.html">Home</a>
+        <a href="pages/about.html">About Us</a>
+        <a href="pages/achievement.html">Achievement</a>
+        <a href="pages/join.html">Join the Club</a>
+      </nav>
+
+      <div class="footer__contact">
+        <h3>Get in Touch</h3>
+        <a href="mailto:[CLUB EMAIL]">[CLUB EMAIL]</a>
+        <p>School of Technology Management and Logistics</p>
+        <div class="footer__social">
+          <a href="https://www.facebook.com/share/1ERZcn2C2W/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="MOTIC on Facebook">Facebook</a>
+          <a href="https://www.instagram.com/motic_uum?igsh=MXA2d3ljcnQ3ZzBzcg==" target="_blank" rel="noopener" aria-label="MOTIC on Instagram">Instagram</a>
+          <a href="https://www.tiktok.com/@motic_uum?_r=1&_t=ZS-98YWH0HeZYw" target="_blank" rel="noopener" aria-label="MOTIC on TikTok">TikTok</a>
+          <a href="https://youtube.com/@motic_uum?si=BqoHyurB2vP5TEdb" target="_blank" rel="noopener" aria-label="MOTIC on YouTube">YouTube</a>
+        </div>
+      </div>
+
+      <div class="footer__map">
+        <div class="footer__map-placeholder">Map placeholder — Sintok, Kedah</div>
+      </div>
+    </div>
+
+    <div class="footer__base">
+      <div class="container footer__base-inner">
+        <p>© <span id="current-year"></span> MOTIC, Universiti Utara Malaysia. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Accessibility Statement</a>
+          <button class="back-to-top" type="button">Back to top ↑</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
