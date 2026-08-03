@@ -27,6 +27,10 @@
 
   <link rel="stylesheet" href="css/styles.css">
   <script src="js/home-data.js" defer></script>
+  <script src="js/news-data.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
+  <script src="js/supabase-config.js" defer></script>
+  <script src="js/news-service.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 
@@ -43,7 +47,7 @@
         </div>
 
         <nav class="institution-bar__links" aria-label="Social links">
-          <a href="https://www.facebook.com/share/1ERZcn2C2W/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://www.facebook.com/100039824747476/" target="_blank" rel="noopener">Facebook</a>
           <a href="https://www.instagram.com/motic_uum?igsh=MXA2d3ljcnQ3ZzBzcg==" target="_blank" rel="noopener">Instagram</a>
           <a href="https://www.tiktok.com/@motic_uum?_r=1&_t=ZS-98YWH0HeZYw" target="_blank" rel="noopener">TikTok</a>
           <a href="https://youtube.com/@motic_uum?si=BqoHyurB2vP5TEdb" target="_blank" rel="noopener">YouTube</a>
@@ -101,10 +105,11 @@
             </div>
           </div>
 
+          <a class="navigation-link" href="pages/news.html">News</a>
           <a class="navigation-link" href="pages/achievement.html">Achievement</a>
 
-          <a class="button button--secondary navigation-cta" href="pages/join.html">
-            Join the Club
+          <a class="button button--secondary navigation-cta" href="pages/admin.html">
+            Admin
           </a>
         </div>
       </div>
@@ -114,54 +119,103 @@
   </header>
 
   <main id="main-content">
-    <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__content">
-          <p class="eyebrow">Official Student Club of Universiti Utara Malaysia</p>
+    <section
+      class="announcement-carousel"
+      aria-label="Upcoming news and announcements"
+      data-poster-carousel
+      data-autoplay-delay="6500"
+    >
+      <section
+        class="announcement-carousel__viewport"
+        aria-roledescription="carousel"
+        aria-label="Upcoming news posters"
+        tabindex="0"
+      >
+        <div class="announcement-carousel__track" data-carousel-track></div>
+      </section>
 
-          <h1>Learn together. Lead with purpose. Create lasting impact.</h1>
+      <button
+        class="carousel-control carousel-control--previous"
+        type="button"
+        aria-label="Show previous poster"
+        data-carousel-previous
+      >
+        <span aria-hidden="true">‹</span>
+      </button>
 
-          <p class="hero__description">
-            Persatuan Pengurusan Teknologi (MOTIC) is the premier academic body for
-            Technology Management students at UUM, building students' skills, network
-            and readiness for the future of work.
-          </p>
+      <button
+        class="carousel-control carousel-control--next"
+        type="button"
+        aria-label="Show next poster"
+        data-carousel-next
+      >
+        <span aria-hidden="true">›</span>
+      </button>
 
-          <div class="hero__actions">
-            <a class="button button--primary" href="pages/join.html">
-              Become a Member
-            </a>
+      <div class="carousel-dots" role="group" aria-label="Choose a poster" data-carousel-dots></div>
+      <p class="sr-only" aria-live="polite" aria-atomic="true" data-carousel-status></p>
 
-            <a class="button button--outlined" href="pages/achievement.html">
-              Explore Achievements
-            </a>
+      <noscript>
+        <img
+          class="announcement-carousel__fallback"
+          src="image(28).png"
+          alt="Appointment announcement for Professor Dr. Ahmad Martadha Mohamed as Deputy Vice-Chancellor of Universiti Utara Malaysia"
+        >
+      </noscript>
+    </section>
+
+    <section class="news-showcase" aria-labelledby="news-showcase-title">
+      <h2 class="sr-only" id="news-showcase-title">MOTIC news and Facebook updates</h2>
+
+      <div class="news-showcase__container">
+        <aside class="facebook-panel" aria-labelledby="facebook-panel-title">
+          <div class="news-panel-heading news-panel-heading--facebook">
+            <span aria-hidden="true">f</span>
+            <h3 id="facebook-panel-title">MOTIC on Facebook</h3>
           </div>
 
-          <dl class="hero__highlights">
-            <div>
-              <dt>[NUMBER]+</dt>
-              <dd>Active members</dd>
-            </div>
-            <div>
-              <dt>[YEAR]</dt>
-              <dd>Club established</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div class="hero__visual">
-          <div class="hero__image-placeholder">
-            <span>Authentic student-life photograph</span>
+          <div class="facebook-panel__embed">
+            <iframe
+              title="MOTIC UUM Facebook timeline"
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F100039824747476%2F&amp;tabs=timeline&amp;width=500&amp;height=560&amp;small_header=false&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=true"
+              width="500"
+              height="560"
+              allowfullscreen="true"
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              loading="lazy"
+            ></iframe>
           </div>
 
-          <article class="next-event-card">
-            <p class="next-event-card__label">Next event</p>
-            <h2>[UPCOMING EVENT NAME]</h2>
-            <p>[DATE] · [TIME]</p>
-            <p>[VENUE]</p>
-            <a href="pages/achievement.html">View details →</a>
-          </article>
-        </div>
+          <a
+            class="facebook-panel__fallback"
+            href="https://www.facebook.com/100039824747476/"
+            target="_blank"
+            rel="noopener"
+          >
+            Open MOTIC UUM on Facebook →
+          </a>
+        </aside>
+
+        <section class="in-house-panel" aria-labelledby="in-house-title">
+          <a class="news-panel-heading news-panel-heading--navy" href="pages/news.html">
+            <h3 id="in-house-title">In-House News</h3>
+            <span aria-hidden="true">→</span>
+          </a>
+
+          <div class="in-house-list" data-in-house-news></div>
+
+          <a class="news-panel-link" href="pages/news.html">
+            View all previous news →
+          </a>
+        </section>
+
+        <section class="latest-news-panel" aria-labelledby="latest-news-title">
+          <div class="news-panel-heading news-panel-heading--gold">
+            <h3 id="latest-news-title">Latest News</h3>
+          </div>
+
+          <div class="latest-news-card" data-latest-news></div>
+        </section>
       </div>
     </section>
 
@@ -215,8 +269,9 @@
         <h3>Quick Links</h3>
         <a href="index.html">Home</a>
         <a href="pages/about.html">About Us</a>
+        <a href="pages/news.html">News</a>
         <a href="pages/achievement.html">Achievement</a>
-        <a href="pages/join.html">Join the Club</a>
+        <a href="pages/admin.html">Admin</a>
       </nav>
 
       <div class="footer__contact">
@@ -224,7 +279,7 @@
         <a href="mailto:[CLUB EMAIL]">[CLUB EMAIL]</a>
         <p>School of Technology Management and Logistics</p>
         <div class="footer__social">
-          <a href="https://www.facebook.com/share/1ERZcn2C2W/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="MOTIC on Facebook">Facebook</a>
+          <a href="https://www.facebook.com/100039824747476/" target="_blank" rel="noopener" aria-label="MOTIC on Facebook">Facebook</a>
           <a href="https://www.instagram.com/motic_uum?igsh=MXA2d3ljcnQ3ZzBzcg==" target="_blank" rel="noopener" aria-label="MOTIC on Instagram">Instagram</a>
           <a href="https://www.tiktok.com/@motic_uum?_r=1&_t=ZS-98YWH0HeZYw" target="_blank" rel="noopener" aria-label="MOTIC on TikTok">TikTok</a>
           <a href="https://youtube.com/@motic_uum?si=BqoHyurB2vP5TEdb" target="_blank" rel="noopener" aria-label="MOTIC on YouTube">YouTube</a>

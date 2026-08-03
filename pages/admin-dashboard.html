@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>News Dashboard | MOTIC UUM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
+  <script src="../js/supabase-config.js" defer></script>
+  <script src="../js/news-service.js" defer></script>
+  <script src="../js/admin.js" defer></script>
+</head>
+
+<body class="admin-page admin-dashboard-page" data-admin-dashboard>
+  <a class="skip-link" href="#dashboard-main">Skip to dashboard</a>
+
+  <header class="admin-dashboard-header">
+    <a class="admin-brand" href="../index.html" aria-label="MOTIC UUM home">
+      <img src="../assets/images/motic-logo-full-trimmed.png" alt="MOTIC UUM">
+    </a>
+
+    <div class="admin-account">
+      <span data-admin-email>Checking account…</span>
+      <a href="../index.html" target="_blank" rel="noopener">View website</a>
+      <button type="button" data-admin-logout>Sign Out</button>
+    </div>
+  </header>
+
+  <main class="admin-dashboard" id="dashboard-main">
+    <div class="admin-dashboard-heading">
+      <div>
+        <p class="admin-kicker">MOTIC news administration</p>
+        <h1>News Dashboard</h1>
+        <p>Publish the latest update, edit an existing story or remove old news.</p>
+      </div>
+      <button class="admin-secondary-button" type="button" data-new-story>+ New Story</button>
+    </div>
+
+    <p class="admin-status admin-status--dashboard" data-dashboard-status hidden role="status" aria-live="polite"></p>
+
+    <div class="admin-dashboard-grid">
+      <section class="admin-panel admin-editor" aria-labelledby="news-form-title">
+        <div class="admin-panel__heading">
+          <p class="admin-kicker">News editor</p>
+          <h2 id="news-form-title" data-form-title>Publish a new story</h2>
+        </div>
+
+        <form class="admin-news-form" data-news-form>
+          <div class="admin-field admin-field--full">
+            <label for="news-title">News title</label>
+            <input id="news-title" name="title" type="text" maxlength="220" required>
+          </div>
+
+          <div class="admin-field admin-field--full">
+            <label for="news-slug">Page URL slug</label>
+            <input
+              id="news-slug"
+              name="slug"
+              type="text"
+              maxlength="120"
+              pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+              aria-describedby="news-slug-help"
+              required
+            >
+            <small id="news-slug-help">Generated from the title. Use lowercase letters, numbers and hyphens.</small>
+          </div>
+
+          <div class="admin-field">
+            <label for="news-date">Published date</label>
+            <input id="news-date" name="date" type="date" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="news-category">Category</label>
+            <input id="news-category" name="category" type="text" maxlength="80" required>
+          </div>
+
+          <div class="admin-field admin-field--full">
+            <label for="news-excerpt">Short summary</label>
+            <textarea id="news-excerpt" name="excerpt" rows="3" minlength="10" maxlength="600" required></textarea>
+          </div>
+
+          <div class="admin-field admin-field--full">
+            <label for="news-content">News details</label>
+            <textarea
+              id="news-content"
+              name="content"
+              rows="9"
+              aria-describedby="news-content-help"
+              required
+            ></textarea>
+            <small id="news-content-help">Separate paragraphs with one blank line.</small>
+          </div>
+
+          <div class="admin-field admin-field--full">
+            <label for="news-image">Poster or news image</label>
+            <input id="news-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
+            <p class="admin-current-image" data-current-image>No image selected.</p>
+          </div>
+
+          <div class="admin-field admin-field--full">
+            <label for="news-image-alt">Image description</label>
+            <input
+              id="news-image-alt"
+              name="imageAlt"
+              type="text"
+              maxlength="220"
+              placeholder="Describe the image for visitors using screen readers"
+            >
+          </div>
+
+          <div class="admin-form-actions admin-field--full">
+            <button class="admin-primary-button" type="submit">Publish News</button>
+            <button class="admin-secondary-button" type="button" data-cancel-edit hidden>Cancel Edit</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="admin-panel admin-story-list-panel" aria-labelledby="published-news-title">
+        <div class="admin-panel__heading">
+          <p class="admin-kicker">Published stories</p>
+          <h2 id="published-news-title">Manage News</h2>
+        </div>
+
+        <p class="admin-empty" data-admin-empty hidden>No news has been published yet.</p>
+        <div class="admin-news-list" data-admin-news-list></div>
+      </section>
+    </div>
+
+    <section class="admin-panel admin-poster-manager" aria-labelledby="poster-manager-title">
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">Homepage slider</p>
+        <h2 id="poster-manager-title">Upcoming Posters</h2>
+        <p>Upload and arrange the announcement posters displayed at the top of the home page.</p>
+      </div>
+
+      <div class="admin-poster-grid">
+        <form class="admin-poster-form" data-poster-form>
+          <h3 data-poster-form-title>Add a poster</h3>
+
+          <div class="admin-field">
+            <label for="poster-title">Poster title</label>
+            <input id="poster-title" name="posterTitle" type="text" maxlength="180" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="poster-image">Poster image</label>
+            <input id="poster-image" name="posterImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
+            <p class="admin-current-image" data-poster-current-image>A poster image is required.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="poster-alt">Image description</label>
+            <input id="poster-alt" name="posterAlt" type="text" minlength="5" maxlength="240" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="poster-link">Link when clicked</label>
+            <input id="poster-link" name="posterLink" type="text" maxlength="500" placeholder="pages/news-detail.html?id=story-slug">
+            <small>Optional. Use a website URL or a page path.</small>
+          </div>
+
+          <div class="admin-field">
+            <label for="poster-order">Display order</label>
+            <input id="poster-order" name="posterOrder" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <label class="admin-checkbox">
+            <input id="poster-active" name="posterActive" type="checkbox" checked>
+            <span>Show this poster on the home page</span>
+          </label>
+
+          <div class="admin-form-actions">
+            <button class="admin-primary-button" type="submit">Add Poster</button>
+            <button class="admin-secondary-button" type="button" data-cancel-poster-edit hidden>Cancel Edit</button>
+          </div>
+        </form>
+
+        <div class="admin-poster-list-section">
+          <h3>Current posters</h3>
+          <p class="admin-empty" data-admin-poster-empty hidden>No posters have been added yet.</p>
+          <div class="admin-poster-list" data-admin-poster-list></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

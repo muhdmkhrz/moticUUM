@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Sign In | MOTIC UUM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
+  <script src="../js/supabase-config.js" defer></script>
+  <script src="../js/news-service.js" defer></script>
+  <script src="../js/admin.js" defer></script>
+</head>
+
+<body class="admin-page admin-login-page" data-admin-login>
+  <a class="skip-link" href="#admin-main">Skip to sign in</a>
+
+  <header class="admin-login-header">
+    <a class="admin-brand" href="../index.html" aria-label="Return to MOTIC home">
+      <img src="../assets/images/motic-logo-full-trimmed.png" alt="MOTIC UUM">
+    </a>
+    <a class="admin-back-link" href="../index.html">← Back to website</a>
+  </header>
+
+  <main class="admin-login-main" id="admin-main">
+    <section class="admin-login-intro" aria-labelledby="admin-login-title">
+      <p class="admin-kicker">Administrative portal</p>
+      <h1 id="admin-login-title">MOTIC Admin</h1>
+      <span class="admin-title-rule" aria-hidden="true"></span>
+      <p>Sign in with an authorized account to publish and manage club news.</p>
+    </section>
+
+    <form class="admin-login-card" data-login-form>
+      <div class="admin-field">
+        <label for="admin-email">Email address</label>
+        <input
+          id="admin-email"
+          name="email"
+          type="email"
+          autocomplete="username"
+          placeholder="admin@motic.example"
+          required
+        >
+      </div>
+
+      <div class="admin-field">
+        <label for="admin-password">Password</label>
+        <div class="admin-password-field">
+          <input
+            id="admin-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+            minlength="6"
+            required
+          >
+          <button type="button" data-password-toggle aria-pressed="false">Show</button>
+        </div>
+      </div>
+
+      <p class="admin-status" data-login-status hidden role="status" aria-live="polite"></p>
+
+      <button class="admin-primary-button" type="submit">Sign In</button>
+    </form>
+
+    <div class="admin-access-note">
+      <strong>Authorized access only</strong>
+      <p>This area is restricted to approved MOTIC administrators.</p>
+    </div>
+  </main>
+
+  <footer class="admin-login-footer">
+    <p>© <span>2026</span> MOTIC UUM. All rights reserved.</p>
+    <p>Secure news administration</p>
+  </footer>
+</body>
+</html>
