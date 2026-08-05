@@ -180,7 +180,7 @@ button:not(:disabled) {
 }
 
 .main-navigation__content {
-  min-height: 76px;
+  min-height: 92px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -194,10 +194,12 @@ button:not(:disabled) {
   flex-shrink: 0;
 }
 
-.club-brand__logo {
+.main-navigation .club-brand__logo {
   display: block;
-  height: 56px;
+  height: 76px;
+  max-width: min(310px, 34vw);
   width: auto;
+  object-fit: contain;
 }
 
 .club-brand__mark {
@@ -648,7 +650,7 @@ button:not(:disabled) {
   --admin-cream: #f2ebe5;
   --admin-cream-soft: #fffdfa;
   --admin-gold: #d3ad55;
-  --admin-header-offset: 93px;
+  --admin-header-offset: 101px;
   min-height: 100vh;
   color: var(--admin-cream);
   background: var(--admin-maroon-deep);
@@ -683,6 +685,59 @@ button:not(:disabled) {
   width: auto;
   height: 48px;
   object-fit: contain;
+}
+
+.admin-login-header .admin-brand--identity,
+.admin-dashboard-header .admin-brand--identity {
+  gap: 12px;
+  padding: 0;
+  color: var(--admin-cream-soft);
+  background: transparent;
+  border-radius: 0;
+}
+
+.admin-brand--identity .admin-brand__mark {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--admin-gold);
+}
+
+.admin-brand--identity .admin-brand__text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.admin-brand--identity .admin-brand__text strong {
+  color: var(--admin-cream-soft);
+  font-family: var(--font-heading);
+  font-size: clamp(0.94rem, 1.4vw, 1.14rem);
+  line-height: 1.15;
+}
+
+.admin-brand--identity .admin-brand__text small {
+  margin-top: 3px;
+  color: rgb(242 235 229 / 82%);
+  font-family: var(--font-heading);
+  font-size: 0.52rem;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.admin-brand--identity .admin-brand__university {
+  display: block;
+  margin-top: 5px;
+  padding-top: 4px;
+  color: var(--admin-gold);
+  border-top: 2px solid var(--admin-gold);
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .admin-login-header,
@@ -1308,7 +1363,7 @@ button:not(:disabled) {
 
 @media (max-width: 680px) {
   .admin-page {
-    --admin-header-offset: 83px;
+    --admin-header-offset: 89px;
   }
 
   .admin-login-header,
@@ -1333,6 +1388,33 @@ button:not(:disabled) {
   .admin-login-header .admin-brand img,
   .admin-dashboard-header .admin-brand img {
     height: 38px;
+  }
+
+  .admin-login-header .admin-brand--identity,
+  .admin-dashboard-header .admin-brand--identity {
+    gap: 10px;
+  }
+
+  .admin-login-header .admin-brand--identity .admin-brand__mark,
+  .admin-dashboard-header .admin-brand--identity .admin-brand__mark {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .admin-brand--identity .admin-brand__text strong {
+    font-size: 0.8rem;
+  }
+
+  .admin-brand--identity .admin-brand__text small {
+    font-size: 0.42rem;
+    white-space: normal;
+  }
+
+  .admin-brand--identity .admin-brand__university {
+    margin-top: 4px;
+    padding-top: 4px;
+    font-size: 0.62rem;
   }
 
   .admin-dashboard-header {
@@ -1556,7 +1638,7 @@ button:not(:disabled) {
   }
 
   .main-navigation__content {
-    min-height: 68px;
+    min-height: 76px;
   }
 
   .club-brand__mark {
@@ -1564,8 +1646,10 @@ button:not(:disabled) {
     height: 42px;
   }
 
-  .club-brand__logo {
-    height: 44px;
+  .main-navigation .club-brand__logo {
+    width: auto;
+    height: clamp(44px, 12vw, 52px);
+    max-width: calc(100vw - 132px);
   }
 
   .club-brand__text small {
