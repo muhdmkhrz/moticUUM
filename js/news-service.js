@@ -71,6 +71,23 @@
     };
   }
 
+  function mapGalleryRow(row) {
+    return {
+      databaseId: row.id,
+      section: row.section,
+      title: row.title,
+      image: row.image_url,
+      imagePath: row.image_path || "",
+      alt: row.image_alt,
+      caption: row.caption || "",
+      link: row.link_url || "",
+      displayOrder: row.display_order,
+      isActive: row.is_active,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  }
+
   function requireClient() {
     if (!client) {
       throw new Error("The news service is not connected. Check supabase-config.js.");
@@ -158,6 +175,107 @@
     }
 
     return data.map(mapPosterRow);
+  }
+
+  async function getGalleryItems(section, options = {}) {
+    const allowFallback = options.allowFallback !== false;
+
+    if (!client) {
+      if (allowFallback) return [];
+      throw new Error("Supabase is not available.");
+    }
+
+    const { data, error } = await client
+      .from("home_gallery")
+      .select("id, section, title, image_url, image_path, image_alt, caption, link_url, display_order, is_active, created_at, updated_at")
+      .eq("section", section)
+      .eq("is_active", true)
+      .order("display_order", { ascending: true })
+      .order("id", { ascending: false });
+
+    if (error) {
+      if (allowFallback) {
+        console.warn(`The ${section} gallery could not be loaded.`, error.message);
+        return [];
+      }
+      throw error;
+    }
+
+    return data.map(mapGalleryRow);
+  }
+
+  async function getGalleryItemsForAdmin(section) {
+    const { data, error } = await requireClient()
+      .from("home_gallery")
+      .select("id, section, title, image_url, image_path, image_alt, caption, link_url, display_order, is_active, created_at, updated_at")
+      .eq("section", section)
+      .order("display_order", { ascending: true })
+      .order("id", { ascending: false });
+
+    if (error) throw error;
+    return data.map(mapGalleryRow);
+  }
+
+  function normaliseGalleryInput(item) {
+    return {
+      section: item.section,
+      title: item.title.trim(),
+      image_url: item.image,
+      image_path: item.imagePath || null,
+      image_alt: item.alt.trim(),
+      caption: item.caption?.trim() || null,
+      link_url: item.link?.trim() || null,
+      display_order: Number(item.displayOrder) || 0,
+      is_active: Boolean(item.isActive),
+    };
+  }
+
+  async function createGalleryItem(item) {
+    const user = await requireAdmin();
+
+    const { data, error } = await requireClient()
+      .from("home_gallery")
+      .insert({
+        ...normaliseGalleryInput(item),
+        created_by: user.id,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return mapGalleryRow(data);
+  }
+
+  async function updateGalleryItem(databaseId, item) {
+    await requireAdmin();
+
+    const { data, error } = await requireClient()
+      .from("home_gallery")
+      .update({
+        ...normaliseGalleryInput(item),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", databaseId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return mapGalleryRow(data);
+  }
+
+  async function deleteGalleryItem(databaseId) {
+    await requireAdmin();
+
+    const { error } = await requireClient()
+      .from("home_gallery")
+      .delete()
+      .eq("id", databaseId);
+
+    if (error) throw error;
+  }
+
+  async function uploadGalleryImage(file, section) {
+    return uploadImage(file, `gallery/${section}`);
   }
 
   async function signIn(email, password) {
@@ -413,8 +531,14 @@
     createPoster,
     updatePoster,
     deletePoster,
+    getGalleryItems,
+    getGalleryItemsForAdmin,
+    createGalleryItem,
+    updateGalleryItem,
+    deleteGalleryItem,
     uploadNewsImage,
     uploadPosterImage,
+    uploadGalleryImage,
     removeNewsImage,
   };
 })();

@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   >
 
@@ -31,6 +31,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
   <script src="js/supabase-config.js" defer></script>
   <script src="js/news-service.js" defer></script>
+  <script src="js/home-gallery.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 
@@ -219,22 +220,86 @@
       </div>
     </section>
 
-    <section class="intro">
-      <div class="container intro__grid">
-        <div class="intro__lede">
-          <p class="eyebrow">Who We Are</p>
-          <h2>The academic home for Technology Management students at UUM.</h2>
-        </div>
+    <section class="home-showcase" aria-labelledby="home-showcase-title">
+      <div class="container">
+        <h2 class="sr-only" id="home-showcase-title">Club highlights</h2>
 
-        <div class="intro__body">
-          <p>
-            Persatuan Pengurusan Teknologi (MOTIC) is the premier academic body for
-            Technology Management students, established under the School of
-            Technology Management and Logistics. Our ongoing purpose is to enhance
-            the academic experience and future readiness of our students.
-          </p>
-          <a class="text-link" href="pages/about.html">Read our full story →</a>
+        <div class="home-showcase__grid" data-home-showcase>
+          <article class="showcase-column" data-gallery-column="event" hidden>
+            <div class="showcase-column__header showcase-column__header--event">EVENT</div>
+
+            <div class="showcase-column__carousel" data-gallery-carousel="event" hidden>
+              <div class="showcase-column__viewport">
+                <div class="showcase-column__track" data-gallery-track></div>
+              </div>
+
+              <button class="showcase-column__nav showcase-column__nav--prev" type="button" data-gallery-prev aria-label="Previous">Prev</button>
+              <button class="showcase-column__nav showcase-column__nav--next" type="button" data-gallery-next aria-label="Next">Next</button>
+
+              <div class="showcase-column__dots" data-gallery-dots></div>
+            </div>
+
+            <p class="showcase-column__empty" data-gallery-empty>Event posters will appear here soon.</p>
+          </article>
+
+          <article class="showcase-column" data-gallery-column="activities" hidden>
+            <div class="showcase-column__header showcase-column__header--activities">ACTIVITIES</div>
+
+            <div class="showcase-column__carousel" data-gallery-carousel="activities" hidden>
+              <div class="showcase-column__viewport">
+                <div class="showcase-column__track" data-gallery-track></div>
+              </div>
+
+              <button class="showcase-column__nav showcase-column__nav--prev" type="button" data-gallery-prev aria-label="Previous">Prev</button>
+              <button class="showcase-column__nav showcase-column__nav--next" type="button" data-gallery-next aria-label="Next">Next</button>
+
+              <div class="showcase-column__dots" data-gallery-dots></div>
+            </div>
+
+            <p class="showcase-column__empty" data-gallery-empty>Activity photos will appear here soon.</p>
+          </article>
+
+          <article class="showcase-column" data-gallery-column="researcher_spotlight" hidden>
+            <div class="showcase-column__header showcase-column__header--researcher">RESEARCHER SPOTLIGHT</div>
+
+            <div class="showcase-column__carousel" data-gallery-carousel="researcher_spotlight" hidden>
+              <div class="showcase-column__viewport">
+                <div class="showcase-column__track" data-gallery-track></div>
+              </div>
+
+              <button class="showcase-column__nav showcase-column__nav--prev" type="button" data-gallery-prev aria-label="Previous">Prev</button>
+              <button class="showcase-column__nav showcase-column__nav--next" type="button" data-gallery-next aria-label="Next">Next</button>
+
+              <div class="showcase-column__dots" data-gallery-dots></div>
+            </div>
+          </article>
+
+          <article class="showcase-column" data-gallery-column="ictom" hidden>
+            <div class="showcase-column__header showcase-column__header--ictom">ICTOM</div>
+
+            <div class="showcase-column__carousel" data-gallery-carousel="ictom" hidden>
+              <div class="showcase-column__viewport">
+                <div class="showcase-column__track" data-gallery-track></div>
+              </div>
+
+              <button class="showcase-column__nav showcase-column__nav--prev" type="button" data-gallery-prev aria-label="Previous">Prev</button>
+              <button class="showcase-column__nav showcase-column__nav--next" type="button" data-gallery-next aria-label="Next">Next</button>
+
+              <div class="showcase-column__dots" data-gallery-dots></div>
+            </div>
+          </article>
         </div>
+      </div>
+    </section>
+
+    <section class="accreditation-strip" aria-label="Accreditations and affiliations">
+      <div class="container">
+        <img
+          class="accreditation-strip__image"
+          src="assets/images/accreditation-logos.png"
+          alt="MOTIC and UUM accreditations: AACSB, AMBA, IQA CEEMAN, Institute of Hospitality, ASEAN University Network AUN-QA, SETARA, ISO 9001:2015, MQA, Beta Gamma Sigma, Sustainable Development Goals, EDAMBA"
+          loading="lazy"
+        >
       </div>
     </section>
 

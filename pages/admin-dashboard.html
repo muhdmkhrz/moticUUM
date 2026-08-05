@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/styles.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
@@ -32,109 +32,120 @@
     </div>
   </header>
 
-  <main class="admin-dashboard" id="dashboard-main">
-    <div class="admin-dashboard-heading">
-      <div>
-        <p class="admin-kicker">MOTIC news administration</p>
-        <h1>News Dashboard</h1>
-        <p>Publish the latest update, edit an existing story or remove old news.</p>
-      </div>
-      <button class="admin-secondary-button" type="button" data-new-story>+ New Story</button>
-    </div>
+  <nav class="admin-tabs" aria-label="Dashboard sections" data-admin-tabs>
+    <button class="admin-tab active" type="button" data-admin-tab="news" aria-current="page">News</button>
+    <button class="admin-tab" type="button" data-admin-tab="posters">Upcoming Poster</button>
+    <button class="admin-tab" type="button" data-admin-tab="event">Event</button>
+    <button class="admin-tab" type="button" data-admin-tab="activities">Activities</button>
+    <button class="admin-tab" type="button" data-admin-tab="researcher_spotlight">Research Spotlight</button>
+    <button class="admin-tab" type="button" data-admin-tab="ictom">ICTOM</button>
+  </nav>
 
+  <main class="admin-dashboard" id="dashboard-main">
     <p class="admin-status admin-status--dashboard" data-dashboard-status hidden role="status" aria-live="polite"></p>
 
-    <div class="admin-dashboard-grid">
-      <section class="admin-panel admin-editor" aria-labelledby="news-form-title">
-        <div class="admin-panel__heading">
-          <p class="admin-kicker">News editor</p>
-          <h2 id="news-form-title" data-form-title>Publish a new story</h2>
+    <div class="admin-dashboard-panel" data-admin-panel="news">
+      <div class="admin-dashboard-heading">
+        <div>
+          <p class="admin-kicker">MOTIC news administration</p>
+          <h1>News Dashboard</h1>
+          <p>Publish the latest update, edit an existing story or remove old news.</p>
         </div>
+        <button class="admin-secondary-button" type="button" data-new-story>+ New Story</button>
+      </div>
 
-        <form class="admin-news-form" data-news-form>
-          <div class="admin-field admin-field--full">
-            <label for="news-title">News title</label>
-            <input id="news-title" name="title" type="text" maxlength="220" required>
+      <div class="admin-dashboard-grid">
+        <section class="admin-panel admin-editor" aria-labelledby="news-form-title">
+          <div class="admin-panel__heading">
+            <p class="admin-kicker">News editor</p>
+            <h2 id="news-form-title" data-form-title>Publish a new story</h2>
           </div>
 
-          <div class="admin-field admin-field--full">
-            <label for="news-slug">Page URL slug</label>
-            <input
-              id="news-slug"
-              name="slug"
-              type="text"
-              maxlength="120"
-              pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-              aria-describedby="news-slug-help"
-              required
-            >
-            <small id="news-slug-help">Generated from the title. Use lowercase letters, numbers and hyphens.</small>
+          <form class="admin-news-form" data-news-form>
+            <div class="admin-field admin-field--full">
+              <label for="news-title">News title</label>
+              <input id="news-title" name="title" type="text" maxlength="220" required>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="news-slug">Page URL slug</label>
+              <input
+                id="news-slug"
+                name="slug"
+                type="text"
+                maxlength="120"
+                pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+                aria-describedby="news-slug-help"
+                required
+              >
+              <small id="news-slug-help">Generated from the title. Use lowercase letters, numbers and hyphens.</small>
+            </div>
+
+            <div class="admin-field">
+              <label for="news-date">Published date</label>
+              <input id="news-date" name="date" type="date" required>
+            </div>
+
+            <div class="admin-field">
+              <label for="news-category">Category</label>
+              <input id="news-category" name="category" type="text" maxlength="80" required>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="news-excerpt">Short summary</label>
+              <textarea id="news-excerpt" name="excerpt" rows="3" minlength="10" maxlength="600" required></textarea>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="news-content">News details</label>
+              <textarea
+                id="news-content"
+                name="content"
+                rows="9"
+                aria-describedby="news-content-help"
+                required
+              ></textarea>
+              <small id="news-content-help">Separate paragraphs with one blank line.</small>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="news-image">Poster or news image</label>
+              <input id="news-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+              <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
+              <p class="admin-current-image" data-current-image>No image selected.</p>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="news-image-alt">Image description</label>
+              <input
+                id="news-image-alt"
+                name="imageAlt"
+                type="text"
+                maxlength="220"
+                placeholder="Describe the image for visitors using screen readers"
+              >
+            </div>
+
+            <div class="admin-form-actions admin-field--full">
+              <button class="admin-primary-button" type="submit">Publish News</button>
+              <button class="admin-secondary-button" type="button" data-cancel-edit hidden>Cancel Edit</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-panel admin-story-list-panel" aria-labelledby="published-news-title">
+          <div class="admin-panel__heading">
+            <p class="admin-kicker">Published stories</p>
+            <h2 id="published-news-title">Manage News</h2>
           </div>
 
-          <div class="admin-field">
-            <label for="news-date">Published date</label>
-            <input id="news-date" name="date" type="date" required>
-          </div>
-
-          <div class="admin-field">
-            <label for="news-category">Category</label>
-            <input id="news-category" name="category" type="text" maxlength="80" required>
-          </div>
-
-          <div class="admin-field admin-field--full">
-            <label for="news-excerpt">Short summary</label>
-            <textarea id="news-excerpt" name="excerpt" rows="3" minlength="10" maxlength="600" required></textarea>
-          </div>
-
-          <div class="admin-field admin-field--full">
-            <label for="news-content">News details</label>
-            <textarea
-              id="news-content"
-              name="content"
-              rows="9"
-              aria-describedby="news-content-help"
-              required
-            ></textarea>
-            <small id="news-content-help">Separate paragraphs with one blank line.</small>
-          </div>
-
-          <div class="admin-field admin-field--full">
-            <label for="news-image">Poster or news image</label>
-            <input id="news-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
-            <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
-            <p class="admin-current-image" data-current-image>No image selected.</p>
-          </div>
-
-          <div class="admin-field admin-field--full">
-            <label for="news-image-alt">Image description</label>
-            <input
-              id="news-image-alt"
-              name="imageAlt"
-              type="text"
-              maxlength="220"
-              placeholder="Describe the image for visitors using screen readers"
-            >
-          </div>
-
-          <div class="admin-form-actions admin-field--full">
-            <button class="admin-primary-button" type="submit">Publish News</button>
-            <button class="admin-secondary-button" type="button" data-cancel-edit hidden>Cancel Edit</button>
-          </div>
-        </form>
-      </section>
-
-      <section class="admin-panel admin-story-list-panel" aria-labelledby="published-news-title">
-        <div class="admin-panel__heading">
-          <p class="admin-kicker">Published stories</p>
-          <h2 id="published-news-title">Manage News</h2>
-        </div>
-
-        <p class="admin-empty" data-admin-empty hidden>No news has been published yet.</p>
-        <div class="admin-news-list" data-admin-news-list></div>
-      </section>
+          <p class="admin-empty" data-admin-empty hidden>No news has been published yet.</p>
+          <div class="admin-news-list" data-admin-news-list></div>
+        </section>
+      </div>
     </div>
 
-    <section class="admin-panel admin-poster-manager" aria-labelledby="poster-manager-title">
+    <section class="admin-panel admin-poster-manager" aria-labelledby="poster-manager-title" data-admin-panel="posters" hidden>
       <div class="admin-panel__heading">
         <p class="admin-kicker">Homepage slider</p>
         <h2 id="poster-manager-title">Upcoming Posters</h2>
@@ -188,6 +199,254 @@
           <h3>Current posters</h3>
           <p class="admin-empty" data-admin-poster-empty hidden>No posters have been added yet.</p>
           <div class="admin-poster-list" data-admin-poster-list></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-gallery-manager" aria-labelledby="event-manager-title" data-gallery-panel="event" data-admin-panel="event" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">Home page — Event column</p>
+        <h2 id="event-manager-title">Event Dashboard</h2>
+        <p>Upload the club poster for each event. These appear in the Event column on the home page.</p>
+      </div>
+
+      <div class="admin-poster-grid">
+        <form class="admin-poster-form" data-gallery-form="event">
+          <h3 data-gallery-form-title>Add an event poster</h3>
+
+          <div class="admin-field">
+            <label for="event-title">Event title</label>
+            <input id="event-title" name="galleryTitle" type="text" maxlength="180" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="event-image">Poster image</label>
+            <input id="event-image" name="galleryImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
+            <p class="admin-current-image" data-gallery-current-image>A poster image is required.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="event-alt">Image description</label>
+            <input id="event-alt" name="galleryAlt" type="text" minlength="5" maxlength="240" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="event-caption">Caption (optional)</label>
+            <input id="event-caption" name="galleryCaption" type="text" maxlength="180">
+          </div>
+
+          <div class="admin-field">
+            <label for="event-link">Link when clicked (optional)</label>
+            <input id="event-link" name="galleryLink" type="text" maxlength="500" placeholder="https://facebook.com/...">
+          </div>
+
+          <div class="admin-field">
+            <label for="event-order">Display order</label>
+            <input id="event-order" name="galleryOrder" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <label class="admin-checkbox">
+            <input id="event-active" name="galleryActive" type="checkbox" checked>
+            <span>Show this on the home page</span>
+          </label>
+
+          <div class="admin-form-actions">
+            <button class="admin-primary-button" type="submit">Add Event Poster</button>
+            <button class="admin-secondary-button" type="button" data-gallery-cancel hidden>Cancel Edit</button>
+          </div>
+        </form>
+
+        <div class="admin-poster-list-section">
+          <h3>Current event posters</h3>
+          <p class="admin-empty" data-gallery-empty hidden>No event posters have been added yet.</p>
+          <div class="admin-poster-list" data-gallery-list="event"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-gallery-manager" aria-labelledby="activities-manager-title" data-gallery-panel="activities" data-admin-panel="activities" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">Home page — Activities column</p>
+        <h2 id="activities-manager-title">Activities Dashboard</h2>
+        <p>Upload photos taken during club activities and events. These appear in the Activities column on the home page.</p>
+      </div>
+
+      <div class="admin-poster-grid">
+        <form class="admin-poster-form" data-gallery-form="activities">
+          <h3 data-gallery-form-title>Add an activity photo</h3>
+
+          <div class="admin-field">
+            <label for="activities-title">Photo title</label>
+            <input id="activities-title" name="galleryTitle" type="text" maxlength="180" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="activities-image">Photo</label>
+            <input id="activities-image" name="galleryImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
+            <p class="admin-current-image" data-gallery-current-image>A photo is required.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="activities-alt">Image description</label>
+            <input id="activities-alt" name="galleryAlt" type="text" minlength="5" maxlength="240" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="activities-caption">Caption (optional)</label>
+            <input id="activities-caption" name="galleryCaption" type="text" maxlength="180">
+          </div>
+
+          <div class="admin-field">
+            <label for="activities-link">Link when clicked (optional)</label>
+            <input id="activities-link" name="galleryLink" type="text" maxlength="500" placeholder="https://facebook.com/...">
+          </div>
+
+          <div class="admin-field">
+            <label for="activities-order">Display order</label>
+            <input id="activities-order" name="galleryOrder" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <label class="admin-checkbox">
+            <input id="activities-active" name="galleryActive" type="checkbox" checked>
+            <span>Show this on the home page</span>
+          </label>
+
+          <div class="admin-form-actions">
+            <button class="admin-primary-button" type="submit">Add Activity Photo</button>
+            <button class="admin-secondary-button" type="button" data-gallery-cancel hidden>Cancel Edit</button>
+          </div>
+        </form>
+
+        <div class="admin-poster-list-section">
+          <h3>Current activity photos</h3>
+          <p class="admin-empty" data-gallery-empty hidden>No activity photos have been added yet.</p>
+          <div class="admin-poster-list" data-gallery-list="activities"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-gallery-manager" aria-labelledby="researcher-manager-title" data-gallery-panel="researcher_spotlight" data-admin-panel="researcher_spotlight" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">Home page — Researcher Spotlight column</p>
+        <h2 id="researcher-manager-title">Research Spotlight Dashboard</h2>
+        <p>This column stays hidden on the home page until you publish the first entry here.</p>
+      </div>
+
+      <div class="admin-poster-grid">
+        <form class="admin-poster-form" data-gallery-form="researcher_spotlight">
+          <h3 data-gallery-form-title>Add a researcher spotlight</h3>
+
+          <div class="admin-field">
+            <label for="researcher-title">Researcher name / title</label>
+            <input id="researcher-title" name="galleryTitle" type="text" maxlength="180" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="researcher-image">Spotlight image</label>
+            <input id="researcher-image" name="galleryImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
+            <p class="admin-current-image" data-gallery-current-image>An image is required.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="researcher-alt">Image description</label>
+            <input id="researcher-alt" name="galleryAlt" type="text" minlength="5" maxlength="240" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="researcher-caption">Caption (optional)</label>
+            <input id="researcher-caption" name="galleryCaption" type="text" maxlength="180" placeholder="e.g. Assoc. Prof. Dr. Abdul Aziz">
+          </div>
+
+          <div class="admin-field">
+            <label for="researcher-link">Link when clicked (optional)</label>
+            <input id="researcher-link" name="galleryLink" type="text" maxlength="500" placeholder="https://expert.uum.edu.my/...">
+          </div>
+
+          <div class="admin-field">
+            <label for="researcher-order">Display order</label>
+            <input id="researcher-order" name="galleryOrder" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <label class="admin-checkbox">
+            <input id="researcher-active" name="galleryActive" type="checkbox" checked>
+            <span>Show this on the home page</span>
+          </label>
+
+          <div class="admin-form-actions">
+            <button class="admin-primary-button" type="submit">Add Spotlight</button>
+            <button class="admin-secondary-button" type="button" data-gallery-cancel hidden>Cancel Edit</button>
+          </div>
+        </form>
+
+        <div class="admin-poster-list-section">
+          <h3>Current spotlights</h3>
+          <p class="admin-empty" data-gallery-empty hidden>No researcher spotlights have been added yet. The column stays hidden on the home page until one is added.</p>
+          <div class="admin-poster-list" data-gallery-list="researcher_spotlight"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-gallery-manager" aria-labelledby="ictom-manager-title" data-gallery-panel="ictom" data-admin-panel="ictom" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">Home page — ICTOM column</p>
+        <h2 id="ictom-manager-title">ICTOM Dashboard</h2>
+        <p>This column stays hidden on the home page until you publish the first entry here.</p>
+      </div>
+
+      <div class="admin-poster-grid">
+        <form class="admin-poster-form" data-gallery-form="ictom">
+          <h3 data-gallery-form-title>Add an ICTOM item</h3>
+
+          <div class="admin-field">
+            <label for="ictom-title">Title</label>
+            <input id="ictom-title" name="galleryTitle" type="text" maxlength="180" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="ictom-image">Poster / image</label>
+            <input id="ictom-image" name="galleryImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <small>JPG, PNG, WebP or GIF. Maximum 8 MB.</small>
+            <p class="admin-current-image" data-gallery-current-image>An image is required.</p>
+          </div>
+
+          <div class="admin-field">
+            <label for="ictom-alt">Image description</label>
+            <input id="ictom-alt" name="galleryAlt" type="text" minlength="5" maxlength="240" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="ictom-caption">Caption (optional)</label>
+            <input id="ictom-caption" name="galleryCaption" type="text" maxlength="180">
+          </div>
+
+          <div class="admin-field">
+            <label for="ictom-link">Link when clicked (optional)</label>
+            <input id="ictom-link" name="galleryLink" type="text" maxlength="500" placeholder="https://ictom.uum.edu.my/...">
+          </div>
+
+          <div class="admin-field">
+            <label for="ictom-order">Display order</label>
+            <input id="ictom-order" name="galleryOrder" type="number" min="0" step="1" value="0" required>
+          </div>
+
+          <label class="admin-checkbox">
+            <input id="ictom-active" name="galleryActive" type="checkbox" checked>
+            <span>Show this on the home page</span>
+          </label>
+
+          <div class="admin-form-actions">
+            <button class="admin-primary-button" type="submit">Add ICTOM Item</button>
+            <button class="admin-secondary-button" type="button" data-gallery-cancel hidden>Cancel Edit</button>
+          </div>
+        </form>
+
+        <div class="admin-poster-list-section">
+          <h3>Current ICTOM items</h3>
+          <p class="admin-empty" data-gallery-empty hidden>No ICTOM items have been added yet. The column stays hidden on the home page until one is added.</p>
+          <div class="admin-poster-list" data-gallery-list="ictom"></div>
         </div>
       </div>
     </section>

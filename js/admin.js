@@ -115,6 +115,34 @@
   async function initialiseDashboard() {
     if (!dashboardPage) return;
 
+    const tabsNav = dashboardPage.querySelector("[data-admin-tabs]");
+    const tabButtons = tabsNav
+      ? [...tabsNav.querySelectorAll("[data-admin-tab]")]
+      : [];
+    const panels = [...dashboardPage.querySelectorAll("[data-admin-panel]")];
+
+    function showTab(key) {
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.adminPanel !== key;
+      });
+
+      tabButtons.forEach((tabButton) => {
+        const isActive = tabButton.dataset.adminTab === key;
+        tabButton.classList.toggle("active", isActive);
+        if (isActive) {
+          tabButton.setAttribute("aria-current", "page");
+        } else {
+          tabButton.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    tabButtons.forEach((tabButton) => {
+      tabButton.addEventListener("click", () => {
+        showTab(tabButton.dataset.adminTab);
+      });
+    });
+
     const status = dashboardPage.querySelector("[data-dashboard-status]");
 
     const form = dashboardPage.querySelector("[data-news-form]");
@@ -471,6 +499,262 @@
       resetPosterForm(true);
     });
 
+    const GALLERY_SECTIONS = [
+      { key: "event", nounSingular: "event poster", verbAdd: "Add Event Poster" },
+      { key: "activities", nounSingular: "activity photo", verbAdd: "Add Activity Photo" },
+      { key: "researcher_spotlight", nounSingular: "spotlight", verbAdd: "Add Spotlight" },
+      { key: "ictom", nounSingular: "ICTOM item", verbAdd: "Add ICTOM Item" },
+    ];
+
+    function resolveGalleryImage(source) {
+      if (
+        /^(?:https?:)?\/\//i.test(source) ||
+        source.startsWith("data:") ||
+        source.startsWith("/")
+      ) {
+        return source;
+      }
+
+      return `../${source}`;
+    }
+
+    function setupGalleryPanel({ key, nounSingular, verbAdd }) {
+      const panel = dashboardPage.querySelector(
+        `[data-gallery-panel="${key}"]`
+      );
+
+      if (!panel) return { load: async () => {} };
+
+      const form = panel.querySelector(`[data-gallery-form="${key}"]`);
+      const formTitle = panel.querySelector("[data-gallery-form-title]");
+      const saveButton = form.querySelector("button[type='submit']");
+      const cancelButton = form.querySelector("[data-gallery-cancel]");
+      const list = panel.querySelector(`[data-gallery-list="${key}"]`);
+      const emptyState = panel.querySelector("[data-gallery-empty]");
+      const currentImage = panel.querySelector("[data-gallery-current-image]");
+
+      let items = [];
+      let editingItem = null;
+
+      function resetForm(scroll = false) {
+        form.reset();
+        editingItem = null;
+
+        form.elements.galleryOrder.value = "0";
+        form.elements.galleryActive.checked = true;
+        formTitle.textContent = `Add a${/^[aeiou]/i.test(nounSingular) ? "n" : ""} ${nounSingular}`;
+        saveButton.textContent = verbAdd;
+        cancelButton.hidden = true;
+        currentImage.textContent = "An image is required.";
+
+        if (scroll) {
+          form.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      function fillForm(item) {
+        editingItem = item;
+
+        form.elements.galleryTitle.value = item.title;
+        form.elements.galleryAlt.value = item.alt;
+        form.elements.galleryCaption.value = item.caption || "";
+        form.elements.galleryLink.value = item.link || "";
+        form.elements.galleryOrder.value = item.displayOrder;
+        form.elements.galleryActive.checked = item.isActive;
+        form.elements.galleryImage.value = "";
+
+        formTitle.textContent = `Edit ${nounSingular}`;
+        saveButton.textContent = "Save Changes";
+        cancelButton.hidden = false;
+
+        currentImage.textContent =
+          "A current image is attached. Choose a file only to replace it.";
+
+        form.scrollIntoView({ behavior: "smooth", block: "start" });
+        form.elements.galleryTitle.focus({ preventScroll: true });
+      }
+
+      function renderItems() {
+        list.replaceChildren();
+        emptyState.hidden = items.length > 0;
+
+        items.forEach((item) => {
+          const row = document.createElement("article");
+          row.className = "admin-poster-row";
+
+          const image = document.createElement("img");
+          image.src = resolveGalleryImage(item.image);
+          image.alt = "";
+          image.loading = "lazy";
+
+          const information = document.createElement("div");
+          information.className = "admin-poster-row__content";
+
+          const title = document.createElement("h4");
+          title.textContent = item.title;
+
+          const meta = document.createElement("p");
+          meta.textContent =
+            `Order ${item.displayOrder} · ${item.isActive ? "Visible" : "Hidden"}`;
+
+          information.append(title, meta);
+
+          const actions = document.createElement("div");
+          actions.className = "admin-news-row__actions";
+
+          const editButton = document.createElement("button");
+          editButton.className = "admin-text-button";
+          editButton.type = "button";
+          editButton.textContent = "Edit";
+          editButton.addEventListener("click", () => fillForm(item));
+
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "admin-text-button admin-text-button--danger";
+          deleteButton.type = "button";
+          deleteButton.textContent = "Delete";
+
+          deleteButton.addEventListener("click", async () => {
+            const confirmed = window.confirm(`Delete “${item.title}”?`);
+            if (!confirmed) return;
+
+            deleteButton.disabled = true;
+            setStatus(status, `Deleting ${nounSingular}…`, "info");
+
+            try {
+              await service.deleteGalleryItem(item.databaseId);
+
+              if (item.imagePath) {
+                try {
+                  await service.removeNewsImage(item.imagePath);
+                } catch (imageError) {
+                  console.warn(
+                    `The ${nounSingular} was deleted, but its image could not be removed.`,
+                    imageError
+                  );
+                }
+              }
+
+              if (editingItem?.databaseId === item.databaseId) {
+                resetForm();
+              }
+
+              await loadItems();
+              setStatus(status, `${nounSingular} deleted.`, "success");
+            } catch (error) {
+              setStatus(status, errorMessage(error), "error");
+              deleteButton.disabled = false;
+            }
+          });
+
+          actions.append(editButton, deleteButton);
+          row.append(image, information, actions);
+          list.append(row);
+        });
+      }
+
+      async function loadItems() {
+        items = await service.getGalleryItemsForAdmin(key);
+        renderItems();
+      }
+
+      cancelButton.addEventListener("click", () => resetForm(true));
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!form.reportValidity()) return;
+
+        const selectedImage = form.elements.galleryImage.files[0];
+
+        if (!selectedImage && !editingItem) {
+          setStatus(status, `Choose an image before saving.`, "error");
+          form.elements.galleryImage.focus();
+          return;
+        }
+
+        saveButton.disabled = true;
+        cancelButton.disabled = true;
+
+        const wasEditing = Boolean(editingItem);
+        saveButton.textContent = wasEditing ? "Saving…" : "Adding…";
+
+        setStatus(
+          status,
+          wasEditing ? `Saving ${nounSingular}…` : `Adding ${nounSingular}…`,
+          "info"
+        );
+
+        let newUpload = null;
+
+        try {
+          if (selectedImage) {
+            newUpload = await service.uploadGalleryImage(selectedImage, key);
+          }
+
+          const item = {
+            section: key,
+            title: form.elements.galleryTitle.value,
+            image: newUpload?.image || editingItem?.image || "",
+            imagePath: newUpload?.imagePath || editingItem?.imagePath || "",
+            alt: form.elements.galleryAlt.value,
+            caption: form.elements.galleryCaption.value,
+            link: form.elements.galleryLink.value,
+            displayOrder: form.elements.galleryOrder.value,
+            isActive: form.elements.galleryActive.checked,
+          };
+
+          if (editingItem) {
+            await service.updateGalleryItem(editingItem.databaseId, item);
+
+            if (newUpload && editingItem.imagePath) {
+              try {
+                await service.removeNewsImage(editingItem.imagePath);
+              } catch (imageError) {
+                console.warn(
+                  `The old ${nounSingular} image could not be removed.`,
+                  imageError
+                );
+              }
+            }
+          } else {
+            await service.createGalleryItem(item);
+          }
+
+          resetForm();
+          await loadItems();
+
+          setStatus(
+            status,
+            wasEditing ? "Changes saved." : `${nounSingular} added.`,
+            "success"
+          );
+        } catch (error) {
+          if (newUpload?.imagePath) {
+            try {
+              await service.removeNewsImage(newUpload.imagePath);
+            } catch (cleanupError) {
+              console.warn(
+                "An unused upload could not be removed.",
+                cleanupError
+              );
+            }
+          }
+
+          setStatus(status, errorMessage(error), "error");
+        } finally {
+          saveButton.disabled = false;
+          cancelButton.disabled = false;
+          saveButton.textContent = editingItem ? "Save Changes" : verbAdd;
+        }
+      });
+
+      resetForm();
+
+      return { load: loadItems };
+    }
+
+    const galleryPanels = GALLERY_SECTIONS.map(setupGalleryPanel);
+
     posterForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -754,6 +1038,7 @@
       await Promise.all([
         loadStories(),
         loadPosters(),
+        ...galleryPanels.map((panel) => panel.load()),
       ]);
     } catch (error) {
       setStatus(status, errorMessage(error), "error");

@@ -280,6 +280,117 @@ using (
   )
 );
 
+-- ============================================================
+-- HOME PAGE GALLERY SECTIONS
+-- Powers the four homepage columns: Event, Activities,
+-- Researcher Spotlight and ICTOM. Each row belongs to one
+-- "section" and behaves like a small, independent carousel.
+-- A section with zero rows simply does not render on the site.
+-- ============================================================
+
+create table if not exists public.home_gallery (
+  id bigint generated always as identity primary key,
+  section text not null
+    check (section in ('event', 'activities', 'researcher_spotlight', 'ictom')),
+  title text not null
+    check (char_length(title) between 3 and 180),
+  image_url text not null,
+  image_path text,
+  image_alt text not null
+    check (char_length(image_alt) between 5 and 240),
+  caption text,
+  link_url text,
+  display_order integer not null default 0 check (display_order >= 0),
+  is_active boolean not null default true,
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists home_gallery_section_order_idx
+  on public.home_gallery (section, is_active, display_order, id desc);
+
+create index if not exists home_gallery_created_by_idx
+  on public.home_gallery (created_by)
+  where created_by is not null;
+
+alter table public.home_gallery enable row level security;
+
+revoke all on table public.home_gallery from anon, authenticated;
+revoke all on sequence public.home_gallery_id_seq from anon, authenticated;
+
+grant select on table public.home_gallery to anon, authenticated;
+grant insert, update, delete on table public.home_gallery to authenticated;
+grant usage, select on sequence public.home_gallery_id_seq to authenticated;
+
+drop policy if exists "Anonymous visitors can read active gallery items" on public.home_gallery;
+create policy "Anonymous visitors can read active gallery items"
+on public.home_gallery
+for select
+to anon
+using (is_active = true);
+
+drop policy if exists "Authenticated users can read allowed gallery items" on public.home_gallery;
+create policy "Authenticated users can read allowed gallery items"
+on public.home_gallery
+for select
+to authenticated
+using (
+  is_active = true
+  or exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+);
+
+drop policy if exists "Admins can create gallery items" on public.home_gallery;
+create policy "Admins can create gallery items"
+on public.home_gallery
+for insert
+to authenticated
+with check (
+  exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+  and created_by = (select auth.uid())
+);
+
+drop policy if exists "Admins can update gallery items" on public.home_gallery;
+create policy "Admins can update gallery items"
+on public.home_gallery
+for update
+to authenticated
+using (
+  exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+)
+with check (
+  exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+);
+
+drop policy if exists "Admins can delete gallery items" on public.home_gallery;
+create policy "Admins can delete gallery items"
+on public.home_gallery
+for delete
+to authenticated
+using (
+  exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+);
+
 -- Create the Auth account in Supabase Dashboard first. Then authorize it by
 -- replacing the placeholder below with that user's UUID and running the line.
 -- insert into public.admin_users (user_id)
