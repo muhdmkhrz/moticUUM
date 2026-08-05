@@ -32,19 +32,19 @@
     </div>
   </header>
 
-  <nav class="admin-tabs" aria-label="Dashboard sections" data-admin-tabs>
-    <button class="admin-tab active" type="button" data-admin-tab="news" aria-current="page">News</button>
-    <button class="admin-tab" type="button" data-admin-tab="posters">Upcoming Poster</button>
-    <button class="admin-tab" type="button" data-admin-tab="event">Event</button>
-    <button class="admin-tab" type="button" data-admin-tab="activities">Activities</button>
-    <button class="admin-tab" type="button" data-admin-tab="researcher_spotlight">Research Spotlight</button>
-    <button class="admin-tab" type="button" data-admin-tab="ictom">ICTOM</button>
-  </nav>
+  <div class="admin-tabs" role="tablist" aria-label="Dashboard sections" data-admin-tabs>
+    <button class="admin-tab active" id="admin-tab-news" type="button" role="tab" aria-selected="true" aria-controls="admin-panel-news" tabindex="0" data-admin-tab="news">News</button>
+    <button class="admin-tab" id="admin-tab-posters" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-posters" tabindex="-1" data-admin-tab="posters">Upcoming Poster</button>
+    <button class="admin-tab" id="admin-tab-event" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-event" tabindex="-1" data-admin-tab="event">Event</button>
+    <button class="admin-tab" id="admin-tab-activities" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-activities" tabindex="-1" data-admin-tab="activities">Activities</button>
+    <button class="admin-tab" id="admin-tab-researcher" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-researcher" tabindex="-1" data-admin-tab="researcher_spotlight">Research Spotlight</button>
+    <button class="admin-tab" id="admin-tab-ictom" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-ictom" tabindex="-1" data-admin-tab="ictom">ICTOM</button>
+  </div>
 
   <main class="admin-dashboard" id="dashboard-main">
     <p class="admin-status admin-status--dashboard" data-dashboard-status hidden role="status" aria-live="polite"></p>
 
-    <div class="admin-dashboard-panel" data-admin-panel="news">
+    <div class="admin-dashboard-panel" id="admin-panel-news" role="tabpanel" aria-labelledby="admin-tab-news" data-admin-panel="news">
       <div class="admin-dashboard-heading">
         <div>
           <p class="admin-kicker">MOTIC news administration</p>
@@ -145,7 +145,7 @@
       </div>
     </div>
 
-    <section class="admin-panel admin-poster-manager" aria-labelledby="poster-manager-title" data-admin-panel="posters" hidden>
+    <section class="admin-panel admin-poster-manager" id="admin-panel-posters" role="tabpanel" aria-labelledby="admin-tab-posters poster-manager-title" data-admin-panel="posters" hidden>
       <div class="admin-panel__heading">
         <p class="admin-kicker">Homepage slider</p>
         <h2 id="poster-manager-title">Upcoming Posters</h2>
@@ -203,7 +203,7 @@
       </div>
     </section>
 
-    <section class="admin-panel admin-gallery-manager" aria-labelledby="event-manager-title" data-gallery-panel="event" data-admin-panel="event" hidden>
+    <section class="admin-panel admin-gallery-manager" id="admin-panel-event" role="tabpanel" aria-labelledby="admin-tab-event event-manager-title" data-gallery-panel="event" data-admin-panel="event" hidden>
       <div class="admin-panel__heading">
         <p class="admin-kicker">Home page — Event column</p>
         <h2 id="event-manager-title">Event Dashboard</h2>
@@ -265,7 +265,7 @@
       </div>
     </section>
 
-    <section class="admin-panel admin-gallery-manager" aria-labelledby="activities-manager-title" data-gallery-panel="activities" data-admin-panel="activities" hidden>
+    <section class="admin-panel admin-gallery-manager" id="admin-panel-activities" role="tabpanel" aria-labelledby="admin-tab-activities activities-manager-title" data-gallery-panel="activities" data-admin-panel="activities" hidden>
       <div class="admin-panel__heading">
         <p class="admin-kicker">Home page — Activities column</p>
         <h2 id="activities-manager-title">Activities Dashboard</h2>
@@ -327,7 +327,7 @@
       </div>
     </section>
 
-    <section class="admin-panel admin-gallery-manager" aria-labelledby="researcher-manager-title" data-gallery-panel="researcher_spotlight" data-admin-panel="researcher_spotlight" hidden>
+    <section class="admin-panel admin-gallery-manager" id="admin-panel-researcher" role="tabpanel" aria-labelledby="admin-tab-researcher researcher-manager-title" data-gallery-panel="researcher_spotlight" data-admin-panel="researcher_spotlight" hidden>
       <div class="admin-panel__heading">
         <p class="admin-kicker">Home page — Researcher Spotlight column</p>
         <h2 id="researcher-manager-title">Research Spotlight Dashboard</h2>
@@ -389,7 +389,7 @@
       </div>
     </section>
 
-    <section class="admin-panel admin-gallery-manager" aria-labelledby="ictom-manager-title" data-gallery-panel="ictom" data-admin-panel="ictom" hidden>
+    <section class="admin-panel admin-gallery-manager" id="admin-panel-ictom" role="tabpanel" aria-labelledby="admin-tab-ictom ictom-manager-title" data-gallery-panel="ictom" data-admin-panel="ictom" hidden>
       <div class="admin-panel__heading">
         <p class="admin-kicker">Home page — ICTOM column</p>
         <h2 id="ictom-manager-title">ICTOM Dashboard</h2>

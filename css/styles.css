@@ -1,32 +1,32 @@
 :root {
   /* Core brand — maroon & cream, brass as the metallic accent */
-  --colour-maroon: #7a1f2b;
-  --colour-maroon-dark: #591420;
-  --colour-maroon-deep: #3a0d15;
-  --colour-gold: #a9812e;       /* brass accent (replaces gold) */
-  --colour-gold-dark: #8a6a24;
+  --colour-maroon: #741c2d;
+  --colour-maroon-dark: #521421;
+  --colour-maroon-deep: #351018;
+  --colour-gold: #b88a32;
+  --colour-gold-dark: #795619;
   --colour-white: #ffffff;
-  --colour-parchment: #fbf6ea;  /* warm off-white for cards */
-  --colour-charcoal: #241512;   /* warm ink, not true black */
-  --colour-background: #f3e9d8; /* cream page background */
-  --colour-background-deep: #ead9b8; /* cream, one step darker */
-  --colour-text-muted: #6e5847;
-  --colour-border: #ddc9a3;
-  --colour-divider: #cfcfcf;
+  --colour-parchment: #fffdfa;
+  --colour-charcoal: #251d1f;
+  --colour-background: #f6f2ed;
+  --colour-background-deep: #ece5dd;
+  --colour-text-muted: #655e60;
+  --colour-border: #d9d1ca;
+  --colour-divider: #e5dfd9;
   --colour-danger: #b3261e;
-  --colour-navy: #4a1420;       /* repurposed: deep maroon panel tone */
-  --colour-deep-blue: #2b0c12;  /* repurposed: deepest maroon-ink panel tone */
+  --colour-navy: #521421;
+  --colour-deep-blue: #351018;
 
   --font-heading: "Playfair Display", Georgia, serif;
   --font-body: "Inter", Arial, sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
 
-  --container-width: 1240px;
-  --radius-card: 22px;
-  --radius-button: 12px;
+  --container-width: 1200px;
+  --radius-card: 12px;
+  --radius-button: 8px;
 
-  --shadow-card: 0 18px 45px rgb(58 13 21 / 14%);
-  --transition: 180ms ease;
+  --shadow-card: 0 8px 24px rgb(37 29 31 / 8%);
+  --transition: 160ms ease;
 
   /* Circuit-trace motif — MOTIC's signature texture, standing in for the
      club's "Technology Intelligence" mandate. Kept faint and used sparingly. */
@@ -43,6 +43,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 128px;
 }
 
 body {
@@ -52,7 +53,9 @@ body {
   color: var(--colour-charcoal);
   background: var(--colour-background);
   font-family: var(--font-body);
+  font-size: 1rem;
   line-height: 1.6;
+  text-rendering: optimizeLegibility;
 }
 
 body.menu-open {
@@ -62,13 +65,14 @@ body.menu-open {
 /* A thin divider between each top-level section on the home page,
    so Announcements / News / Home Showcase / Accreditations / Logo Strip
    read as clearly separate blocks as you scroll. */
-main > section + section {
+main>section+section {
   border-top: 1px solid var(--colour-divider);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  text-underline-offset: 0.18em;
 }
 
 button,
@@ -84,8 +88,17 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--colour-gold);
-  outline-offset: 4px;
+  outline: 3px solid var(--colour-maroon);
+  outline-offset: 3px;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+::selection {
+  color: var(--colour-white);
+  background: var(--colour-maroon);
 }
 
 .container {
@@ -101,8 +114,9 @@ a {
   padding: 12px 18px;
   color: var(--colour-white);
   background: var(--colour-charcoal);
-  border-radius: 8px;
+  border-radius: var(--radius-button);
   transform: translateY(-150%);
+  transition: transform var(--transition);
 }
 
 .skip-link:focus {
@@ -114,8 +128,7 @@ a {
 .institution-bar {
   position: relative;
   color: var(--colour-white);
-  background: var(--colour-charcoal);
-  background-image: var(--circuit-cream);
+  background: var(--colour-maroon-deep);
   font-family: var(--font-mono);
   font-size: 0.74rem;
 }
@@ -149,24 +162,25 @@ a {
 
 .institution-bar__links a:hover {
   color: var(--colour-gold);
+  text-decoration: underline;
 }
 
 /* Main navigation */
 
 .site-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 100;
 }
 
 .main-navigation {
-  position: sticky;
-  top: 0;
-  background: rgb(255 255 255 / 96%);
+  position: relative;
+  background: var(--colour-white);
   border-bottom: 1px solid var(--colour-border);
 }
 
 .main-navigation__content {
-  min-height: 82px;
+  min-height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -182,7 +196,7 @@ a {
 
 .club-brand__logo {
   display: block;
-  height: 62px;
+  height: 56px;
   width: auto;
 }
 
@@ -220,11 +234,12 @@ a {
 }
 
 .navigation-link {
+  position: relative;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
   padding: 10px 12px;
-  border-radius: 9px;
+  border-radius: 0;
   font-size: 0.88rem;
   font-weight: 600;
 }
@@ -232,7 +247,26 @@ a {
 .navigation-link:hover,
 .navigation-link.active {
   color: var(--colour-maroon);
-  background: var(--colour-background);
+  background: transparent;
+}
+
+.navigation-link::after {
+  position: absolute;
+  right: 12px;
+  bottom: 5px;
+  left: 12px;
+  height: 2px;
+  background: var(--colour-maroon);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.65);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.navigation-link:hover::after,
+.navigation-link.active::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .menu-button,
@@ -244,7 +278,7 @@ a {
 /* Buttons */
 
 .button {
-  min-height: 48px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -256,16 +290,7 @@ a {
   transition:
     background-color var(--transition),
     border-color var(--transition),
-    color var(--transition),
-    transform var(--transition);
-}
-
-.button:hover {
-  transform: translateY(-2px);
-}
-
-.button:active {
-  transform: translateY(0);
+    color var(--transition);
 }
 
 .button--primary {
@@ -464,7 +489,6 @@ a {
   width: 100%;
   overflow: hidden;
   background: var(--colour-charcoal);
-  background-image: var(--circuit-cream);
   border-bottom: 1px solid var(--colour-border);
   isolation: isolate;
 }
@@ -517,23 +541,21 @@ a {
   display: grid;
   place-items: center;
   padding: 0 0 4px;
-  color: var(--colour-charcoal);
-  background: rgb(255 255 255 / 88%);
-  border: 1px solid rgb(26 26 26 / 12%);
-  border-radius: 50%;
-  box-shadow: 0 8px 24px rgb(26 26 26 / 18%);
+  color: var(--colour-maroon);
+  background: rgb(255 255 255 / 92%);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius-button);
+  box-shadow: none;
   cursor: pointer;
   transform: translateY(-50%);
   transition:
     color var(--transition),
-    background-color var(--transition),
-    transform var(--transition);
+    background-color var(--transition);
 }
 
 .carousel-control:hover {
   color: var(--colour-white);
   background: var(--colour-maroon);
-  transform: translateY(-50%) scale(1.05);
 }
 
 .carousel-control span {
@@ -569,7 +591,7 @@ a {
   background: rgb(255 255 255 / 72%);
   border: 1px solid rgb(26 26 26 / 35%);
   border-radius: 999px;
-  box-shadow: 0 2px 8px rgb(26 26 26 / 18%);
+  box-shadow: none;
   cursor: pointer;
   pointer-events: auto;
   transition:
@@ -620,36 +642,29 @@ a {
    ============================================================ */
 
 .admin-page {
-  --admin-maroon: #4a0007;
-  --admin-maroon-deep: #200308;
-  --admin-maroon-soft: #5c0a13;
-  --admin-cream: #f7ead5;
-  --admin-cream-soft: #fff8ec;
-  --admin-gold: #cfa53f;
+  --admin-maroon: #521421;
+  --admin-maroon-deep: #2d0b12;
+  --admin-maroon-soft: #41101a;
+  --admin-cream: #f2ebe5;
+  --admin-cream-soft: #fffdfa;
+  --admin-gold: #d3ad55;
+  --admin-header-offset: 93px;
   min-height: 100vh;
   color: var(--admin-cream);
   background: var(--admin-maroon-deep);
   font-family: var(--font-body);
 }
 
-.admin-page::before {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    radial-gradient(circle at 18% 20%, rgb(255 232 198 / 7%), transparent 30%),
-    radial-gradient(circle at 85% 75%, rgb(217 180 74 / 7%), transparent 32%),
-    var(--circuit-brass),
-    linear-gradient(145deg, var(--admin-maroon-soft), var(--admin-maroon-deep) 70%);
-  content: "";
+.admin-page :focus-visible {
+  outline-color: var(--admin-gold);
 }
 
-/* Admin console gets a monospace "readout" voice for labels — deliberately
-   distinct from the serif/warm-cream public site so staff always know which
-   surface they're on. */
+.admin-page::before {
+  content: none;
+}
+
 .admin-kicker,
-.admin-account > span,
-.admin-field label,
+.admin-account>span,
 .admin-status,
 .admin-current-image,
 .admin-field small {
@@ -661,7 +676,7 @@ a {
   align-items: center;
   padding: 8px 12px;
   background: var(--admin-cream-soft);
-  border-radius: 12px;
+  border-radius: var(--radius-button);
 }
 
 .admin-brand img {
@@ -733,7 +748,7 @@ a {
   font-size: clamp(2.8rem, 7vw, 4.6rem);
 }
 
-.admin-login-intro > p:last-child {
+.admin-login-intro>p:last-child {
   max-width: 460px;
   margin: 18px auto 0;
   color: rgb(247 234 213 / 72%);
@@ -749,15 +764,14 @@ a {
 
 .admin-login-card,
 .admin-panel {
-  background: linear-gradient(145deg, rgb(255 248 236 / 9%), rgb(255 248 236 / 4%));
+  background: var(--admin-maroon-soft);
   border: 1px solid rgb(247 234 213 / 18%);
-  box-shadow: 0 28px 80px rgb(24 0 3 / 30%);
-  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 28px rgb(24 0 3 / 18%);
 }
 
 .admin-login-card {
   padding: clamp(28px, 6vw, 52px);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
 }
 
 .admin-field {
@@ -768,19 +782,18 @@ a {
   display: block;
   margin-bottom: 8px;
   color: var(--admin-cream);
-  font-size: 0.75rem;
+  font-size: 0.86rem;
   font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+  letter-spacing: 0;
 }
 
 .admin-field input,
 .admin-field textarea {
   width: 100%;
   color: var(--admin-cream-soft);
-  background: rgb(25 0 3 / 28%);
-  border: 1px solid rgb(247 234 213 / 28%);
-  border-radius: 10px;
+  background: var(--admin-maroon-deep);
+  border: 1px solid rgb(247 234 213 / 34%);
+  border-radius: var(--radius-button);
   outline: none;
   transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
 }
@@ -801,7 +814,7 @@ a {
   color: var(--admin-maroon-deep);
   background: var(--admin-cream);
   border: 0;
-  border-radius: 7px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 700;
 }
@@ -820,7 +833,7 @@ a {
 
 .admin-field input:focus,
 .admin-field textarea:focus {
-  background: rgb(25 0 3 / 44%);
+  background: #24070d;
   border-color: var(--admin-gold);
   box-shadow: 0 0 0 3px rgb(217 180 74 / 15%);
 }
@@ -838,7 +851,7 @@ a {
   margin-bottom: 0;
 }
 
-.admin-login-card .admin-field + .admin-field {
+.admin-login-card .admin-field+.admin-field {
   margin-top: 26px;
 }
 
@@ -868,13 +881,13 @@ a {
 .admin-secondary-button {
   min-height: 48px;
   padding: 0 22px;
-  border-radius: 9px;
+  border-radius: var(--radius-button);
   cursor: pointer;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: transform var(--transition), background var(--transition), opacity var(--transition);
+  transition: background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition);
 }
 
 .admin-primary-button {
@@ -883,7 +896,7 @@ a {
   border: 1px solid var(--admin-cream-soft);
 }
 
-.admin-login-card > .admin-primary-button {
+.admin-login-card>.admin-primary-button {
   width: 100%;
   margin-top: 30px;
 }
@@ -896,7 +909,7 @@ a {
 
 .admin-primary-button:hover,
 .admin-secondary-button:hover {
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .admin-primary-button:hover {
@@ -922,7 +935,7 @@ a {
   margin: 20px 0 0;
   padding: 11px 13px;
   border: 1px solid rgb(247 234 213 / 24%);
-  border-radius: 8px;
+  border-radius: var(--radius-button);
   font-size: 0.86rem;
 }
 
@@ -983,8 +996,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgb(40 0 4 / 88%);
-  backdrop-filter: blur(18px);
+  background: var(--admin-maroon-deep);
 }
 
 .admin-account {
@@ -995,7 +1007,7 @@ a {
   gap: 18px;
 }
 
-.admin-account > span {
+.admin-account>span {
   color: rgb(247 234 213 / 65%);
   font-size: 0.8rem;
 }
@@ -1014,26 +1026,27 @@ a {
 
 .admin-tabs {
   position: sticky;
-  top: 0;
+  top: var(--admin-header-offset);
   z-index: 19;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 14px max(20px, calc((100% - 1420px) / 2 + 20px));
-  background: rgb(40 0 4 / 88%);
-  backdrop-filter: blur(18px);
+  justify-content: flex-start;
+  gap: 24px;
+  padding: 0 max(20px, calc((100% - 1420px) / 2 + 20px));
+  background: var(--admin-maroon-deep);
   border-bottom: 1px solid rgb(247 234 213 / 12%);
 }
 
 .admin-tab {
-  padding: 10px 18px;
+  min-height: 52px;
+  padding: 10px 2px 8px;
   color: rgb(247 234 213 / 75%);
   background: transparent;
-  border: 1px solid rgb(247 234 213 / 18%);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
@@ -1042,13 +1055,13 @@ a {
 
 .admin-tab:hover {
   color: var(--admin-cream, #f7ead5);
-  border-color: rgb(247 234 213 / 35%);
+  border-bottom-color: rgb(247 234 213 / 45%);
 }
 
 .admin-tab.active {
-  color: var(--colour-charcoal);
-  background: var(--admin-gold, #cfa53f);
-  border-color: var(--admin-gold, #cfa53f);
+  color: var(--admin-cream-soft);
+  background: transparent;
+  border-bottom-color: var(--admin-gold, #cfa53f);
 }
 
 .admin-dashboard-heading {
@@ -1063,7 +1076,7 @@ a {
   font-size: clamp(2.4rem, 5vw, 4.4rem);
 }
 
-.admin-dashboard-heading > div > p:last-child {
+.admin-dashboard-heading>div>p:last-child {
   max-width: 680px;
   margin: 12px 0 0;
   color: rgb(247 234 213 / 68%);
@@ -1082,26 +1095,19 @@ a {
 
 .admin-panel {
   padding: clamp(24px, 4vw, 40px);
-  border-radius: 18px;
+  border-radius: var(--radius-card);
 }
 
 .admin-panel__heading {
   position: relative;
   margin-bottom: 26px;
   padding-bottom: 20px;
-  padding-left: 16px;
+  padding-left: 0;
   border-bottom: 1px solid rgb(247 234 213 / 15%);
 }
 
 .admin-panel__heading::before {
-  position: absolute;
-  top: 4px;
-  left: 0;
-  width: 7px;
-  height: 7px;
-  background: var(--admin-gold);
-  border-radius: 1px;
-  content: "";
+  content: none;
 }
 
 .admin-panel__heading h2 {
@@ -1131,8 +1137,8 @@ a {
 
 .admin-story-list-panel {
   position: sticky;
-  top: 112px;
-  max-height: calc(100vh - 136px);
+  top: calc(var(--admin-header-offset) + 72px);
+  max-height: calc(100vh - var(--admin-header-offset) - 96px);
   overflow: auto;
 }
 
@@ -1140,7 +1146,7 @@ a {
   margin-top: 24px;
 }
 
-.admin-panel__heading > p:last-child {
+.admin-panel__heading>p:last-child {
   margin: 10px 0 0;
   color: rgb(247 234 213 / 62%);
 }
@@ -1162,7 +1168,7 @@ a {
 }
 
 .admin-poster-form h3,
-.admin-poster-list-section > h3 {
+.admin-poster-list-section>h3 {
   margin: 0 0 2px;
   color: var(--admin-cream-soft);
   font-size: 1rem;
@@ -1197,15 +1203,15 @@ a {
   padding: 14px;
   background: rgb(25 0 3 / 24%);
   border: 1px solid rgb(247 234 213 / 13%);
-  border-radius: 11px;
+  border-radius: var(--radius-button);
 }
 
-.admin-poster-row > img {
+.admin-poster-row>img {
   width: 110px;
   aspect-ratio: 16 / 8;
   object-fit: cover;
   background: rgb(255 255 255 / 8%);
-  border-radius: 7px;
+  border-radius: 6px;
 }
 
 .admin-poster-row__content h4 {
@@ -1227,7 +1233,7 @@ a {
   color: rgb(247 234 213 / 64%);
   background: rgb(25 0 3 / 24%);
   border: 1px dashed rgb(247 234 213 / 22%);
-  border-radius: 10px;
+  border-radius: var(--radius-button);
   text-align: center;
 }
 
@@ -1243,7 +1249,7 @@ a {
   padding: 18px;
   background: rgb(25 0 3 / 24%);
   border: 1px solid rgb(247 234 213 / 13%);
-  border-radius: 11px;
+  border-radius: var(--radius-button);
 }
 
 .admin-news-row__content h3 {
@@ -1267,7 +1273,8 @@ a {
 }
 
 .admin-text-button {
-  padding: 2px 4px;
+  min-height: 36px;
+  padding: 6px 8px;
   color: var(--admin-gold);
   background: transparent;
   border: 0;
@@ -1300,6 +1307,10 @@ a {
 }
 
 @media (max-width: 680px) {
+  .admin-page {
+    --admin-header-offset: 83px;
+  }
+
   .admin-login-header,
   .admin-dashboard-header,
   .admin-login-footer {
@@ -1310,6 +1321,7 @@ a {
     flex-wrap: nowrap;
     justify-content: flex-start;
     overflow-x: auto;
+    gap: 20px;
     padding-inline: 20px;
     -webkit-overflow-scrolling: touch;
   }
@@ -1331,7 +1343,7 @@ a {
     gap: 8px 12px;
   }
 
-  .admin-account > span {
+  .admin-account>span {
     width: 100%;
     text-align: right;
   }
@@ -1367,7 +1379,7 @@ a {
     grid-template-columns: 86px minmax(0, 1fr);
   }
 
-  .admin-poster-row > img {
+  .admin-poster-row>img {
     width: 86px;
   }
 
@@ -1423,7 +1435,7 @@ a {
     justify-content: center;
     gap: 9px;
     color: var(--colour-charcoal);
-    background: var(--colour-parchment);
+    background: var(--colour-white);
     border: 1px solid var(--colour-border);
     border-radius: 10px;
     cursor: pointer;
@@ -1468,10 +1480,10 @@ a {
     align-items: stretch;
     flex-direction: column;
     gap: 4px;
-    padding: 24px;
+    padding: 24px 22px;
     overflow-y: auto;
-    background: var(--colour-parchment);
-    box-shadow: -20px 0 50px rgb(26 26 26 / 20%);
+    background: var(--colour-white);
+    box-shadow: -12px 0 32px rgb(37 29 31 / 16%);
     transform: translateX(105%);
     visibility: hidden;
     transition:
@@ -1497,13 +1509,19 @@ a {
     color: var(--colour-charcoal);
     background: var(--colour-background);
     border: 1px solid var(--colour-border);
-    border-radius: 10px;
+    border-radius: var(--radius-button);
     cursor: pointer;
     font-size: 1.7rem;
   }
 
   .navigation-link {
     padding-inline: 14px;
+  }
+
+  .navigation-link::after {
+    right: auto;
+    left: 14px;
+    width: 28px;
   }
 
   .navigation-cta {
@@ -1515,7 +1533,7 @@ a {
     inset: 0;
     z-index: 101;
     display: block;
-    background: rgb(26 26 26 / 55%);
+    background: rgb(37 29 31 / 58%);
   }
 
   .menu-overlay[hidden] {
@@ -1538,7 +1556,7 @@ a {
   }
 
   .main-navigation__content {
-    min-height: 70px;
+    min-height: 68px;
   }
 
   .club-brand__mark {
@@ -1547,7 +1565,7 @@ a {
   }
 
   .club-brand__logo {
-    height: 46px;
+    height: 44px;
   }
 
   .club-brand__text small {
@@ -1590,6 +1608,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1599,6 +1618,7 @@ a {
     animation-iteration-count: 1 !important;
   }
 }
+
 /* ============================================================
    NAV DROPDOWN (About Us)
    ============================================================ */
@@ -1650,13 +1670,13 @@ a {
   padding: 8px;
   background: var(--colour-parchment);
   border: 1px solid var(--colour-border);
-  border-radius: 14px;
+  border-radius: 10px;
   box-shadow: var(--shadow-card);
 }
 
 .nav-dropdown__menu a {
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 0.86rem;
   font-weight: 600;
   color: var(--colour-charcoal);
@@ -1706,10 +1726,10 @@ a {
 }
 
 .news-showcase__container {
-  width: min(calc(100% - 40px), 1640px);
+  width: min(calc(100% - 40px), var(--container-width));
   margin-inline: auto;
   display: grid;
-  grid-template-columns: minmax(280px, 0.72fr) minmax(340px, 0.88fr) minmax(480px, 1.4fr);
+  grid-template-columns: minmax(240px, 0.72fr) minmax(300px, 0.88fr) minmax(420px, 1.4fr);
   grid-template-areas: "facebook inhouse latest";
   align-items: start;
   gap: clamp(24px, 2.5vw, 42px);
@@ -1734,14 +1754,14 @@ a {
 }
 
 .news-panel-heading {
-  min-height: 52px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   padding: 10px 18px;
   color: var(--colour-white);
-  border-radius: 2px;
+  border-radius: var(--radius-button) var(--radius-button) 0 0;
 }
 
 .news-panel-heading h3 {
@@ -1754,7 +1774,7 @@ a {
 
 .news-panel-heading--gold {
   color: var(--colour-white);
-  background: var(--colour-gold);
+  background: var(--colour-gold-dark);
 }
 
 .news-panel-heading--navy {
@@ -1772,7 +1792,7 @@ a {
   background: #1877f2;
 }
 
-.news-panel-heading--facebook > span {
+.news-panel-heading--facebook>span {
   width: 28px;
   height: 28px;
   display: grid;
@@ -1793,6 +1813,7 @@ a {
   overflow: hidden;
   background: #f1f2f5;
   border: 1px solid var(--colour-border);
+  border-top: 0;
 }
 
 .facebook-panel__embed iframe {
@@ -1817,7 +1838,7 @@ a {
 }
 
 .in-house-item {
-  min-height: 214px;
+  min-height: 176px;
   display: grid;
   grid-template-columns: 68px minmax(0, 1fr);
   color: var(--colour-white);
@@ -1857,7 +1878,7 @@ a {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 24px 28px;
+  padding: 22px 24px;
 }
 
 .in-house-item__content h4 {
@@ -1887,9 +1908,12 @@ a {
 .latest-news-card {
   display: grid;
   grid-template-columns: minmax(220px, 0.95fr) minmax(260px, 1.05fr);
-  min-height: 430px;
+  min-height: 390px;
   background: var(--colour-parchment);
+  overflow: hidden;
   border: 1px solid var(--colour-border);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-button) var(--radius-button);
 }
 
 .latest-news-card__media {
@@ -1901,21 +1925,21 @@ a {
 .latest-news-card__media img {
   width: 100%;
   height: 100%;
-  min-height: 430px;
+  min-height: 390px;
   display: block;
   object-fit: cover;
-  transition: transform 350ms ease;
+  transition: opacity var(--transition);
 }
 
 .latest-news-card__media:hover img {
-  transform: scale(1.025);
+  opacity: 0.92;
 }
 
 .latest-news-card__content {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: clamp(26px, 3vw, 46px);
+  padding: clamp(24px, 3vw, 38px);
 }
 
 .latest-news-card__meta {
@@ -1943,6 +1967,7 @@ a {
   margin: 18px 0 0;
   color: var(--colour-text-muted);
   line-height: 1.65;
+  max-width: 58ch;
 }
 
 .latest-news-card__link {
@@ -1978,7 +2003,7 @@ a {
 
 @media (max-width: 760px) {
   .news-showcase__container {
-    width: min(calc(100% - 28px), 1640px);
+    width: min(calc(100% - 28px), var(--container-width));
     grid-template-columns: 1fr;
     grid-template-areas:
       "latest"
@@ -2056,7 +2081,7 @@ a {
 }
 
 .news-table__head span,
-.news-table__row > * {
+.news-table__row>* {
   padding: 16px 14px;
 }
 
@@ -2076,6 +2101,10 @@ a {
 .news-table__title {
   color: var(--colour-maroon-dark);
   font-weight: 700;
+}
+
+.news-table__title-cell {
+  min-width: 0;
 }
 
 .news-table__title:hover {
@@ -2100,6 +2129,10 @@ a {
   margin-bottom: 26px;
   color: var(--colour-maroon);
   font-weight: 700;
+}
+
+.news-detail__back:hover {
+  text-decoration: underline;
 }
 
 .news-detail__meta {
@@ -2131,7 +2164,7 @@ a {
   line-height: 1.8;
 }
 
-.news-detail__body p + p {
+.news-detail__body p+p {
   margin-top: 20px;
 }
 
@@ -2148,7 +2181,15 @@ a {
   }
 
   .news-table__head {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .news-table__row {
@@ -2156,12 +2197,16 @@ a {
     padding: 14px 0;
   }
 
-  .news-table__row > * {
+  .news-table__row>* {
     padding: 6px 14px;
   }
 
   .news-table__date {
     border-left: none;
+  }
+
+  .news-table__title-cell {
+    padding-bottom: 2px;
   }
 }
 
@@ -2228,22 +2273,19 @@ a {
 }
 
 .home-showcase__grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: clamp(18px, 2.4vw, 28px);
 }
 
 .showcase-column {
   display: flex;
-  flex: 1 1 260px;
-  max-width: 320px;
   flex-direction: column;
   overflow: hidden;
   background: var(--colour-white);
   border: 1px solid var(--colour-border);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
+  box-shadow: none;
 }
 
 .showcase-column[hidden] {
@@ -2263,16 +2305,17 @@ a {
 }
 
 .showcase-column__header--event,
-.showcase-column__header--activities {
-  background: linear-gradient(135deg, #1c6fd6, #1454a8);
+.showcase-column__header--activities,
+.showcase-column__header--researcher {
+  background: var(--colour-maroon);
 }
 
 .showcase-column__header--researcher {
-  background: linear-gradient(135deg, #2fae5e, #1f8a48);
+  background: var(--colour-maroon-dark);
 }
 
 .showcase-column__header--ictom {
-  background: linear-gradient(135deg, #d99a2b, #b9781a);
+  background: var(--colour-gold-dark);
 }
 
 .showcase-column__carousel {
@@ -2326,7 +2369,7 @@ a {
   color: var(--colour-white);
   background: rgb(20 14 12 / 55%);
   border: none;
-  border-radius: 999px;
+  border-radius: 6px;
   transform: translateY(-50%);
   font-family: var(--font-body);
   font-size: 0.78rem;
@@ -2429,7 +2472,7 @@ a {
   color: var(--colour-charcoal);
   background: var(--colour-parchment);
   border: 1px solid var(--colour-border);
-  border-radius: 999px;
+  border-radius: 6px;
   font-size: 0.82rem;
   font-weight: 600;
 }
@@ -2441,7 +2484,6 @@ a {
 .page-hero {
   padding: clamp(48px, 6vw, 80px) 0 clamp(40px, 5vw, 56px);
   background: var(--colour-background);
-  background-image: var(--circuit-maroon);
   border-bottom: 1px solid var(--colour-border);
 }
 
@@ -2486,7 +2528,6 @@ a {
   margin-bottom: clamp(40px, 5vw, 64px);
   padding: clamp(24px, 3vw, 36px) clamp(20px, 3vw, 32px);
   background: var(--colour-charcoal);
-  background-image: var(--circuit-cream);
   border-radius: var(--radius-card);
 }
 
@@ -2522,13 +2563,12 @@ a {
   border: 1px solid var(--colour-border);
   border-top: 3px solid var(--colour-gold);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
-  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: none;
+  transition: border-color var(--transition);
 }
 
 .achievement-card:hover {
-  box-shadow: 0 22px 50px rgb(58 13 21 / 18%);
-  transform: translateY(-3px);
+  border-color: var(--colour-gold);
 }
 
 .achievement-card__year {
@@ -2537,7 +2577,7 @@ a {
   padding: 4px 10px;
   color: var(--colour-maroon);
   background: var(--colour-background);
-  border-radius: 999px;
+  border-radius: 6px;
   font-family: var(--font-mono);
   font-size: 0.74rem;
   font-weight: 600;
@@ -2687,8 +2727,9 @@ a {
   padding: 32px;
   background: var(--colour-parchment);
   border: 1px solid var(--colour-border);
+  border-top: 3px solid var(--colour-maroon);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
+  box-shadow: none;
 }
 
 .pillar-card h3 {
@@ -2711,7 +2752,7 @@ a {
   line-height: 1.6;
 }
 
-.pillar-card li + li {
+.pillar-card li+li {
   margin-top: 12px;
 }
 
@@ -2752,7 +2793,7 @@ a {
 }
 
 .team-grid--top .team__group-title,
-.team > .container > .team__group-title {
+.team>.container>.team__group-title {
   padding-top: 0;
   border-top: none;
   margin-top: 0;
@@ -2770,12 +2811,11 @@ a {
   background: var(--colour-background);
   border: 1px solid var(--colour-border);
   border-radius: var(--radius-card);
-  transition: box-shadow var(--transition), transform var(--transition);
+  transition: border-color var(--transition);
 }
 
 .member-card:hover {
-  box-shadow: var(--shadow-card);
-  transform: translateY(-3px);
+  border-color: var(--colour-gold);
 }
 
 .member-card__avatar {
@@ -2828,22 +2868,75 @@ a {
   position: relative;
   color: var(--colour-white);
   background: var(--colour-charcoal);
-  background-image: var(--circuit-cream);
 }
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 1.3fr 0.8fr 1fr 1fr;
+  grid-template-columns: 1.5fr 0.7fr 1fr 1fr;
   gap: 40px;
   padding: clamp(48px, 6vw, 72px) 0 40px;
 }
 
 .club-brand--footer {
-  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.club-brand--footer .club-brand__mark {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.club-brand--footer .club-brand__text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.club-brand--footer .club-brand__text strong {
+  color: #ffffff;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
 }
 
 .club-brand--footer .club-brand__text small {
-  color: rgb(255 255 255 / 65%);
+  margin-top: 4px;
+  color: rgb(255 255 255 / 78%);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 0.62rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.club-brand__university {
+  display: block;
+  margin-top: 7px;
+  padding-top: 6px;
+  color: #b88a32;
+  border-top: 2px solid #b88a32;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.footer__address {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  color: rgb(255 255 255 / 86%);
+  font-size: 0.94rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.footer__address span {
+  display: block;
 }
 
 .footer__about p {
@@ -2878,7 +2971,7 @@ a {
   color: var(--colour-gold);
 }
 
-.footer__contact > a {
+.footer__contact>a {
   display: inline-block;
   margin-bottom: 8px;
   color: rgb(255 255 255 / 90%);
@@ -2902,7 +2995,7 @@ a {
   color: var(--colour-white);
   background: rgb(255 255 255 / 8%);
   border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 999px;
+  border-radius: 6px;
   font-size: 0.78rem;
   font-weight: 600;
 }
@@ -2920,8 +3013,8 @@ a {
   padding: 16px;
   color: rgb(255 255 255 / 55%);
   background: rgb(255 255 255 / 6%);
-  border: 1px dashed rgb(255 255 255 / 25%);
-  border-radius: var(--radius-card);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: var(--radius-button);
   text-align: center;
   font-size: 0.82rem;
 }
@@ -2961,6 +3054,13 @@ a {
   color: var(--colour-gold);
 }
 
+.footer__contact-placeholder {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: rgb(255 255 255 / 65%);
+  font-weight: 600;
+}
+
 .back-to-top {
   color: var(--colour-gold);
   background: none;
@@ -2984,5 +3084,10 @@ a {
   .footer__base-inner {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .club-brand--footer .club-brand__mark {
+    width: 56px;
+    height: 56px;
   }
 }

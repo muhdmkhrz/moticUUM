@@ -8,11 +8,36 @@ const currentYear = document.querySelector("#current-year");
 
 let previouslyFocusedElement = null;
 
+const mobileNavigationQuery = window.matchMedia("(max-width: 1023px)");
+
+function navigationFocusableElements() {
+  if (!navigationMenu) return [];
+
+  return [...navigationMenu.querySelectorAll(
+    'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )].filter(
+    (element) =>
+      !element.hidden &&
+      element.getClientRects().length > 0
+  );
+}
+
+function syncNavigationState() {
+  if (!navigationMenu) return;
+
+  const menuIsOpen =
+    navigationMenu.classList.contains("open");
+
+  navigationMenu.inert =
+    mobileNavigationQuery.matches && !menuIsOpen;
+}
+
 function openMenu() {
   if (!navigationMenu || !menuOverlay || !menuButton) return;
 
   previouslyFocusedElement = document.activeElement;
   navigationMenu.classList.add("open");
+  navigationMenu.inert = false;
   menuOverlay.hidden = false;
   document.body.classList.add("menu-open");
   menuButton.setAttribute("aria-expanded", "true");
@@ -26,6 +51,7 @@ function closeMenu() {
   menuOverlay.hidden = true;
   document.body.classList.remove("menu-open");
   menuButton.setAttribute("aria-expanded", "false");
+  syncNavigationState();
   previouslyFocusedElement?.focus();
 }
 
@@ -34,22 +60,74 @@ closeButton?.addEventListener("click", closeMenu);
 menuOverlay?.addEventListener("click", closeMenu);
 
 document.addEventListener("keydown", (event) => {
-  if (
-    event.key === "Escape" &&
-    navigationMenu?.classList.contains("open")
-  ) {
+  const menuIsOpen =
+    navigationMenu?.classList.contains("open");
+
+  if (event.key === "Escape" && menuIsOpen) {
     closeMenu();
+  }
+
+  if (
+    event.key === "Tab" &&
+    menuIsOpen &&
+    mobileNavigationQuery.matches
+  ) {
+    const focusableElements =
+      navigationFocusableElements();
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements.at(-1);
+
+    if (!firstElement || !lastElement) return;
+
+    if (
+      event.shiftKey &&
+      document.activeElement === firstElement
+    ) {
+      event.preventDefault();
+      lastElement.focus();
+    } else if (
+      !event.shiftKey &&
+      document.activeElement === lastElement
+    ) {
+      event.preventDefault();
+      firstElement.focus();
+    }
   }
 });
 
-window.addEventListener("resize", () => {
+function handleNavigationViewportChange() {
   if (
-    window.innerWidth > 1023 &&
+    !mobileNavigationQuery.matches &&
     navigationMenu?.classList.contains("open")
   ) {
     closeMenu();
   }
-});
+
+  syncNavigationState();
+}
+
+mobileNavigationQuery.addEventListener?.(
+  "change",
+  handleNavigationViewportChange
+);
+
+window.addEventListener(
+  "resize",
+  handleNavigationViewportChange
+);
+
+navigationMenu
+  ?.querySelectorAll("a[href]")
+  .forEach((link) => {
+    link.addEventListener("click", () => {
+      if (mobileNavigationQuery.matches) {
+        closeMenu();
+      }
+    });
+  });
+
+syncNavigationState();
 
 if (currentYear) {
   currentYear.textContent = new Date().getFullYear();
@@ -129,7 +207,9 @@ async function initialisePosterCarousel() {
     );
     slide.setAttribute(
       "aria-label",
-      `${index + 1} of ${posters.length}: ${poster.title || "Announcement"}`
+      `${index + 1} of ${posters.length}: ${
+        poster.title || "Announcement"
+      }`
     );
 
     const image = document.createElement("img");
@@ -140,6 +220,7 @@ async function initialisePosterCarousel() {
       poster.alt ||
       poster.title ||
       "Upcoming announcement poster";
+
     image.loading = index === 0 ? "eager" : "lazy";
     image.decoding = "async";
 
@@ -175,7 +256,9 @@ async function initialisePosterCarousel() {
     dot.type = "button";
     dot.setAttribute(
       "aria-label",
-      `Show poster ${index + 1}: ${poster.title || "Announcement"}`
+      `Show poster ${index + 1}: ${
+        poster.title || "Announcement"
+      }`
     );
 
     dot.addEventListener("click", () => {
@@ -229,7 +312,9 @@ async function initialisePosterCarousel() {
       const poster = posters[activeIndex];
 
       status.textContent =
-        `Poster ${activeIndex + 1} of ${posters.length}: ${poster.title || "Announcement"}`;
+        `Poster ${activeIndex + 1} of ${posters.length}: ${
+          poster.title || "Announcement"
+        }`;
     }
   }
 
@@ -424,7 +509,9 @@ function renderLatestNews(item) {
   if (!latestNewsContainer || !item) return;
 
   const detailUrl =
-    `pages/news-detail.html?id=${encodeURIComponent(item.id)}`;
+    `pages/news-detail.html?id=${
+      encodeURIComponent(item.id)
+    }`;
 
   if (item.image) {
     const imageLink =
@@ -457,11 +544,14 @@ function renderLatestNews(item) {
     createTextElement(
       "p",
       "latest-news-card__meta",
-      `${item.category} · ${formatNewsDate(item.date, {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })}`
+      `${item.category} · ${formatNewsDate(
+        item.date,
+        {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }
+      )}`
     )
   );
 
@@ -546,7 +636,9 @@ function renderInHouseNews(items) {
       document.createElement("a");
 
     link.href =
-      `pages/news-detail.html?id=${encodeURIComponent(item.id)}`;
+      `pages/news-detail.html?id=${
+        encodeURIComponent(item.id)
+      }`;
 
     link.textContent = item.title;
 
@@ -631,6 +723,11 @@ document
         "aria-expanded",
         "true"
       );
+
+      trigger.setAttribute(
+        "aria-label",
+        "Hide About Us submenu"
+      );
     }
 
     function closeDropdown() {
@@ -639,6 +736,11 @@ document
       trigger.setAttribute(
         "aria-expanded",
         "false"
+      );
+
+      trigger.setAttribute(
+        "aria-label",
+        "Show About Us submenu"
       );
     }
 
@@ -688,8 +790,13 @@ document.addEventListener("click", (event) => {
 document
   .querySelector(".back-to-top")
   ?.addEventListener("click", () => {
+    const reduceMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: reduceMotion ? "auto" : "smooth",
     });
   });
