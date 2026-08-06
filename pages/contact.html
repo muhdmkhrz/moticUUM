@@ -4,22 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About Us | MOTIC, Universiti Utara Malaysia</title>
+  <title>Contact Us | MOTIC, Universiti Utara Malaysia</title>
+
   <meta
     name="description"
-    content="Meet MOTIC — our vision, mission, objectives and the 2025/2026 leadership committee at Universiti Utara Malaysia."
+    content="Contact the MOTIC academic leadership, advisor, President and Vice President at Universiti Utara Malaysia."
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   >
 
   <link rel="stylesheet" href="../css/styles.css">
-  <script src="../js/team-data.js" defer></script>
-  <script src="../js/team-render.js" defer></script>
   <script src="../js/main.js" defer></script>
 </head>
 
@@ -73,11 +73,7 @@
           <a class="navigation-link" href="../index.html">Home</a>
 
           <div class="nav-dropdown">
-            <a
-              class="navigation-link nav-dropdown__link active"
-              href="about.html"
-              aria-current="page"
-            >
+            <a class="navigation-link nav-dropdown__link" href="about.html">
               About Us
             </a>
 
@@ -92,9 +88,9 @@
             </button>
 
             <div class="nav-dropdown__menu" id="about-dropdown-menu">
-              <a href="#president-message">President's Message</a>
-              <a href="#vision-mission">Vision, Mission &amp; Objectives</a>
-              <a href="#our-team">Our Team</a>
+              <a href="about.html#president-message">President's Message</a>
+              <a href="about.html#vision-mission">Vision, Mission &amp; Objectives</a>
+              <a href="about.html#our-team">Our Team</a>
             </div>
           </div>
 
@@ -117,133 +113,146 @@
         <nav class="breadcrumbs" aria-label="Breadcrumb">
           <a href="../index.html">Home</a>
           <span aria-hidden="true">/</span>
-          About Us
+          Contact Us
         </nav>
 
-        <p class="eyebrow">Get to know us</p>
-        <h1>About MOTIC</h1>
+        <p class="eyebrow">We are here to help</p>
+        <h1>Contact Us</h1>
 
         <p class="page-hero__lede">
-          The academic association for Technology Management students at
-          Universiti Utara Malaysia.
+          Reach the right MOTIC representative for academic guidance,
+          collaboration, membership or club-related enquiries.
         </p>
       </div>
     </section>
 
-    <section id="president-message" class="president">
-      <div class="container president__grid">
-        <div class="president__portrait">
-          <div class="president__portrait-placeholder" aria-hidden="true">
-            <span>[PRESIDENT'S PHOTO]</span>
+    <section class="contact-directory" aria-labelledby="contact-directory-title">
+      <div class="container">
+        <div class="contact-directory__intro">
+          <div>
+            <p class="eyebrow">MOTIC representatives</p>
+            <h2 id="contact-directory-title">Connect with our leadership team</h2>
           </div>
-        </div>
 
-        <div class="president__content">
-          <p class="eyebrow">Greetings</p>
-          <h2>A Message from Our President</h2>
-
-          <blockquote>
-            [PRESIDENT'S MESSAGE PLACEHOLDER — add a short welcome note from the
-            President here. Talk about what MOTIC stands for, what new and
-            existing members can look forward to this session, and an invitation
-            to get involved.]
-          </blockquote>
-
-          <p class="president__signature">
-            <strong>Peek Zhen Nan</strong><br>
-            President, MOTIC 2025/2026
+          <p>
+            Choose the most relevant representative below. Email links open your
+            email application directly, while phone numbers can be tapped on
+            supported devices once the official details are added.
           </p>
         </div>
-      </div>
-    </section>
 
-    <section id="vision-mission" class="about-pillars">
-      <div class="container">
-        <p class="eyebrow">Who We Are</p>
-        <h2>Vision, Mission &amp; Objectives</h2>
+        <div class="contact-grid">
+          <article class="contact-card">
+            <div class="contact-card__photo">
+              <!-- Replace this placeholder with the official Dr portrait. -->
+              <img
+                src="../assets/images/contact-portrait-placeholder.svg"
+                alt="Portrait placeholder for the Dr"
+                loading="lazy"
+              >
+              <span class="contact-card__role">Dr</span>
+            </div>
 
-        <p class="about-pillars__intro">
-          Persatuan Pengurusan Teknologi (MOTIC) is the premier academic body for
-          Technology Management students, established under the School of
-          Technology Management and Logistics. Our ongoing purpose is to enhance
-          the academic experience and future readiness of our students.
-        </p>
+            <div class="contact-card__body">
+              <p class="contact-card__kicker">Academic leadership</p>
+              <h3>[DR NAME]</h3>
 
-        <div class="pillars-grid">
-          <article class="pillar-card">
-            <h3>Vision</h3>
-            <p>
-              To be recognised as the leading academic association in UUM,
-              consistently enhancing the marketability and success of students
-              majoring in Technology Management.
-            </p>
+              <ul class="contact-card__details">
+                <li>
+                  <img src="../assets/images/mail.svg" alt="" aria-hidden="true">
+                  <span class="contact-card__pending">[DR EMAIL]</span>
+                </li>
+                <li>
+                  <img src="../assets/images/phone.svg" alt="" aria-hidden="true">
+                  <span class="contact-card__pending">[DR PHONE NUMBER]</span>
+                </li>
+              </ul>
+            </div>
           </article>
 
-          <article class="pillar-card">
-            <h3>Mission</h3>
-            <ul>
-              <li>
-                To champion the welfare and holistic development of all STML
-                students, with a dedicated focus on those in Technology
-                Management.
-              </li>
-              <li>
-                To continuously innovate and improve the academic activities
-                available to Technology Management students.
-              </li>
-              <li>
-                To strengthen the essential soft skills of our students through
-                impactful, well-organised association activities.
-              </li>
-            </ul>
+          <article class="contact-card">
+            <div class="contact-card__photo">
+              <!-- Replace this placeholder with the official Advisor portrait. -->
+              <img
+                src="../assets/images/contact-portrait-placeholder.svg"
+                alt="Portrait placeholder for the MOTIC Advisor"
+                loading="lazy"
+              >
+              <span class="contact-card__role">Advisor</span>
+            </div>
+
+            <div class="contact-card__body">
+              <p class="contact-card__kicker">Club guidance</p>
+              <h3>[ADVISOR NAME]</h3>
+
+              <ul class="contact-card__details">
+                <li>
+                  <img src="../assets/images/mail.svg" alt="" aria-hidden="true">
+                  <span class="contact-card__pending">[ADVISOR EMAIL]</span>
+                </li>
+                <li>
+                  <img src="../assets/images/phone.svg" alt="" aria-hidden="true">
+                  <span class="contact-card__pending">[ADVISOR PHONE NUMBER]</span>
+                </li>
+              </ul>
+            </div>
           </article>
 
-          <article class="pillar-card">
-            <h3>Our Objectives</h3>
-            <ul>
-              <li>
-                To facilitate the ongoing exchange of contemporary knowledge
-                and industry insights for students of Technology Management.
-              </li>
-              <li>
-                To promote and support the dynamic activities and programmes
-                led by our students.
-              </li>
-              <li>
-                To provide current guidance on relevant subjects and emerging
-                fields of focus for study and research.
-              </li>
-            </ul>
+          <article class="contact-card">
+            <div class="contact-card__photo">
+              <!-- Replace this placeholder with the official President portrait. -->
+              <img
+                src="../assets/images/contact-portrait-placeholder.svg"
+                alt="Portrait placeholder for MOTIC President Peek Zhen Nan"
+                loading="lazy"
+              >
+              <span class="contact-card__role">President</span>
+            </div>
+
+            <div class="contact-card__body">
+              <p class="contact-card__kicker">Student leadership</p>
+              <h3>Peek Zhen Nan</h3>
+
+              <ul class="contact-card__details">
+                <li>
+                  <img src="../assets/images/mail.svg" alt="" aria-hidden="true">
+                  <a href="mailto:zhen.motic@gmail.com">zhen.motic@gmail.com</a>
+                </li>
+                <li>
+                  <img src="../assets/images/phone.svg" alt="" aria-hidden="true">
+                  <span class="contact-card__pending">[PRESIDENT PHONE NUMBER]</span>
+                </li>
+              </ul>
+            </div>
           </article>
-        </div>
-      </div>
-    </section>
 
-    <section id="our-team" class="team">
-      <div class="container">
-        <p class="eyebrow">Leadership</p>
-        <h2>Our Team, 2025/2026</h2>
+          <article class="contact-card">
+            <div class="contact-card__photo">
+              <!-- Replace this placeholder with the official Vice President portrait. -->
+              <img
+                src="../assets/images/contact-portrait-placeholder.svg"
+                alt="Portrait placeholder for MOTIC Vice President Nur Adriana Amni Binti Mohd Asrol"
+                loading="lazy"
+              >
+              <span class="contact-card__role">Vice President</span>
+            </div>
 
-        <p class="team__intro">
-          Meet the committee behind MOTIC this session, organised by portfolio.
-        </p>
+            <div class="contact-card__body">
+              <p class="contact-card__kicker">Student leadership</p>
+              <h3>Nur Adriana Amni Binti Mohd Asrol</h3>
 
-        <h3 class="team__group-title">Majlis Tertinggi</h3>
-        <div id="top-committee-grid" class="team-grid team-grid--top"></div>
-
-        <div id="departments-list"></div>
-      </div>
-    </section>
-
-    <section class="logo-strip" aria-label="Our university and school">
-      <div class="container logo-strip__inner">
-        <span class="logo-strip__label">Operating under</span>
-
-        <div class="logo-strip__marks">
-          <span class="logo-strip__item">Universiti Utara Malaysia</span>
-          <span class="logo-strip__item">
-            Management of Technology Intelligence Club
-          </span>
+              <ul class="contact-card__details">
+                <li>
+                  <img src="../assets/images/mail.svg" alt="" aria-hidden="true">
+                  <a href="mailto:nadriana.motic@gmail.com">nadriana.motic@gmail.com</a>
+                </li>
+                <li>
+                  <img src="../assets/images/phone.svg" alt="" aria-hidden="true">
+                  <span class="contact-card__pending">[VICE PRESIDENT PHONE NUMBER]</span>
+                </li>
+              </ul>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -285,7 +294,7 @@
         <a href="about.html">About Us</a>
         <a href="news.html">News</a>
         <a href="achievement.html">Achievement</a>
-        <a href="contact.html">Contact Us</a>
+        <a href="contact.html" aria-current="page">Contact Us</a>
         <a href="admin.html">Admin</a>
       </nav>
 
@@ -311,7 +320,7 @@
           </a>
         </nav>
 
-        <a class="footer__contact-button" href="contact.html">
+        <a class="footer__contact-button" href="contact.html" aria-current="page">
           <img src="../assets/images/mail.svg" alt="" aria-hidden="true">
           <span>Contact Us</span>
         </a>

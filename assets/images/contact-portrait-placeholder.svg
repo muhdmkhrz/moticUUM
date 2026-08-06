@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-labelledby="title description">
+  <title id="title">Portrait placeholder</title>
+  <desc id="description">A decorative maroon and cream silhouette to be replaced with an official portrait.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8f1e7"/>
+      <stop offset="1" stop-color="#ead9c4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7b2337"/>
+      <stop offset="1" stop-color="#3c0d18"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="560" rx="32" fill="url(#background)"/>
+  <circle cx="680" cy="70" r="160" fill="#c89b43" opacity=".16"/>
+  <circle cx="120" cy="520" r="220" fill="#5b1726" opacity=".08"/>
+  <circle cx="400" cy="205" r="94" fill="url(#accent)"/>
+  <path d="M205 560c15-132 91-211 195-211s180 79 195 211H205Z" fill="url(#accent)"/>
+  <circle cx="400" cy="280" r="194" fill="none" stroke="#c89b43" stroke-width="3" opacity=".55"/>
+</svg>

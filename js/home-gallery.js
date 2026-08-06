@@ -10,6 +10,11 @@
 
   if (!showcase) return;
 
+  const AUTO_SLIDE_DELAY = 5000;
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
   const SECTIONS = [
     { key: "event", alwaysShow: true },
     { key: "activities", alwaysShow: true },
@@ -29,7 +34,6 @@
     const carousel = column.querySelector(
       `[data-gallery-carousel="${key}"]`
     );
-
     const track = column.querySelector("[data-gallery-track]");
     const dotsContainer = column.querySelector("[data-gallery-dots]");
     const previousButton = column.querySelector("[data-gallery-prev]");
@@ -64,6 +68,9 @@
     if (carousel) carousel.hidden = false;
 
     let activeIndex = 0;
+    let autoSlideTimer = null;
+    let pointerIsInside = false;
+    let focusIsInside = false;
 
     function createSlide(item, index) {
       const hasLink = Boolean(item.link);
@@ -114,7 +121,10 @@
         `Show ${index + 1} of ${items.length}: ${item.title || "Update"}`
       );
 
-      dot.addEventListener("click", () => showSlide(index));
+      dot.addEventListener("click", () => {
+        showSlide(index);
+        restartAutoSlide();
+      });
 
       return dot;
     }
@@ -126,12 +136,47 @@
         track.style.transform = `translateX(-${activeIndex * 100}%)`;
       }
 
-      [...dotsContainer.children].forEach((dot, dotIndex) => {
-        dot.setAttribute(
-          "aria-current",
-          String(dotIndex === activeIndex)
-        );
-      });
+      if (dotsContainer) {
+        [...dotsContainer.children].forEach((dot, dotIndex) => {
+          dot.setAttribute(
+            "aria-current",
+            String(dotIndex === activeIndex)
+          );
+        });
+      }
+    }
+
+    function stopAutoSlide() {
+      if (autoSlideTimer !== null) {
+        window.clearTimeout(autoSlideTimer);
+        autoSlideTimer = null;
+      }
+    }
+
+    function canAutoSlide() {
+      return (
+        items.length > 1 &&
+        !pointerIsInside &&
+        !focusIsInside &&
+        !document.hidden &&
+        !reducedMotionQuery.matches
+      );
+    }
+
+    function startAutoSlide() {
+      stopAutoSlide();
+
+      if (!canAutoSlide()) return;
+
+      autoSlideTimer = window.setTimeout(() => {
+        showSlide(activeIndex + 1);
+        startAutoSlide();
+      }, AUTO_SLIDE_DELAY);
+    }
+
+    function restartAutoSlide() {
+      stopAutoSlide();
+      startAutoSlide();
     }
 
     items.forEach((item, index) => {
@@ -145,14 +190,53 @@
       previousButton?.setAttribute("hidden", "");
       nextButton?.setAttribute("hidden", "");
       if (dotsContainer) dotsContainer.hidden = true;
-    } else {
-      previousButton?.addEventListener("click", () => {
-        showSlide(activeIndex - 1);
-      });
-
-      nextButton?.addEventListener("click", () => {
-        showSlide(activeIndex + 1);
-      });
+      return;
     }
+
+    previousButton?.addEventListener("click", () => {
+      showSlide(activeIndex - 1);
+      restartAutoSlide();
+    });
+
+    nextButton?.addEventListener("click", () => {
+      showSlide(activeIndex + 1);
+      restartAutoSlide();
+    });
+
+    column.addEventListener("pointerenter", () => {
+      pointerIsInside = true;
+      stopAutoSlide();
+    });
+
+    column.addEventListener("pointerleave", () => {
+      pointerIsInside = false;
+      startAutoSlide();
+    });
+
+    column.addEventListener("focusin", () => {
+      focusIsInside = true;
+      stopAutoSlide();
+    });
+
+    column.addEventListener("focusout", (event) => {
+      if (column.contains(event.relatedTarget)) return;
+
+      focusIsInside = false;
+      startAutoSlide();
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopAutoSlide();
+      } else {
+        startAutoSlide();
+      }
+    });
+
+    reducedMotionQuery.addEventListener?.("change", () => {
+      startAutoSlide();
+    });
+
+    startAutoSlide();
   }
 })();
