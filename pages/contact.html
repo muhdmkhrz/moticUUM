@@ -19,7 +19,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css?v=9">
   <script src="../js/main.js" defer></script>
 </head>
 
@@ -88,9 +88,9 @@
             </button>
 
             <div class="nav-dropdown__menu" id="about-dropdown-menu">
-              <a href="about.html#president-message">President's Message</a>
-              <a href="about.html#vision-mission">Vision, Mission &amp; Objectives</a>
-              <a href="about.html#our-team">Our Team</a>
+              <a href="president-message.html">President's Message</a>
+              <a href="vision-mission.html">Vision, Mission &amp; Objectives</a>
+              <a href="team.html">Our Team</a>
             </div>
           </div>
 
@@ -254,6 +254,12 @@
             </div>
           </article>
         </div>
+
+        <p class="contact-directory__note">
+          Replace the bracketed Dr, Advisor and phone-number fields with the
+          official details before publishing. Replace each portrait placeholder
+          with the relevant approved photograph.
+        </p>
       </div>
     </section>
   </main>
@@ -327,8 +333,22 @@
       </div>
 
       <div class="footer__map">
-        <div class="footer__map-placeholder">
-          Map placeholder — Sintok, Kedah
+        <div class="footer__map-embed">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4852.677751592595!2d100.49930676721557!3d6.466752797211717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304cae152c08f777%3A0x76d78a9b0a4b933d!2sUniversiti%20Utara%20Malaysia!5e0!3m2!1sen!2smy!4v1786001646989!5m2!1sen!2smy"
+            title="Universiti Utara Malaysia location"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+
+          <a
+            class="footer__map-link"
+            href="https://maps.app.goo.gl/opJV587D76FixoVo7"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Universiti Utara Malaysia in Google Maps"
+          ></a>
         </div>
       </div>
     </div>

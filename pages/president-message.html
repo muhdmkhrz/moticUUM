@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About Us | MOTIC, Universiti Utara Malaysia</title>
+  <title>President's Message | MOTIC, Universiti Utara Malaysia</title>
   <meta
     name="description"
-    content="Meet MOTIC — our vision, mission, objectives and the 2025/2026 leadership committee at Universiti Utara Malaysia."
+    content="Read the President's message for MOTIC's 2025/2026 session at Universiti Utara Malaysia."
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="../css/styles.css?v=11">
+  <link rel="stylesheet" href="../css/styles.css?v=9">
   <script src="../js/main.js" defer></script>
 </head>
 
@@ -74,7 +74,6 @@
             <a
               class="navigation-link nav-dropdown__link active"
               href="about.html"
-              aria-current="page"
             >
               About Us
             </a>
@@ -90,7 +89,7 @@
             </button>
 
             <div class="nav-dropdown__menu" id="about-dropdown-menu">
-              <a href="president-message.html">President's Message</a>
+              <a class="active" href="president-message.html" aria-current="page">President's Message</a>
               <a href="vision-mission.html">Vision, Mission &amp; Objectives</a>
               <a href="team.html">Our Team</a>
             </div>
@@ -110,51 +109,52 @@
   </header>
 
   <main id="main-content">
-    <section class="about-pillars about-directory">
+    <section class="page-hero page-hero--compact">
       <div class="container">
-        <p class="eyebrow">Explore MOTIC</p>
-        <h2>Choose an About Us page</h2>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span aria-hidden="true">/</span>
+          <a href="about.html">About Us</a>
+          <span aria-hidden="true">/</span>
+          President's Message
+        </nav>
 
-        <p class="about-pillars__intro">
-          Each topic now has its own page, making it easier to read and share.
+        <p class="eyebrow">Greetings</p>
+        <h1>President's Message</h1>
+
+        <p class="page-hero__lede">
+          A welcome from the President of MOTIC for the 2025/2026 session.
         </p>
+      </div>
+    </section>
 
-        <div class="pillars-grid">
-          <article class="pillar-card">
-            <p class="eyebrow">Greetings</p>
-            <h3>President's Message</h3>
-            <p>
-              Read the President's welcome message and introduction to MOTIC.
-            </p>
-            <a class="button button--primary" href="president-message.html">
-              Read message
-            </a>
-          </article>
+    <section id="president-message" class="president">
+      <div class="container president__grid">
+        <div class="president__portrait">
+          <div class="president__portrait-placeholder" aria-hidden="true">
+            <span>[PRESIDENT'S PHOTO]</span>
+          </div>
+        </div>
 
-          <article class="pillar-card">
-            <p class="eyebrow">Who We Are</p>
-            <h3>Vision, Mission &amp; Objectives</h3>
-            <p>
-              Discover MOTIC's direction, purpose and core objectives.
-            </p>
-            <a class="button button--primary" href="vision-mission.html">
-              View our direction
-            </a>
-          </article>
+        <div class="president__content">
+          <p class="eyebrow">Greetings</p>
+          <h2>A Message from Our President</h2>
 
-          <article class="pillar-card">
-            <p class="eyebrow">Leadership</p>
-            <h3>Our Team</h3>
-            <p>
-              Meet the 2025/2026 committee members behind MOTIC.
-            </p>
-            <a class="button button--primary" href="team.html">
-              Meet the team
-            </a>
-          </article>
+          <blockquote>
+            [PRESIDENT'S MESSAGE PLACEHOLDER — add a short welcome note from the
+            President here. Talk about what MOTIC stands for, what new and
+            existing members can look forward to this session, and an invitation
+            to get involved.]
+          </blockquote>
+
+          <p class="president__signature">
+            <strong>Peek Zhen Nan</strong><br>
+            President, MOTIC 2025/2026
+          </p>
         </div>
       </div>
     </section>
+
 
     <section class="logo-strip" aria-label="Our university and school">
       <div class="container logo-strip__inner">

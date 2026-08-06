@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About Us | MOTIC, Universiti Utara Malaysia</title>
+  <title>Our Team | MOTIC, Universiti Utara Malaysia</title>
   <meta
     name="description"
-    content="Meet MOTIC — our vision, mission, objectives and the 2025/2026 leadership committee at Universiti Utara Malaysia."
+    content="Meet the MOTIC 2025/2026 leadership committee at Universiti Utara Malaysia."
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,9 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="../css/styles.css?v=11">
+  <link rel="stylesheet" href="../css/styles.css?v=10">
+  <script src="../js/team-data.js" defer></script>
+  <script src="../js/team-render.js" defer></script>
   <script src="../js/main.js" defer></script>
 </head>
 
@@ -74,7 +76,6 @@
             <a
               class="navigation-link nav-dropdown__link active"
               href="about.html"
-              aria-current="page"
             >
               About Us
             </a>
@@ -92,7 +93,7 @@
             <div class="nav-dropdown__menu" id="about-dropdown-menu">
               <a href="president-message.html">President's Message</a>
               <a href="vision-mission.html">Vision, Mission &amp; Objectives</a>
-              <a href="team.html">Our Team</a>
+              <a class="active" href="team.html" aria-current="page">Our Team</a>
             </div>
           </div>
 
@@ -110,49 +111,19 @@
   </header>
 
   <main id="main-content">
-    <section class="about-pillars about-directory">
+    <section id="our-team" class="team">
       <div class="container">
-        <p class="eyebrow">Explore MOTIC</p>
-        <h2>Choose an About Us page</h2>
+        <p class="eyebrow">Leadership</p>
+        <h2>Our Team, 2025/2026</h2>
 
-        <p class="about-pillars__intro">
-          Each topic now has its own page, making it easier to read and share.
+        <p class="team__intro">
+          Meet the committee behind MOTIC this session, organised by portfolio.
         </p>
 
-        <div class="pillars-grid">
-          <article class="pillar-card">
-            <p class="eyebrow">Greetings</p>
-            <h3>President's Message</h3>
-            <p>
-              Read the President's welcome message and introduction to MOTIC.
-            </p>
-            <a class="button button--primary" href="president-message.html">
-              Read message
-            </a>
-          </article>
+        <h3 class="team__group-title">Majlis Tertinggi</h3>
+        <div id="top-committee-grid" class="team-grid team-grid--top"></div>
 
-          <article class="pillar-card">
-            <p class="eyebrow">Who We Are</p>
-            <h3>Vision, Mission &amp; Objectives</h3>
-            <p>
-              Discover MOTIC's direction, purpose and core objectives.
-            </p>
-            <a class="button button--primary" href="vision-mission.html">
-              View our direction
-            </a>
-          </article>
-
-          <article class="pillar-card">
-            <p class="eyebrow">Leadership</p>
-            <h3>Our Team</h3>
-            <p>
-              Meet the 2025/2026 committee members behind MOTIC.
-            </p>
-            <a class="button button--primary" href="team.html">
-              Meet the team
-            </a>
-          </article>
-        </div>
+        <div id="departments-list"></div>
       </div>
     </section>
 
