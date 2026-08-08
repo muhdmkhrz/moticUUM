@@ -203,7 +203,68 @@
       ),
     ];
 
+    const pageTitle =
+      dashboardPage.querySelector(
+        "[data-admin-page-title]"
+      );
+
+    const pageDescription =
+      dashboardPage.querySelector(
+        "[data-admin-page-description]"
+      );
+
+    const newStoryButton =
+      dashboardPage.querySelector(
+        "[data-new-story]"
+      );
+
+    const TAB_CONTENT = {
+      news: {
+        title: "News Management",
+        description:
+          "Publish and manage MOTIC news updates.",
+        action: "+ New Story",
+      },
+      posters: {
+        title: "Upcoming Posters",
+        description:
+          "Manage the announcement slider on the home page.",
+        action: "+ New Poster",
+      },
+      event: {
+        title: "Event Management",
+        description:
+          "Add and arrange posters in the Event section.",
+        action: "+ New Event",
+      },
+      activities: {
+        title: "Activities Management",
+        description:
+          "Add and arrange photos from MOTIC activities.",
+        action: "+ New Activity",
+      },
+      researcher_spotlight: {
+        title: "Research Spotlight",
+        description:
+          "Feature MOTIC researchers on the home page.",
+        action: "+ New Spotlight",
+      },
+      ictom: {
+        title: "ICTOM Management",
+        description:
+          "Publish and arrange ICTOM content.",
+        action: "+ New ICTOM Item",
+      },
+    };
+
+    let activeTabKey = "news";
+
     function showTab(key) {
+      const tabContent =
+        TAB_CONTENT[key] || TAB_CONTENT.news;
+
+      activeTabKey = key;
+
       panels.forEach((panel) => {
         panel.hidden =
           panel.dataset.adminPanel !== key;
@@ -226,6 +287,21 @@
         tabButton.tabIndex =
           isActive ? 0 : -1;
       });
+
+      if (pageTitle) {
+        pageTitle.textContent =
+          tabContent.title;
+      }
+
+      if (pageDescription) {
+        pageDescription.textContent =
+          tabContent.description;
+      }
+
+      if (newStoryButton) {
+        newStoryButton.textContent =
+          tabContent.action;
+      }
     }
 
     tabButtons.forEach((tabButton) => {
@@ -311,11 +387,6 @@
         "[data-cancel-edit]"
       );
 
-    const newStoryButton =
-      dashboardPage.querySelector(
-        "[data-new-story]"
-      );
-
     const logoutButton =
       dashboardPage.querySelector(
         "[data-admin-logout]"
@@ -387,6 +458,43 @@
     let slugWasEdited = false;
     let posters = [];
     let editingPoster = null;
+
+    const newsStat =
+      dashboardPage.querySelector(
+        '[data-admin-stat="news"]'
+      );
+
+    const posterStat =
+      dashboardPage.querySelector(
+        '[data-admin-stat="posters"]'
+      );
+
+    const galleryStat =
+      dashboardPage.querySelector(
+        '[data-admin-stat="gallery"]'
+      );
+
+    function updateDashboardStats() {
+      if (newsStat) {
+        newsStat.textContent =
+          String(stories.length);
+      }
+
+      if (posterStat) {
+        posterStat.textContent =
+          String(posters.length);
+      }
+
+      if (galleryStat) {
+        const galleryItems =
+          dashboardPage.querySelectorAll(
+            "[data-gallery-list] .admin-poster-row"
+          );
+
+        galleryStat.textContent =
+          String(galleryItems.length);
+      }
+    }
 
     if (!service) {
       setStatus(
@@ -652,6 +760,8 @@
 
         list.append(row);
       });
+
+      updateDashboardStats();
     }
 
     async function loadStories() {
@@ -902,6 +1012,8 @@
 
         posterList.append(row);
       });
+
+      updateDashboardStats();
     }
 
     async function loadPosters() {
@@ -1239,8 +1351,10 @@
             actions
           );
 
-          list.append(row);
-        });
+        list.append(row);
+      });
+
+        updateDashboardStats();
       }
 
       async function loadItems() {
@@ -1422,6 +1536,7 @@
 
       return {
         load: loadItems,
+        reset: resetForm,
       };
     }
 
@@ -1613,10 +1728,27 @@
       }
     );
 
-    newStoryButton.addEventListener(
+    newStoryButton?.addEventListener(
       "click",
       () => {
-        resetForm(true);
+        if (activeTabKey === "news") {
+          resetForm(true);
+          return;
+        }
+
+        if (activeTabKey === "posters") {
+          resetPosterForm(true);
+          return;
+        }
+
+        const galleryIndex =
+          GALLERY_SECTIONS.findIndex(
+            (section) =>
+              section.key === activeTabKey
+          );
+
+        galleryPanels[galleryIndex]
+          ?.reset(true);
       }
     );
 

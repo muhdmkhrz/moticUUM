@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>News Dashboard | MOTIC UUM</title>
+  <title>Administration Portal | MOTIC UUM</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css?v=11">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
   <script src="../js/supabase-config.js" defer></script>
@@ -20,7 +20,7 @@
 <body class="admin-page admin-dashboard-page" data-admin-dashboard>
   <a class="skip-link" href="#dashboard-main">Skip to dashboard</a>
 
-  <header class="admin-dashboard-header">
+  <aside class="admin-sidebar" aria-label="Administration navigation">
     <a class="admin-brand admin-brand--identity" href="../index.html" aria-label="Persatuan Pengurusan Teknologi UUM home">
       <img
         class="admin-brand__mark"
@@ -37,35 +37,68 @@
       </span>
     </a>
 
-    <div class="admin-account">
-      <span data-admin-email>Checking account…</span>
-      <a href="../index.html" target="_blank" rel="noopener">View website</a>
-      <button type="button" data-admin-logout>Sign Out</button>
+    <div class="admin-tabs" role="tablist" aria-label="Dashboard sections" aria-orientation="vertical" data-admin-tabs>
+      <button class="admin-tab active" id="admin-tab-news" type="button" role="tab" aria-selected="true" aria-controls="admin-panel-news" tabindex="0" data-admin-tab="news"><span class="admin-tab__icon" aria-hidden="true">▦</span><span>News</span></button>
+      <button class="admin-tab" id="admin-tab-posters" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-posters" tabindex="-1" data-admin-tab="posters"><span class="admin-tab__icon" aria-hidden="true">▣</span><span>Upcoming Poster</span></button>
+      <button class="admin-tab" id="admin-tab-event" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-event" tabindex="-1" data-admin-tab="event"><span class="admin-tab__icon" aria-hidden="true">◫</span><span>Event</span></button>
+      <button class="admin-tab" id="admin-tab-activities" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-activities" tabindex="-1" data-admin-tab="activities"><span class="admin-tab__icon" aria-hidden="true">◎</span><span>Activities</span></button>
+      <button class="admin-tab" id="admin-tab-researcher" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-researcher" tabindex="-1" data-admin-tab="researcher_spotlight"><span class="admin-tab__icon" aria-hidden="true">✦</span><span>Research Spotlight</span></button>
+      <button class="admin-tab" id="admin-tab-ictom" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-ictom" tabindex="-1" data-admin-tab="ictom"><span class="admin-tab__icon" aria-hidden="true">◇</span><span>ICTOM</span></button>
     </div>
-  </header>
 
-  <div class="admin-tabs" role="tablist" aria-label="Dashboard sections" data-admin-tabs>
-    <button class="admin-tab active" id="admin-tab-news" type="button" role="tab" aria-selected="true" aria-controls="admin-panel-news" tabindex="0" data-admin-tab="news">News</button>
-    <button class="admin-tab" id="admin-tab-posters" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-posters" tabindex="-1" data-admin-tab="posters">Upcoming Poster</button>
-    <button class="admin-tab" id="admin-tab-event" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-event" tabindex="-1" data-admin-tab="event">Event</button>
-    <button class="admin-tab" id="admin-tab-activities" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-activities" tabindex="-1" data-admin-tab="activities">Activities</button>
-    <button class="admin-tab" id="admin-tab-researcher" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-researcher" tabindex="-1" data-admin-tab="researcher_spotlight">Research Spotlight</button>
-    <button class="admin-tab" id="admin-tab-ictom" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-ictom" tabindex="-1" data-admin-tab="ictom">ICTOM</button>
-  </div>
+    <div class="admin-account">
+      <span class="admin-account__avatar" aria-hidden="true">A</span>
+      <span class="admin-account__details">
+        <strong>Administrator</strong>
+        <span data-admin-email>Checking account…</span>
+      </span>
+      <span class="admin-account__links">
+        <a href="../index.html" target="_blank" rel="noopener">View website</a>
+        <button type="button" data-admin-logout>Sign Out</button>
+      </span>
+    </div>
+  </aside>
 
-  <main class="admin-dashboard" id="dashboard-main">
+  <div class="admin-workspace">
+    <header class="admin-dashboard-header">
+      <div>
+        <h1 data-admin-page-title>News Management</h1>
+        <p data-admin-page-description>Publish and manage MOTIC news updates.</p>
+      </div>
+
+      <button class="admin-primary-button admin-header-action" type="button" data-new-story>+ New Story</button>
+    </header>
+
+    <main class="admin-dashboard" id="dashboard-main">
+      <section class="admin-overview" aria-label="Content overview">
+        <article class="admin-overview-card">
+          <p>Published News</p>
+          <strong data-admin-stat="news">0</strong>
+          <span>Stories available</span>
+        </article>
+
+        <article class="admin-overview-card">
+          <p>Upcoming Posters</p>
+          <strong data-admin-stat="posters">0</strong>
+          <span>Slider items</span>
+        </article>
+
+        <article class="admin-overview-card">
+          <p>Homepage Items</p>
+          <strong data-admin-stat="gallery">0</strong>
+          <span>Gallery entries</span>
+        </article>
+
+        <article class="admin-overview-card">
+          <p>Manage Sections</p>
+          <strong>6</strong>
+          <span>Content areas</span>
+        </article>
+      </section>
+
     <p class="admin-status admin-status--dashboard" data-dashboard-status hidden role="status" aria-live="polite"></p>
 
     <div class="admin-dashboard-panel" id="admin-panel-news" role="tabpanel" aria-labelledby="admin-tab-news" data-admin-panel="news">
-      <div class="admin-dashboard-heading">
-        <div>
-          <p class="admin-kicker">MOTIC news administration</p>
-          <h1>News Dashboard</h1>
-          <p>Publish the latest update, edit an existing story or remove old news.</p>
-        </div>
-        <button class="admin-secondary-button" type="button" data-new-story>+ New Story</button>
-      </div>
-
       <div class="admin-dashboard-grid">
         <section class="admin-panel admin-editor" aria-labelledby="news-form-title">
           <div class="admin-panel__heading">
@@ -462,6 +495,7 @@
         </div>
       </div>
     </section>
-  </main>
+    </main>
+  </div>
 </body>
 </html>
