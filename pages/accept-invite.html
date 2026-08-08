@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Accept Admin Invitation | MOTIC UUM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css?v=14">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
+  <script src="../js/supabase-config.js" defer></script>
+  <script src="../js/accept-invite.js" defer></script>
+</head>
+
+<body class="admin-page admin-login-page" data-accept-invite>
+  <a class="skip-link" href="#invite-main">Skip to account setup</a>
+
+  <header class="admin-login-header">
+    <a class="admin-brand admin-brand--identity" href="../index.html" aria-label="Persatuan Pengurusan Teknologi UUM home">
+      <img class="admin-brand__mark" src="../assets/images/motic-crest.png" alt="Persatuan Pengurusan Teknologi crest" width="64" height="64">
+      <span class="admin-brand__text">
+        <strong>Persatuan Pengurusan Teknologi</strong>
+        <small>Management of Technology Intelligence Club</small>
+        <span class="admin-brand__university">Universiti Utara Malaysia</span>
+      </span>
+    </a>
+    <a class="admin-back-link" href="admin.html">Admin sign in</a>
+  </header>
+
+  <main class="admin-login-main" id="invite-main">
+    <section class="admin-login-intro" aria-labelledby="invite-title">
+      <p class="admin-kicker">Secure admin handover</p>
+      <h1 id="invite-title">Create Your Admin Password</h1>
+      <span class="admin-title-rule" aria-hidden="true"></span>
+      <p>Use the invitation link sent to your email, then create a password for your own MOTIC administrator account.</p>
+    </section>
+
+    <form class="admin-login-card" data-accept-invite-form>
+      <div class="admin-field">
+        <label for="invite-password">New password</label>
+        <input id="invite-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+      </div>
+
+      <div class="admin-field">
+        <label for="invite-password-confirm">Confirm new password</label>
+        <input id="invite-password-confirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="8" required>
+      </div>
+
+      <p class="admin-status" data-accept-invite-status hidden role="status" aria-live="polite"></p>
+      <button class="admin-primary-button" type="submit">Activate Admin Account</button>
+    </form>
+  </main>
+
+  <footer class="admin-login-footer">
+    <p>© 2026 MOTIC UUM. All rights reserved.</p>
+    <p>Secure administration</p>
+  </footer>
+</body>
+</html>

@@ -88,12 +88,98 @@
     };
   }
 
+  function mapPresidentRow(row) {
+    if (!row) return null;
+
+    return {
+      name: row.president_name,
+      sessionLabel: row.session_label,
+      message: row.message,
+      photo: row.photo_url || "",
+      photoPath: row.photo_path || "",
+      photoAlt: row.photo_alt || "",
+      updatedAt: row.updated_at,
+    };
+  }
+
+  function mapCommitteeRow(row) {
+    const members = Array.isArray(row?.members)
+      ? row.members.map((member, index) => ({
+          id: member.id || `member-${index + 1}`,
+          group: member.group || "Majlis Tertinggi",
+          position: String(member.position || "Committee Member")
+            .replace(/^Deputy /, "Vice ")
+            .replace("Deputy Head", "Vice Head"),
+          name: member.name || "",
+          email: member.email || "",
+          order: Number(member.order) || index + 1,
+        }))
+      : [];
+
+    return {
+      sessionLabel: row?.session_label || "2025/2026",
+      members,
+      updatedAt: row?.updated_at || null,
+    };
+  }
+
+  function mapOrganizationalChartRow(row) {
+    if (!row) return null;
+
+    return {
+      title: row.title,
+      sessionLabel: row.session_label,
+      image: row.image_url || "",
+      imagePath: row.image_path || "",
+      alt: row.image_alt || "",
+      updatedAt: row.updated_at,
+    };
+  }
+
   function requireClient() {
     if (!client) {
       throw new Error("The news service is not connected. Check supabase-config.js.");
     }
 
     return client;
+  }
+
+  async function invokeAdminFunction(functionName, body) {
+    const { data, error } = await requireClient()
+      .functions
+      .invoke(functionName, { body });
+
+    if (error) {
+      let message = error.message;
+      let details = null;
+
+      try {
+        details = await error.context?.json();
+        message = details?.error || message;
+      } catch {
+        // The Edge Function did not return a JSON error body.
+      }
+
+      const functionError = new Error(message);
+      functionError.accessRemoved = Boolean(details?.accessRemoved);
+      functionError.removedCurrentAccount = Boolean(
+        details?.removedCurrentAccount
+      );
+      throw functionError;
+    }
+
+    if (!data?.ok) {
+      const functionError = new Error(
+        data?.error || "The administrator request could not be completed."
+      );
+      functionError.accessRemoved = Boolean(data?.accessRemoved);
+      functionError.removedCurrentAccount = Boolean(
+        data?.removedCurrentAccount
+      );
+      throw functionError;
+    }
+
+    return data;
   }
 
   async function getAllNews(options = {}) {
@@ -216,6 +302,201 @@
     return data.map(mapGalleryRow);
   }
 
+  async function getPresidentProfile(options = {}) {
+    const allowFallback = options.allowFallback !== false;
+
+    if (!client) {
+      if (allowFallback) return null;
+      throw new Error("Supabase is not available.");
+    }
+
+    const { data, error } = await client
+      .from("president_profile")
+      .select("president_name, session_label, message, photo_url, photo_path, photo_alt, updated_at")
+      .eq("id", "current")
+      .maybeSingle();
+
+    if (error) {
+      if (allowFallback) {
+        console.warn("The President's profile could not be loaded.", error.message);
+        return null;
+      }
+      throw error;
+    }
+
+    return mapPresidentRow(data);
+  }
+
+  async function savePresidentProfile(profile) {
+    const user = await requireAdmin();
+
+    const { data, error } = await requireClient()
+      .from("president_profile")
+      .upsert({
+        id: "current",
+        president_name: profile.name.trim(),
+        session_label: profile.sessionLabel.trim(),
+        message: profile.message.trim(),
+        photo_url: profile.photo || null,
+        photo_path: profile.photoPath || null,
+        photo_alt: profile.photoAlt?.trim() || null,
+        updated_by: user.id,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "id" })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return mapPresidentRow(data);
+  }
+
+  async function getCommitteeSettings(options = {}) {
+    const allowFallback = options.allowFallback !== false;
+
+    if (!client) {
+      if (allowFallback) return null;
+      throw new Error("Supabase is not available.");
+    }
+
+    const { data, error } = await client
+      .from("committee_settings")
+      .select("session_label, members, updated_at")
+      .eq("id", "current")
+      .maybeSingle();
+
+    if (error) {
+      if (allowFallback) {
+        console.warn("The committee could not be loaded.", error.message);
+        return null;
+      }
+      throw error;
+    }
+
+    return data ? mapCommitteeRow(data) : null;
+  }
+
+  async function saveCommitteeSettings(settings) {
+    const user = await requireAdmin();
+    const members = Array.isArray(settings.members)
+      ? settings.members.map((member, index) => ({
+          id: member.id || window.crypto?.randomUUID?.() || `member-${Date.now()}-${index}`,
+          group: member.group.trim(),
+          position: member.position.trim().replace(/^Deputy /, "Vice "),
+          name: member.name.trim(),
+          email: member.email.trim(),
+          order: Number(member.order) || index + 1,
+        }))
+      : [];
+
+    const { data, error } = await requireClient()
+      .from("committee_settings")
+      .upsert({
+        id: "current",
+        session_label: settings.sessionLabel.trim(),
+        members,
+        updated_by: user.id,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "id" })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return mapCommitteeRow(data);
+  }
+
+  async function getOrganizationalChart(options = {}) {
+    const allowFallback = options.allowFallback !== false;
+
+    if (!client) {
+      if (allowFallback) return null;
+      throw new Error("Supabase is not available.");
+    }
+
+    const { data, error } = await client
+      .from("organizational_chart")
+      .select("title, session_label, image_url, image_path, image_alt, updated_at")
+      .eq("id", "current")
+      .maybeSingle();
+
+    if (error) {
+      if (allowFallback) {
+        console.warn("The organizational chart could not be loaded.", error.message);
+        return null;
+      }
+      throw error;
+    }
+
+    return mapOrganizationalChartRow(data);
+  }
+
+  async function saveOrganizationalChart(chart) {
+    const user = await requireAdmin();
+
+    const { data, error } = await requireClient()
+      .from("organizational_chart")
+      .upsert({
+        id: "current",
+        title: chart.title.trim(),
+        session_label: chart.sessionLabel.trim(),
+        image_url: chart.image,
+        image_path: chart.imagePath,
+        image_alt: chart.alt.trim(),
+        updated_by: user.id,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "id" })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return mapOrganizationalChartRow(data);
+  }
+
+  async function deleteOrganizationalChart() {
+    await requireAdmin();
+
+    const { error } = await requireClient()
+      .from("organizational_chart")
+      .delete()
+      .eq("id", "current");
+
+    if (error) throw error;
+  }
+
+  async function inviteAdmin(email) {
+    await requireAdmin();
+
+    const acceptUrl = new URL("accept-invite.html", window.location.href);
+    const redirectTo = /^https?:$/.test(acceptUrl.protocol)
+      ? acceptUrl.href
+      : null;
+
+    return invokeAdminFunction("invite-admin", {
+      email: email.trim().toLowerCase(),
+      redirectTo,
+    });
+  }
+
+  async function getAdmins() {
+    await requireAdmin();
+    return invokeAdminFunction("manage-admins", { action: "list" });
+  }
+
+  async function transferAdminOwnership(targetUserId) {
+    await requireAdmin();
+    return invokeAdminFunction("manage-admins", {
+      action: "transfer",
+      targetUserId,
+    });
+  }
+
+  async function removeAdmin(targetUserId) {
+    await requireAdmin();
+    return invokeAdminFunction("manage-admins", {
+      action: "remove",
+      targetUserId,
+    });
+  }
+
   function normaliseGalleryInput(item) {
     return {
       section: item.section,
@@ -274,8 +555,8 @@
     if (error) throw error;
   }
 
-  async function uploadGalleryImage(file, section) {
-    return uploadImage(file, `gallery/${section}`);
+  async function uploadGalleryImage(file, section, existingPath = "") {
+    return uploadImage(file, `gallery/${section}`, existingPath);
   }
 
   async function signIn(email, password) {
@@ -457,7 +738,7 @@
     return `${baseName}${extension}`;
   }
 
-  async function uploadImage(file, folder) {
+  async function uploadImage(file, folder, existingPath = "") {
     const user = await requireAdmin();
 
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
@@ -472,15 +753,16 @@
       window.crypto?.randomUUID?.() ||
       `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-    const path = `${folder}/${user.id}/${uniquePart}-${safeFileName(file.name)}`;
+    const path = existingPath ||
+      `${folder}/${user.id}/${uniquePart}-${safeFileName(file.name)}`;
 
     const { error } = await requireClient()
       .storage
       .from(NEWS_BUCKET)
       .upload(path, file, {
-        cacheControl: "3600",
+        cacheControl: "0",
         contentType: file.type,
-        upsert: false,
+        upsert: Boolean(existingPath),
       });
 
     if (error) throw error;
@@ -491,17 +773,25 @@
       .getPublicUrl(path);
 
     return {
-      image: data.publicUrl,
+      image: `${data.publicUrl}?v=${Date.now()}`,
       imagePath: path,
     };
   }
 
-  async function uploadNewsImage(file) {
-    return uploadImage(file, "news");
+  async function uploadNewsImage(file, existingPath = "") {
+    return uploadImage(file, "news", existingPath);
   }
 
-  async function uploadPosterImage(file) {
-    return uploadImage(file, "posters");
+  async function uploadPosterImage(file, existingPath = "") {
+    return uploadImage(file, "posters", existingPath);
+  }
+
+  async function uploadPresidentPhoto(file, existingPath = "") {
+    return uploadImage(file, "president", existingPath);
+  }
+
+  async function uploadOrganizationalChart(file, existingPath = "") {
+    return uploadImage(file, "organizational-chart", existingPath);
   }
 
   async function removeNewsImage(path) {
@@ -536,9 +826,22 @@
     createGalleryItem,
     updateGalleryItem,
     deleteGalleryItem,
+    getPresidentProfile,
+    savePresidentProfile,
+    getCommitteeSettings,
+    saveCommitteeSettings,
+    getOrganizationalChart,
+    saveOrganizationalChart,
+    deleteOrganizationalChart,
+    inviteAdmin,
+    getAdmins,
+    transferAdminOwnership,
+    removeAdmin,
     uploadNewsImage,
     uploadPosterImage,
     uploadGalleryImage,
+    uploadPresidentPhoto,
+    uploadOrganizationalChart,
     removeNewsImage,
   };
 })();

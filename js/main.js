@@ -8,18 +8,14 @@ const currentYear = document.querySelector("#current-year");
 
 let previouslyFocusedElement = null;
 
-const mobileNavigationQuery = window.matchMedia(
-  "(max-width: 1023px)"
-);
+const mobileNavigationQuery = window.matchMedia("(max-width: 1023px)");
 
 function navigationFocusableElements() {
   if (!navigationMenu) return [];
 
-  return [
-    ...navigationMenu.querySelectorAll(
-      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    ),
-  ].filter(
+  return [...navigationMenu.querySelectorAll(
+    'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )].filter(
     (element) =>
       !element.hidden &&
       element.getClientRects().length > 0
@@ -37,35 +33,24 @@ function syncNavigationState() {
 }
 
 function openMenu() {
-  if (!navigationMenu || !menuOverlay || !menuButton) {
-    return;
-  }
+  if (!navigationMenu || !menuOverlay || !menuButton) return;
 
   previouslyFocusedElement = document.activeElement;
-
   navigationMenu.classList.add("open");
   navigationMenu.inert = false;
   menuOverlay.hidden = false;
-
   document.body.classList.add("menu-open");
-
   menuButton.setAttribute("aria-expanded", "true");
-
   closeButton?.focus();
 }
 
 function closeMenu() {
-  if (!navigationMenu || !menuOverlay || !menuButton) {
-    return;
-  }
+  if (!navigationMenu || !menuOverlay || !menuButton) return;
 
   navigationMenu.classList.remove("open");
   menuOverlay.hidden = true;
-
   document.body.classList.remove("menu-open");
-
   menuButton.setAttribute("aria-expanded", "false");
-
   syncNavigationState();
   previouslyFocusedElement?.focus();
 }
@@ -148,13 +133,8 @@ if (currentYear) {
   currentYear.textContent = new Date().getFullYear();
 }
 
-/* ========================================
-   POSTER CAROUSEL
-======================================== */
-
-const posterCarousel = document.querySelector(
-  "[data-poster-carousel]"
-);
+const posterCarousel =
+  document.querySelector("[data-poster-carousel]");
 
 if (posterCarousel) {
   initialisePosterCarousel();
@@ -171,15 +151,10 @@ async function initialisePosterCarousel() {
 
   try {
     if (window.newsService) {
-      posters =
-        await window.newsService.getAllPosters();
+      posters = await window.newsService.getAllPosters();
     }
   } catch (error) {
-    console.warn(
-      "Posters could not be loaded.",
-      error
-    );
-
+    console.warn("Posters could not be loaded.", error);
     posters = fallbackPosters;
   }
 
@@ -189,40 +164,33 @@ async function initialisePosterCarousel() {
       poster.isActive !== false
   );
 
-  const track = posterCarousel.querySelector(
-    "[data-carousel-track]"
-  );
+  const track =
+    posterCarousel.querySelector("[data-carousel-track]");
 
   const previousButton =
-    posterCarousel.querySelector(
-      "[data-carousel-previous]"
-    );
+    posterCarousel.querySelector("[data-carousel-previous]");
 
   const nextButton =
-    posterCarousel.querySelector(
-      "[data-carousel-next]"
-    );
+    posterCarousel.querySelector("[data-carousel-next]");
 
   const dotsContainer =
+    posterCarousel.querySelector("[data-carousel-dots]");
+
+  const status =
+    posterCarousel.querySelector("[data-carousel-status]");
+
+  const viewport =
     posterCarousel.querySelector(
-      "[data-carousel-dots]"
+      ".announcement-carousel__viewport"
     );
 
-  const status = posterCarousel.querySelector(
-    "[data-carousel-status]"
-  );
-
-  const viewport = posterCarousel.querySelector(
-    ".announcement-carousel__viewport"
-  );
-
   const autoplayDelay =
-    Number(posterCarousel.dataset.autoplayDelay) ||
-    6500;
+    Number(posterCarousel.dataset.autoplayDelay) || 6500;
 
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  );
+  const reduceMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
 
   let activeIndex = 0;
   let autoplayTimer = null;
@@ -237,7 +205,6 @@ async function initialisePosterCarousel() {
       "aria-roledescription",
       "slide"
     );
-
     slide.setAttribute(
       "aria-label",
       `${index + 1} of ${posters.length}: ${
@@ -247,19 +214,14 @@ async function initialisePosterCarousel() {
 
     const image = document.createElement("img");
 
-    image.className =
-      "announcement-slide__image";
-
+    image.className = "announcement-slide__image";
     image.src = poster.image;
-
     image.alt =
       poster.alt ||
       poster.title ||
       "Upcoming announcement poster";
 
-    image.loading =
-      index === 0 ? "eager" : "lazy";
-
+    image.loading = index === 0 ? "eager" : "lazy";
     image.decoding = "async";
 
     if (index === 0) {
@@ -267,14 +229,10 @@ async function initialisePosterCarousel() {
     }
 
     if (poster.link) {
-      const link =
-        document.createElement("a");
+      const link = document.createElement("a");
 
-      link.className =
-        "announcement-slide__link";
-
+      link.className = "announcement-slide__link";
       link.href = poster.link;
-
       link.setAttribute(
         "aria-label",
         poster.title
@@ -292,12 +250,10 @@ async function initialisePosterCarousel() {
   }
 
   function createDot(poster, index) {
-    const dot =
-      document.createElement("button");
+    const dot = document.createElement("button");
 
     dot.className = "carousel-dot";
     dot.type = "button";
-
     dot.setAttribute(
       "aria-label",
       `Show poster ${index + 1}: ${
@@ -314,11 +270,7 @@ async function initialisePosterCarousel() {
   }
 
   function showSlide(index, announce = false) {
-    if (
-      !posters.length ||
-      !track ||
-      !dotsContainer
-    ) {
+    if (!posters.length || !track || !dotsContainer) {
       return;
     }
 
@@ -360,9 +312,9 @@ async function initialisePosterCarousel() {
       const poster = posters[activeIndex];
 
       status.textContent =
-        `Poster ${activeIndex + 1} of ${
-          posters.length
-        }: ${poster.title || "Announcement"}`;
+        `Poster ${activeIndex + 1} of ${posters.length}: ${
+          poster.title || "Announcement"
+        }`;
     }
   }
 
@@ -393,21 +345,14 @@ async function initialisePosterCarousel() {
     startAutoplay();
   }
 
-  if (
-    !posters.length ||
-    !track ||
-    !dotsContainer
-  ) {
+  if (!posters.length || !track || !dotsContainer) {
     posterCarousel.dataset.empty = "true";
     return;
   }
 
   posters.forEach((poster, index) => {
     track.append(createSlide(poster, index));
-
-    dotsContainer.append(
-      createDot(poster, index)
-    );
+    dotsContainer.append(createDot(poster, index));
   });
 
   posterCarousel.classList.toggle(
@@ -418,47 +363,35 @@ async function initialisePosterCarousel() {
   showSlide(0);
   startAutoplay();
 
-  previousButton?.addEventListener(
-    "click",
-    () => {
+  previousButton?.addEventListener("click", () => {
+    showSlide(activeIndex - 1, true);
+    restartAutoplay();
+  });
+
+  nextButton?.addEventListener("click", () => {
+    showSlide(activeIndex + 1, true);
+    restartAutoplay();
+  });
+
+  viewport?.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
       showSlide(activeIndex - 1, true);
       restartAutoplay();
     }
-  );
 
-  nextButton?.addEventListener(
-    "click",
-    () => {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
       showSlide(activeIndex + 1, true);
       restartAutoplay();
     }
-  );
-
-  viewport?.addEventListener(
-    "keydown",
-    (event) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-
-        showSlide(activeIndex - 1, true);
-        restartAutoplay();
-      }
-
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-
-        showSlide(activeIndex + 1, true);
-        restartAutoplay();
-      }
-    }
-  );
+  });
 
   viewport?.addEventListener(
     "touchstart",
     (event) => {
       touchStartX =
-        event.changedTouches[0]?.clientX ??
-        null;
+        event.changedTouches[0]?.clientX ?? null;
     },
     {
       passive: true,
@@ -472,15 +405,15 @@ async function initialisePosterCarousel() {
 
       const distance =
         (event.changedTouches[0]?.clientX ??
-          touchStartX) - touchStartX;
+          touchStartX) -
+        touchStartX;
 
       touchStartX = null;
 
       if (Math.abs(distance) < 48) return;
 
       showSlide(
-        activeIndex +
-          (distance < 0 ? 1 : -1),
+        activeIndex + (distance < 0 ? 1 : -1),
         true
       );
 
@@ -509,11 +442,7 @@ async function initialisePosterCarousel() {
   posterCarousel.addEventListener(
     "focusout",
     (event) => {
-      if (
-        !posterCarousel.contains(
-          event.relatedTarget
-        )
-      ) {
+      if (!posterCarousel.contains(event.relatedTarget)) {
         startAutoplay();
       }
     }
@@ -530,24 +459,13 @@ async function initialisePosterCarousel() {
   );
 }
 
-/* ========================================
-   HOMEPAGE NEWS
-======================================== */
-
 const latestNewsContainer =
-  document.querySelector(
-    "[data-latest-news]"
-  );
+  document.querySelector("[data-latest-news]");
 
 const inHouseNewsContainer =
-  document.querySelector(
-    "[data-in-house-news]"
-  );
+  document.querySelector("[data-in-house-news]");
 
-if (
-  latestNewsContainer ||
-  inHouseNewsContainer
-) {
+if (latestNewsContainer || inHouseNewsContainer) {
   renderHomepageNews();
 }
 
@@ -555,9 +473,7 @@ function formatNewsDate(date, options) {
   return new Intl.DateTimeFormat(
     "en-MY",
     options
-  ).format(
-    new Date(`${date}T12:00:00`)
-  );
+  ).format(new Date(`${date}T12:00:00`));
 }
 
 function createTextElement(
@@ -590,9 +506,7 @@ function localNewsItems() {
 }
 
 function renderLatestNews(item) {
-  if (!latestNewsContainer || !item) {
-    return;
-  }
+  if (!latestNewsContainer || !item) return;
 
   const detailUrl =
     `pages/news-detail.html?id=${
@@ -612,9 +526,7 @@ function renderLatestNews(item) {
       document.createElement("img");
 
     image.src = item.image;
-    image.alt =
-      item.imageAlt || item.title;
-
+    image.alt = item.imageAlt || item.title;
     image.loading = "lazy";
     image.decoding = "async";
 
@@ -691,9 +603,7 @@ function renderInHouseNews(items) {
     const date =
       document.createElement("time");
 
-    date.className =
-      "in-house-item__date";
-
+    date.className = "in-house-item__date";
     date.dateTime = item.date;
 
     date.append(
@@ -704,7 +614,6 @@ function renderInHouseNews(items) {
           day: "2-digit",
         })
       ),
-
       createTextElement(
         "span",
         "in-house-item__month",
@@ -737,7 +646,6 @@ function renderInHouseNews(items) {
 
     content.append(
       title,
-
       createTextElement(
         "p",
         "in-house-item__excerpt",
@@ -790,19 +698,8 @@ async function renderHomepageNews() {
   }
 
   renderLatestNews(newsItems[0]);
-
-  /*
-   * Display the two newest news articles.
-   * slice(0, 2) includes the newest article.
-   */
-  renderInHouseNews(
-    newsItems.slice(0, 2)
-  );
+  renderInHouseNews(newsItems.slice(0, 2));
 }
-
-/* ========================================
-   NAVIGATION DROPDOWN
-======================================== */
 
 document
   .querySelectorAll(".nav-dropdown")
@@ -852,9 +749,7 @@ document
       (event) => {
         event.stopPropagation();
 
-        if (
-          dropdown.classList.contains("open")
-        ) {
+        if (dropdown.classList.contains("open")) {
           closeDropdown();
         } else {
           openDropdown();
@@ -892,10 +787,6 @@ document.addEventListener("click", (event) => {
     });
 });
 
-/* ========================================
-   BACK TO TOP
-======================================== */
-
 document
   .querySelector(".back-to-top")
   ?.addEventListener("click", () => {
@@ -906,8 +797,6 @@ document
 
     window.scrollTo({
       top: 0,
-      behavior: reduceMotion
-        ? "auto"
-        : "smooth",
+      behavior: reduceMotion ? "auto" : "smooth",
     });
   });

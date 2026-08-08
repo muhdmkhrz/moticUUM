@@ -9,12 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css?v=11">
+  <link rel="stylesheet" href="../css/styles.css?v=16">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
   <script src="../js/supabase-config.js" defer></script>
-  <script src="../js/news-service.js" defer></script>
-  <script src="../js/admin.js" defer></script>
+  <script src="../js/news-service.js?v=16" defer></script>
+  <script src="../js/admin.js?v=16" defer></script>
 </head>
 
 <body class="admin-page admin-dashboard-page" data-admin-dashboard>
@@ -44,6 +44,10 @@
       <button class="admin-tab" id="admin-tab-activities" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-activities" tabindex="-1" data-admin-tab="activities"><span class="admin-tab__icon" aria-hidden="true">◎</span><span>Activities</span></button>
       <button class="admin-tab" id="admin-tab-researcher" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-researcher" tabindex="-1" data-admin-tab="researcher_spotlight"><span class="admin-tab__icon" aria-hidden="true">✦</span><span>Research Spotlight</span></button>
       <button class="admin-tab" id="admin-tab-ictom" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-ictom" tabindex="-1" data-admin-tab="ictom"><span class="admin-tab__icon" aria-hidden="true">◇</span><span>ICTOM</span></button>
+      <button class="admin-tab" id="admin-tab-president" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-president" tabindex="-1" data-admin-tab="president"><span class="admin-tab__icon" aria-hidden="true">♛</span><span>President</span></button>
+      <button class="admin-tab" id="admin-tab-team" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-team" tabindex="-1" data-admin-tab="team"><span class="admin-tab__icon" aria-hidden="true">◉</span><span>Our Team</span></button>
+      <button class="admin-tab" id="admin-tab-chart" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-organizational-chart" tabindex="-1" data-admin-tab="organizational_chart"><span class="admin-tab__icon" aria-hidden="true">⌘</span><span>Organizational Chart</span></button>
+      <button class="admin-tab" id="admin-tab-access" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-admin-access" tabindex="-1" data-admin-tab="admin_access"><span class="admin-tab__icon" aria-hidden="true">＋</span><span>Manage Admins</span></button>
     </div>
 
     <div class="admin-account">
@@ -91,7 +95,7 @@
 
         <article class="admin-overview-card">
           <p>Manage Sections</p>
-          <strong>6</strong>
+          <strong>10</strong>
           <span>Content areas</span>
         </article>
       </section>
@@ -493,6 +497,209 @@
           <p class="admin-empty" data-gallery-empty hidden>No ICTOM items have been added yet. The column stays hidden on the home page until one is added.</p>
           <div class="admin-poster-list" data-gallery-list="ictom"></div>
         </div>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-profile-manager" id="admin-panel-president" role="tabpanel" aria-labelledby="admin-tab-president president-manager-title" data-admin-panel="president" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">About Us — President's Message</p>
+        <h2 id="president-manager-title">Current President</h2>
+        <p>This edits the existing President record.</p>
+      </div>
+
+      <form class="admin-news-form admin-singleton-form" data-president-form>
+        <div class="admin-field">
+          <label for="president-name">President's name</label>
+          <input id="president-name" name="presidentName" type="text" maxlength="180" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="president-session">Session</label>
+          <input id="president-session" name="presidentSession" type="text" maxlength="40" placeholder="2025/2026" required>
+        </div>
+
+        <div class="admin-field admin-field--full">
+          <label for="president-message-text">President's message</label>
+          <textarea id="president-message-text" name="presidentMessage" rows="9" minlength="20" maxlength="5000" required></textarea>
+        </div>
+
+        <div class="admin-field">
+          <label for="president-photo">President's photo</label>
+          <input id="president-photo" name="presidentPhoto" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+          <small>Choose a file only when adding or replacing the photo.</small>
+          <p class="admin-current-image" data-president-current-photo>No President photo is attached yet.</p>
+        </div>
+
+        <div class="admin-field">
+          <label for="president-photo-alt">Photo description</label>
+          <input id="president-photo-alt" name="presidentPhotoAlt" type="text" maxlength="240" placeholder="Portrait of the MOTIC President">
+        </div>
+
+        <div class="admin-form-actions admin-field--full">
+          <button class="admin-primary-button" type="submit">Save President's Message</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-panel admin-team-manager" id="admin-panel-team" role="tabpanel" aria-labelledby="admin-tab-team team-manager-title" data-admin-panel="team" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">About Us — Our Team</p>
+        <h2 id="team-manager-title">Committee Members</h2>
+        <p>Choose each role from the position dropdown.</p>
+      </div>
+
+      <div class="admin-session-editor">
+        <div class="admin-field">
+          <label for="team-session">Committee session</label>
+          <input id="team-session" data-team-session type="text" maxlength="40" placeholder="2025/2026" required>
+        </div>
+        <button class="admin-secondary-button" type="button" data-team-session-save>Save Session</button>
+      </div>
+
+      <div class="admin-dashboard-grid admin-team-grid">
+        <form class="admin-news-form admin-team-member-form" data-team-member-form>
+          <h3 data-team-form-title>Add a committee member</h3>
+
+          <div class="admin-field">
+            <label for="team-group">Committee group</label>
+            <select id="team-group" name="teamGroup" required>
+              <option>Majlis Tertinggi</option>
+              <option>Multimedia</option>
+              <option>Industry</option>
+              <option>Training</option>
+              <option>Spiritual</option>
+              <option>CSR</option>
+              <option>Network &amp; Alumni</option>
+              <option>Protocol</option>
+              <option>Special Duty &amp; Academic</option>
+              <option>Entrepreneurship</option>
+              <option>Logistics</option>
+            </select>
+          </div>
+
+          <div class="admin-field">
+            <label for="team-position">Position</label>
+            <select id="team-position" name="teamPosition" required>
+              <option>President</option>
+              <option>Vice President</option>
+              <option>Secretary</option>
+              <option>Vice Secretary</option>
+              <option>Treasurer</option>
+              <option>Vice Treasurer</option>
+              <option>Head of Exco</option>
+              <option>Vice Head of Exco</option>
+              <option>Committee Member</option>
+            </select>
+          </div>
+
+          <div class="admin-field admin-field--full">
+            <label for="team-name">Member name</label>
+            <input id="team-name" name="teamName" type="text" maxlength="180" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="team-email">MOTIC email</label>
+            <input id="team-email" name="teamEmail" type="email" maxlength="254" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="team-order">Display order</label>
+            <input id="team-order" name="teamOrder" type="number" min="1" step="1" value="1" required>
+          </div>
+
+          <div class="admin-form-actions admin-field--full">
+            <button class="admin-primary-button" type="submit">Add Member</button>
+            <button class="admin-secondary-button" type="button" data-team-cancel hidden>Cancel Edit</button>
+          </div>
+        </form>
+
+        <section class="admin-panel admin-story-list-panel" aria-labelledby="current-team-title">
+          <div class="admin-panel__heading">
+            <p class="admin-kicker">Current committee</p>
+            <h3 id="current-team-title">Manage Members</h3>
+          </div>
+          <p class="admin-empty" data-team-empty hidden>No committee members have been added yet.</p>
+          <div class="admin-news-list" data-team-member-list></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-chart-manager" id="admin-panel-organizational-chart" role="tabpanel" aria-labelledby="admin-tab-chart chart-manager-title" data-admin-panel="organizational_chart" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">About Us — Organizational Chart</p>
+        <h2 id="chart-manager-title">Current Organizational Chart</h2>
+      </div>
+
+      <form class="admin-news-form admin-singleton-form" data-organizational-chart-form>
+        <div class="admin-field">
+          <label for="chart-title">Chart title</label>
+          <input id="chart-title" name="chartTitle" type="text" maxlength="180" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="chart-session">Session</label>
+          <input id="chart-session" name="chartSession" type="text" maxlength="40" placeholder="2025/2026" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="chart-image">Organizational chart image</label>
+          <input id="chart-image" name="chartImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+          <p class="admin-current-image" data-organizational-chart-current>Upload the first organizational chart.</p>
+        </div>
+
+        <div class="admin-field">
+          <label for="chart-alt">Image description</label>
+          <input id="chart-alt" name="chartAlt" type="text" minlength="5" maxlength="240" required>
+        </div>
+
+        <div class="admin-form-actions admin-field--full">
+          <button class="admin-primary-button" type="submit">Save Organizational Chart</button>
+          <button class="admin-secondary-button admin-danger-button" type="button" data-delete-organizational-chart hidden>Delete Chart</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-panel admin-access-manager" id="admin-panel-admin-access" role="tabpanel" aria-labelledby="admin-tab-access admin-access-title" data-admin-panel="admin_access" hidden>
+      <div class="admin-panel__heading">
+        <p class="admin-kicker">Secure handover</p>
+        <h2 id="admin-access-title">Manage Administrators</h2>
+        <p>The Owner can invite a replacement and transfer ownership. After the transfer, the former Owner may delete their own account or the new Owner may remove it.</p>
+      </div>
+
+      <div class="admin-access-grid">
+        <div class="admin-access-invite" data-admin-owner-controls>
+          <h3>Invite a New Administrator</h3>
+          <p>They will receive an email link and create their own password.</p>
+
+          <form class="admin-news-form admin-singleton-form" data-admin-invite-form>
+            <div class="admin-field admin-field--full">
+              <label for="admin-invite-email">New administrator email</label>
+              <input id="admin-invite-email" name="adminInviteEmail" type="email" maxlength="254" autocomplete="email" required>
+            </div>
+            <div class="admin-form-actions admin-field--full">
+              <button class="admin-primary-button" type="submit">Send Admin Invitation</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-access-permission" data-admin-standard-message hidden>
+          <h3>Standard Administrator</h3>
+          <p>You can manage website content and delete your own account. Only the current Owner can invite or remove other administrators.</p>
+        </div>
+
+        <section class="admin-access-list-panel" aria-labelledby="authorized-admins-title">
+          <div class="admin-access-list-heading">
+            <div>
+              <p class="admin-kicker">Authorized accounts</p>
+              <h3 id="authorized-admins-title">Current Administrators</h3>
+            </div>
+            <span class="admin-access-count" data-admin-access-count>0 accounts</span>
+          </div>
+
+          <p class="admin-access-loading" data-admin-access-loading>Loading administrators…</p>
+          <p class="admin-empty" data-admin-access-empty hidden>No administrators were found.</p>
+          <div class="admin-access-list" data-admin-access-list></div>
+        </section>
       </div>
     </section>
     </main>

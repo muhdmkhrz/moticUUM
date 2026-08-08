@@ -15,7 +15,7 @@ const teamData = {
       },
 
       {
-        position: "Deputy President",
+        position: "Vice President",
         name:
           "Nur Adriana Amni Binti Mohd Asrol",
         email: "nadriana.motic@gmail.com",
@@ -28,7 +28,7 @@ const teamData = {
       },
 
       {
-        position: "Deputy Secretary",
+        position: "Vice Secretary",
         name: "Loo Pak Heng",
         email: "loo.motic@gmail.com",
       },
@@ -41,7 +41,7 @@ const teamData = {
       },
 
       {
-        position: "Deputy Treasurer",
+        position: "Vice Treasurer",
         name: "Nur Laila Binti Ibrahim",
         email: "laila.motic@gmail.com",
       },
@@ -61,7 +61,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Nur Aisyahtul Farisya Binti Abdul Malik",
           email: "aisyahtul.motic@gmail.com",
@@ -100,7 +100,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name: "Risviin A/L Sugunthan",
           email: "risviin.motic@gmail.com",
         },
@@ -132,7 +132,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Nurilma Dalila Binti Amerudin",
           email: "ilmaaa.motic@gmail.com",
@@ -158,7 +158,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Ahmad Aiman Afif Bin Ahmad Mazli",
           email: "aiman.motic@gmail.com",
@@ -184,7 +184,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Wan Nur Izzati Binti Ibrahim",
           email: "izzati.motic@gmail.com",
@@ -218,7 +218,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Evangelina Seeba A/P Balu",
           email: "seeba.motic@gmail.com",
@@ -246,7 +246,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Nur Alieya Qistina Binti Sharol Azlan",
           email:
@@ -286,7 +286,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Nur-Asmida Binti Mohd Shariff",
           email: "asmieda.motic@gmail.com",
@@ -320,7 +320,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Nik Alya Qistina Binti Nik Hassanuddin",
           email: "nikalya.motic@gmail.com",
@@ -354,7 +354,7 @@ const teamData = {
         },
 
         {
-          position: "Deputy Head of Exco",
+          position: "Vice Head of Exco",
           name:
             "Nurhanis Eliyia Binti Mohd Yusnor",
           email: "hanis.motic@gmail.com",

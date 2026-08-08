@@ -17,7 +17,11 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="../css/styles.css?v=9">
+  <link rel="stylesheet" href="../css/styles.css?v=14">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
+  <script src="../js/supabase-config.js" defer></script>
+  <script src="../js/news-service.js" defer></script>
+  <script src="../js/president-render.js" defer></script>
   <script src="../js/main.js" defer></script>
 </head>
 
@@ -92,6 +96,7 @@
               <a class="active" href="president-message.html" aria-current="page">President's Message</a>
               <a href="vision-mission.html">Vision, Mission &amp; Objectives</a>
               <a href="team.html">Our Team</a>
+              <a href="organizational-chart.html">Organizational Chart</a>
             </div>
           </div>
 
@@ -130,7 +135,7 @@
 
     <section id="president-message" class="president">
       <div class="container president__grid">
-        <div class="president__portrait">
+        <div class="president__portrait" data-president-portrait>
           <div class="president__portrait-placeholder" aria-hidden="true">
             <span>[PRESIDENT'S PHOTO]</span>
           </div>
@@ -140,7 +145,7 @@
           <p class="eyebrow">Greetings</p>
           <h2>A Message from Our President</h2>
 
-          <blockquote>
+          <blockquote data-president-message>
             [PRESIDENT'S MESSAGE PLACEHOLDER — add a short welcome note from the
             President here. Talk about what MOTIC stands for, what new and
             existing members can look forward to this session, and an invitation
@@ -148,8 +153,8 @@
           </blockquote>
 
           <p class="president__signature">
-            <strong>Peek Zhen Nan</strong><br>
-            President, MOTIC 2025/2026
+            <strong data-president-name>Peek Zhen Nan</strong><br>
+            <span data-president-session>President, MOTIC 2025/2026</span>
           </p>
         </div>
       </div>

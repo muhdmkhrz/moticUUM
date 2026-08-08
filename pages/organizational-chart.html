@@ -4,37 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>News Details | MOTIC, Universiti Utara Malaysia</title>
-
+  <title>Organizational Chart | MOTIC, Universiti Utara Malaysia</title>
   <meta
     name="description"
-    content="Read the latest news from MOTIC at Universiti Utara Malaysia."
+    content="View the current MOTIC organizational chart at Universiti Utara Malaysia."
   >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   >
 
   <link rel="stylesheet" href="../css/styles.css?v=14">
-
-  <script src="../js/news-data.js" defer></script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js"
-    defer
-  ></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
   <script src="../js/supabase-config.js" defer></script>
   <script src="../js/news-service.js" defer></script>
-  <script src="../js/news-render.js" defer></script>
+  <script src="../js/organizational-chart-render.js" defer></script>
   <script src="../js/main.js" defer></script>
 </head>
 
-<body data-asset-base="../">
+<body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header">
@@ -48,9 +39,9 @@
 
         <nav class="institution-bar__links" aria-label="Social links">
           <a href="https://www.facebook.com/100039824747476/" target="_blank" rel="noopener">Facebook</a>
-          <a href="https://www.instagram.com/motic_uum" target="_blank" rel="noopener">Instagram</a>
-          <a href="https://www.tiktok.com/@motic_uum" target="_blank" rel="noopener">TikTok</a>
-          <a href="https://youtube.com/@motic_uum" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://www.instagram.com/motic_uum?igsh=MXA2d3ljcnQ3ZzBzcg==" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@motic_uum?_r=1&_t=ZS-98YWH0HeZYw" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://youtube.com/@motic_uum?si=BqoHyurB2vP5TEdb" target="_blank" rel="noopener">YouTube</a>
         </nav>
       </div>
     </div>
@@ -84,7 +75,10 @@
           <a class="navigation-link" href="../index.html">Home</a>
 
           <div class="nav-dropdown">
-            <a class="navigation-link nav-dropdown__link" href="about.html">
+            <a
+              class="navigation-link nav-dropdown__link active"
+              href="about.html"
+            >
               About Us
             </a>
 
@@ -102,21 +96,12 @@
               <a href="president-message.html">President's Message</a>
               <a href="vision-mission.html">Vision, Mission &amp; Objectives</a>
               <a href="team.html">Our Team</a>
-              <a href="organizational-chart.html">Organizational Chart</a>
+              <a class="active" href="organizational-chart.html" aria-current="page">Organizational Chart</a>
             </div>
           </div>
 
-          <a
-            class="navigation-link active"
-            href="news.html"
-            aria-current="page"
-          >
-            News
-          </a>
-
-          <a class="navigation-link" href="achievement.html">
-            Achievement
-          </a>
+          <a class="navigation-link" href="news.html">News</a>
+          <a class="navigation-link" href="achievement.html">Achievement</a>
 
           <a class="button button--secondary navigation-cta" href="admin.html">
             Admin
@@ -129,8 +114,31 @@
   </header>
 
   <main id="main-content">
-    <section class="news-detail">
-      <div class="container" data-news-detail></div>
+    <section class="organizational-chart">
+      <div class="container">
+        <div class="organizational-chart__header">
+          <p class="eyebrow" data-chart-session>Club Structure</p>
+          <h1 data-chart-heading>MOTIC Organizational Chart</h1>
+          <p>View the current committee structure maintained by the MOTIC administration.</p>
+        </div>
+
+        <div class="organizational-chart__empty" data-organizational-chart>
+          <p>The current organizational chart will appear here after it is uploaded by an administrator.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="logo-strip" aria-label="Our university and school">
+      <div class="container logo-strip__inner">
+        <span class="logo-strip__label">Operating under</span>
+
+        <div class="logo-strip__marks">
+          <span class="logo-strip__item">Universiti Utara Malaysia</span>
+          <span class="logo-strip__item">
+            Management of Technology Intelligence Club
+          </span>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -176,6 +184,7 @@
 
       <div class="footer__contact">
         <h3>Get in Touch</h3>
+
         <p class="footer__contact-intro">
           Follow MOTIC for club news, programmes and student opportunities.
         </p>
@@ -184,13 +193,13 @@
           <a class="footer__social-link" href="https://www.facebook.com/100039824747476/" target="_blank" rel="noopener" aria-label="MOTIC on Facebook" title="Facebook">
             <img src="../assets/images/facebook.svg" alt="" aria-hidden="true">
           </a>
-          <a class="footer__social-link" href="https://www.instagram.com/motic_uum" target="_blank" rel="noopener" aria-label="MOTIC on Instagram" title="Instagram">
+          <a class="footer__social-link" href="https://www.instagram.com/motic_uum?igsh=MXA2d3ljcnQ3ZzBzcg==" target="_blank" rel="noopener" aria-label="MOTIC on Instagram" title="Instagram">
             <img src="../assets/images/instagram.svg" alt="" aria-hidden="true">
           </a>
-          <a class="footer__social-link" href="https://www.tiktok.com/@motic_uum" target="_blank" rel="noopener" aria-label="MOTIC on TikTok" title="TikTok">
+          <a class="footer__social-link" href="https://www.tiktok.com/@motic_uum?_r=1&_t=ZS-98YWH0HeZYw" target="_blank" rel="noopener" aria-label="MOTIC on TikTok" title="TikTok">
             <img src="../assets/images/tiktok.svg" alt="" aria-hidden="true">
           </a>
-          <a class="footer__social-link" href="https://youtube.com/@motic_uum" target="_blank" rel="noopener" aria-label="MOTIC on YouTube" title="YouTube">
+          <a class="footer__social-link" href="https://youtube.com/@motic_uum?si=BqoHyurB2vP5TEdb" target="_blank" rel="noopener" aria-label="MOTIC on YouTube" title="YouTube">
             <img src="../assets/images/youtube.svg" alt="" aria-hidden="true">
           </a>
         </nav>

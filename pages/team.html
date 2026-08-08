@@ -17,7 +17,10 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="../css/styles.css?v=10">
+  <link rel="stylesheet" href="../css/styles.css?v=15">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
+  <script src="../js/supabase-config.js" defer></script>
+  <script src="../js/news-service.js" defer></script>
   <script src="../js/team-data.js" defer></script>
   <script src="../js/team-render.js" defer></script>
   <script src="../js/main.js" defer></script>
@@ -94,6 +97,7 @@
               <a href="president-message.html">President's Message</a>
               <a href="vision-mission.html">Vision, Mission &amp; Objectives</a>
               <a class="active" href="team.html" aria-current="page">Our Team</a>
+              <a href="organizational-chart.html">Organizational Chart</a>
             </div>
           </div>
 
@@ -114,16 +118,17 @@
     <section id="our-team" class="team">
       <div class="container">
         <p class="eyebrow">Leadership</p>
-        <h2>Our Team, 2025/2026</h2>
+        <h2 data-team-heading>Our Team, 2025/2026</h2>
 
         <p class="team__intro">
           Meet the committee behind MOTIC this session, organised by portfolio.
         </p>
 
-        <h3 class="team__group-title">Majlis Tertinggi</h3>
-        <div id="top-committee-grid" class="team-grid team-grid--top"></div>
-
-        <div id="departments-list"></div>
+        <div
+          id="committee-groups"
+          class="team-accordion-list"
+          aria-label="MOTIC committee groups"
+        ></div>
       </div>
     </section>
 
