@@ -1,6 +1,6 @@
 -- ============================================================
 -- MOTIC UUM — COMPLETE SUPABASE SETUP
--- Updated: 2026-08-08
+-- Updated: 2026-08-12
 --
 -- Safe to run again: existing news, posters, gallery items,
 -- administrators and uploaded images are preserved.
@@ -16,6 +16,7 @@
 --   8. Storage bucket and overwrite/delete policies
 --   9. Row Level Security and Data API grants
 --  10. Owner/admin roles and secure administrator handover
+--  11. Contact Us photo, email and phone management
 -- ============================================================
 
 begin;
@@ -815,6 +816,191 @@ values (
   '2025/2026',
   '[{"id":"member-1","group":"Majlis Tertinggi","position":"President","name":"Peek Zhen Nan","email":"zhen.motic@gmail.com","order":1},{"id":"member-2","group":"Majlis Tertinggi","position":"Vice President","name":"Nur Adriana Amni Binti Mohd Asrol","email":"nadriana.motic@gmail.com","order":2},{"id":"member-3","group":"Majlis Tertinggi","position":"Secretary","name":"Nor Salihah Binti Mah Hassan","email":"salihah.motic@gmail.com","order":3},{"id":"member-4","group":"Majlis Tertinggi","position":"Vice Secretary","name":"Loo Pak Heng","email":"loo.motic@gmail.com","order":4},{"id":"member-5","group":"Majlis Tertinggi","position":"Treasurer","name":"Nur Farisha Alya Binti Zulkafli","email":"farisha.motic@gmail.com","order":5},{"id":"member-6","group":"Majlis Tertinggi","position":"Vice Treasurer","name":"Nur Laila Binti Ibrahim","email":"laila.motic@gmail.com","order":6},{"id":"member-7","group":"Multimedia","position":"Head of Exco","name":"Muhammad Sufi Bin Nor Hisham","email":"sufi.motic@gmail.com","order":1},{"id":"member-8","group":"Multimedia","position":"Vice Head of Exco","name":"Nur Aisyahtul Farisya Binti Abdul Malik","email":"aisyahtul.motic@gmail.com","order":2},{"id":"member-9","group":"Multimedia","position":"Committee Member","name":"Aidan Rafif Bin Asmadiwardi","email":"aidan.motic@gmail.com","order":3},{"id":"member-10","group":"Multimedia","position":"Committee Member","name":"Nurul Farzana Binti Zamri","email":"farzana.motic@gmail.com","order":4},{"id":"member-11","group":"Multimedia","position":"Committee Member","name":"Malina A/P Uthai","email":"malina.motic@gmail.com","order":5},{"id":"member-12","group":"Industry","position":"Head of Exco","name":"Cheong Yu Cen","email":"yucencc.motic@gmail.com","order":1},{"id":"member-13","group":"Industry","position":"Vice Head of Exco","name":"Risviin A/L Sugunthan","email":"risviin.motic@gmail.com","order":2},{"id":"member-14","group":"Industry","position":"Committee Member","name":"Dianasuttiryani Binti Darwis","email":"dyana.motic@gmail.com","order":3},{"id":"member-15","group":"Industry","position":"Committee Member","name":"Harees A/L Renganathan","email":"harees.motic@gmail.com","order":4},{"id":"member-16","group":"Training","position":"Head of Exco","name":"Nur Balqis Binti Mohamad Zuraimi","email":"balqis.motic@gmail.com","order":1},{"id":"member-17","group":"Training","position":"Vice Head of Exco","name":"Nurilma Dalila Binti Amerudin","email":"ilmaaa.motic@gmail.com","order":2},{"id":"member-18","group":"Training","position":"Committee Member","name":"Devarishi A/L Ilangoyan","email":"devarishi.motic@gmail.com","order":3},{"id":"member-19","group":"Spiritual","position":"Head of Exco","name":"Nur Nadjwa Iman Binti Mohamad Fadzli","email":"nadjwa.motic@gmail.com","order":1},{"id":"member-20","group":"Spiritual","position":"Vice Head of Exco","name":"Ahmad Aiman Afif Bin Ahmad Mazli","email":"aiman.motic@gmail.com","order":2},{"id":"member-21","group":"Spiritual","position":"Committee Member","name":"Nur Hidayu Mat Yatim","email":"hidayu.motic@gmail.com","order":3},{"id":"member-22","group":"CSR","position":"Head of Exco","name":"Nur Azwahida Binti Mohamad","email":"azwa.motic@gmail.com","order":1},{"id":"member-23","group":"CSR","position":"Vice Head of Exco","name":"Wan Nur Izzati Binti Ibrahim","email":"izzati.motic@gmail.com","order":2},{"id":"member-24","group":"CSR","position":"Committee Member","name":"Nur Fatihah Binti Azizan","email":"fatihah.motic@gmail.com","order":3},{"id":"member-25","group":"CSR","position":"Committee Member","name":"Nadia Irieqa Binti Mat Nasir","email":"nadia.motic@gmail.com","order":4},{"id":"member-26","group":"Network & Alumni","position":"Head of Exco","name":"Danesh Mirven A/L Pathmanathan","email":"dmirvenmotic@gmail.com","order":1},{"id":"member-27","group":"Network & Alumni","position":"Vice Head of Exco","name":"Evangelina Seeba A/P Balu","email":"seeba.motic@gmail.com","order":2},{"id":"member-28","group":"Network & Alumni","position":"Committee Member","name":"Tiviyanthini A/P Kannan","email":"tiviya.motic@gmail.com","order":3},{"id":"member-29","group":"Protocol","position":"Head of Exco","name":"Nurul Syazwani Natasha Yusri Azwan Binti Abdullah","email":"syazwanitasha.motic@gmail.com","order":1},{"id":"member-30","group":"Protocol","position":"Vice Head of Exco","name":"Nur Alieya Qistina Binti Sharol Azlan","email":"alieyamotic@gmail.com","order":2},{"id":"member-31","group":"Protocol","position":"Committee Member","name":"Nireshaa A/P Vijayan","email":"nireshaa.motic@gmail.com","order":3},{"id":"member-32","group":"Protocol","position":"Committee Member","name":"Diban Raj A/L Jayamohan","email":"diban.raj05motic@gmail.com","order":4},{"id":"member-33","group":"Protocol","position":"Committee Member","name":"Nur Fatihah Binti Azrun","email":"nurfatihah.motic@gmail.com","order":5},{"id":"member-34","group":"Special Duty & Academic","position":"Head of Exco","name":"Nuratirah Binti Sahidan","email":"atirah.motic@gmail.com","order":1},{"id":"member-35","group":"Special Duty & Academic","position":"Vice Head of Exco","name":"Nur-Asmida Binti Mohd Shariff","email":"asmieda.motic@gmail.com","order":2},{"id":"member-36","group":"Special Duty & Academic","position":"Committee Member","name":"Putri Nur Khaleeda Binti Khaireel","email":"khaleeda.motic@gmail.com","order":3},{"id":"member-37","group":"Special Duty & Academic","position":"Committee Member","name":"Ratthanaphorn A/P Prak Pan","email":"rath.motic@gmail.com","order":4},{"id":"member-38","group":"Entrepreneurship","position":"Head of Exco","name":"Fakhrul Imran Bin Abd Rahim","email":"fakhrul.motic@gmail.com","order":1},{"id":"member-39","group":"Entrepreneurship","position":"Vice Head of Exco","name":"Nik Alya Qistina Binti Nik Hassanuddin","email":"nikalya.motic@gmail.com","order":2},{"id":"member-40","group":"Entrepreneurship","position":"Committee Member","name":"Nur Aufa Natasha Binti Annuar Khuzaimi","email":"aufa.motic@gmail.com","order":3},{"id":"member-41","group":"Entrepreneurship","position":"Committee Member","name":"Charan Jeevanantham","email":"charan.motic1903@gmail.com","order":4},{"id":"member-42","group":"Logistics","position":"Head of Exco","name":"Amanina Aqilah Binti Khairil Anuar","email":"aqilah.motic@gmail.com","order":1},{"id":"member-43","group":"Logistics","position":"Vice Head of Exco","name":"Nurhanis Eliyia Binti Mohd Yusnor","email":"hanis.motic@gmail.com","order":2},{"id":"member-44","group":"Logistics","position":"Committee Member","name":"Nurhasya Afiqah Binti Md Jafri","email":"hasya.motic@gmail.com","order":3},{"id":"member-45","group":"Logistics","position":"Committee Member","name":"Karthik Raj A/L Rajakumar","email":"karthik.motic@gmail.com","order":4}]'::jsonb
 )
+on conflict (id) do nothing;
+
+-- ============================================================
+-- CONTACT US DIRECTORY
+-- Four fixed public positions with photo, email and phone details.
+-- ============================================================
+
+create table if not exists public.contact_people (
+  id text primary key
+    check (
+      id in (
+        'academic_leadership',
+        'advisor',
+        'president',
+        'vice_president'
+      )
+    ),
+  role_label text not null
+    check (char_length(role_label) between 2 and 80),
+  kicker text not null
+    check (char_length(kicker) between 2 and 100),
+  display_name text not null
+    check (char_length(display_name) between 2 and 180),
+  email text
+    check (
+      email is null
+      or (
+        char_length(email) <= 254
+        and email ~* '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
+      )
+    ),
+  phone text,
+  photo_url text,
+  photo_path text,
+  photo_alt text not null
+    check (char_length(photo_alt) between 5 and 240),
+  display_order smallint not null
+    check (display_order between 1 and 4),
+  updated_by uuid references auth.users(id) on delete set null,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.contact_people
+  add column if not exists phone text;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conrelid = 'public.contact_people'::regclass
+      and conname = 'contact_people_phone_format_check'
+  ) then
+    alter table public.contact_people
+      add constraint contact_people_phone_format_check
+      check (
+        phone is null
+        or (
+          char_length(trim(phone)) between 7 and 30
+          and phone ~ '^[0-9+() .-]+$'
+        )
+      );
+  end if;
+end
+$$;
+
+comment on table public.contact_people is
+  'Fixed Contact Us directory managed through the MOTIC admin portal, including public email and phone links.';
+
+create index if not exists contact_people_updated_by_idx
+  on public.contact_people (updated_by)
+  where updated_by is not null;
+
+alter table public.contact_people enable row level security;
+
+revoke all on table public.contact_people from anon, authenticated;
+grant select on table public.contact_people to anon, authenticated;
+grant insert, update on table public.contact_people to authenticated;
+
+drop policy if exists "Public can read contact directory"
+  on public.contact_people;
+create policy "Public can read contact directory"
+on public.contact_people
+for select
+to anon, authenticated
+using (true);
+
+drop policy if exists "Admins can insert contact directory"
+  on public.contact_people;
+create policy "Admins can insert contact directory"
+on public.contact_people
+for insert
+to authenticated
+with check (
+  updated_by = (select auth.uid())
+  and exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+);
+
+drop policy if exists "Admins can update contact directory"
+  on public.contact_people;
+create policy "Admins can update contact directory"
+on public.contact_people
+for update
+to authenticated
+using (
+  exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+)
+with check (
+  updated_by = (select auth.uid())
+  and exists (
+    select 1
+    from public.admin_users
+    where admin_users.user_id = (select auth.uid())
+  )
+);
+
+insert into public.contact_people (
+  id,
+  role_label,
+  kicker,
+  display_name,
+  email,
+  phone,
+  photo_url,
+  photo_path,
+  photo_alt,
+  display_order
+)
+values
+  (
+    'academic_leadership',
+    'Dr',
+    'Academic leadership',
+    'Academic Representative',
+    null,
+    null,
+    null,
+    null,
+    'Portrait placeholder for the academic representative',
+    1
+  ),
+  (
+    'advisor',
+    'Advisor',
+    'Club guidance',
+    'MOTIC Advisor',
+    null,
+    null,
+    null,
+    null,
+    'Portrait placeholder for the MOTIC Advisor',
+    2
+  ),
+  (
+    'president',
+    'President',
+    'Student leadership',
+    'Peek Zhen Nan',
+    'zhen.motic@gmail.com',
+    null,
+    null,
+    null,
+    'Portrait of MOTIC President Peek Zhen Nan',
+    3
+  ),
+  (
+    'vice_president',
+    'Vice President',
+    'Student leadership',
+    'Nur Adriana Amni Binti Mohd Asrol',
+    'nadriana.motic@gmail.com',
+    null,
+    null,
+    null,
+    'Portrait of MOTIC Vice President Nur Adriana Amni Binti Mohd Asrol',
+    4
+  )
 on conflict (id) do nothing;
 
 -- ============================================================

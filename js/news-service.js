@@ -31,6 +31,59 @@
     }));
   }
 
+  function fallbackContacts() {
+    return [
+      {
+        id: "academic_leadership",
+        roleLabel: "Dr",
+        kicker: "Academic leadership",
+        name: "Academic Representative",
+        email: "",
+        phone: "",
+        photo: "",
+        photoPath: "",
+        photoAlt: "Portrait placeholder for the academic representative",
+        displayOrder: 1,
+      },
+      {
+        id: "advisor",
+        roleLabel: "Advisor",
+        kicker: "Club guidance",
+        name: "MOTIC Advisor",
+        email: "",
+        phone: "",
+        photo: "",
+        photoPath: "",
+        photoAlt: "Portrait placeholder for the MOTIC Advisor",
+        displayOrder: 2,
+      },
+      {
+        id: "president",
+        roleLabel: "President",
+        kicker: "Student leadership",
+        name: "Peek Zhen Nan",
+        email: "zhen.motic@gmail.com",
+        phone: "",
+        photo: "",
+        photoPath: "",
+        photoAlt: "Portrait of MOTIC President Peek Zhen Nan",
+        displayOrder: 3,
+      },
+      {
+        id: "vice_president",
+        roleLabel: "Vice President",
+        kicker: "Student leadership",
+        name: "Nur Adriana Amni Binti Mohd Asrol",
+        email: "nadriana.motic@gmail.com",
+        phone: "",
+        photo: "",
+        photoPath: "",
+        photoAlt: "Portrait of the MOTIC Vice President",
+        displayOrder: 4,
+      },
+    ];
+  }
+
   function sortNewestFirst(items) {
     return [...items].sort((first, second) => {
       const dateDifference = new Date(second.date) - new Date(first.date);
@@ -132,6 +185,22 @@
       image: row.image_url || "",
       imagePath: row.image_path || "",
       alt: row.image_alt || "",
+      updatedAt: row.updated_at,
+    };
+  }
+
+  function mapContactRow(row) {
+    return {
+      id: row.id,
+      roleLabel: row.role_label,
+      kicker: row.kicker,
+      name: row.display_name,
+      email: row.email || "",
+      phone: row.phone || "",
+      photo: row.photo_url || "",
+      photoPath: row.photo_path || "",
+      photoAlt: row.photo_alt || "",
+      displayOrder: row.display_order,
       updatedAt: row.updated_at,
     };
   }
@@ -462,6 +531,60 @@
     if (error) throw error;
   }
 
+  async function getContactPeople(options = {}) {
+    const allowFallback = options.allowFallback !== false;
+
+    if (!client) {
+      if (allowFallback) return fallbackContacts();
+      throw new Error("Supabase is not available.");
+    }
+
+    const { data, error } = await client
+      .from("contact_people")
+      .select("id, role_label, kicker, display_name, email, phone, photo_url, photo_path, photo_alt, display_order, updated_at")
+      .order("display_order", { ascending: true });
+
+    if (error) {
+      if (allowFallback) {
+        console.warn(
+          "Live contact details could not be loaded. Showing the local fallback.",
+          error.message
+        );
+        return fallbackContacts();
+      }
+
+      throw error;
+    }
+
+    return data.map(mapContactRow);
+  }
+
+  async function saveContactPerson(contact) {
+    const user = await requireAdmin();
+
+    const { data, error } = await requireClient()
+      .from("contact_people")
+      .upsert({
+        id: contact.id,
+        role_label: contact.roleLabel.trim(),
+        kicker: contact.kicker.trim(),
+        display_name: contact.name.trim(),
+        email: contact.email.trim().toLowerCase(),
+        phone: contact.phone.trim(),
+        photo_url: contact.photo || null,
+        photo_path: contact.photoPath || null,
+        photo_alt: contact.photoAlt.trim(),
+        display_order: Number(contact.displayOrder),
+        updated_by: user.id,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "id" })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return mapContactRow(data);
+  }
+
   async function inviteAdmin(email) {
     await requireAdmin();
 
@@ -569,8 +692,10 @@
     return data.user;
   }
 
-  async function signOut() {
-    const { error } = await requireClient().auth.signOut();
+  async function signOut(options = {}) {
+    const { error } = await requireClient().auth.signOut({
+      scope: options.scope || "local",
+    });
     if (error) throw error;
   }
 
@@ -578,6 +703,12 @@
     const { data, error } = await requireClient().auth.getUser();
     if (error) return null;
     return data.user || null;
+  }
+
+  function onAuthStateChange(callback) {
+    return requireClient().auth.onAuthStateChange(
+      callback
+    );
   }
 
   async function isAdmin(user = null) {
@@ -794,6 +925,10 @@
     return uploadImage(file, "organizational-chart", existingPath);
   }
 
+  async function uploadContactPhoto(file, existingPath = "") {
+    return uploadImage(file, "contacts", existingPath);
+  }
+
   async function removeNewsImage(path) {
     if (!path) return;
 
@@ -814,6 +949,7 @@
     signIn,
     signOut,
     getCurrentUser,
+    onAuthStateChange,
     isAdmin,
     createNews,
     updateNews,
@@ -833,6 +969,8 @@
     getOrganizationalChart,
     saveOrganizationalChart,
     deleteOrganizationalChart,
+    getContactPeople,
+    saveContactPerson,
     inviteAdmin,
     getAdmins,
     transferAdminOwnership,
@@ -842,6 +980,7 @@
     uploadGalleryImage,
     uploadPresidentPhoto,
     uploadOrganizationalChart,
+    uploadContactPhoto,
     removeNewsImage,
   };
 })();

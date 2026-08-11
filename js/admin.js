@@ -9,6 +9,54 @@
 
   const statusTimers = new WeakMap();
 
+  const ADMIN_ACTIVITY_STORAGE_KEY =
+    "motic-admin-last-activity";
+
+  const ADMIN_INACTIVITY_LIMIT =
+    15 * 60 * 1000;
+
+  function getAdminLastActivity() {
+    const storedActivity = Number(
+      window.localStorage.getItem(
+        ADMIN_ACTIVITY_STORAGE_KEY
+      )
+    );
+
+    return Number.isFinite(storedActivity) &&
+      storedActivity > 0
+      ? storedActivity
+      : null;
+  }
+
+  function hasRecentAdminActivity(
+    now = Date.now()
+  ) {
+    const lastActivity =
+      getAdminLastActivity();
+
+    if (!lastActivity) return false;
+
+    const elapsed = now - lastActivity;
+
+    return elapsed >= 0 &&
+      elapsed < ADMIN_INACTIVITY_LIMIT;
+  }
+
+  function rememberAdminActivity(
+    activityTime = Date.now()
+  ) {
+    window.localStorage.setItem(
+      ADMIN_ACTIVITY_STORAGE_KEY,
+      String(activityTime)
+    );
+  }
+
+  function forgetAdminActivity() {
+    window.localStorage.removeItem(
+      ADMIN_ACTIVITY_STORAGE_KEY
+    );
+  }
+
   function setStatus(
     element,
     message = "",
@@ -151,14 +199,28 @@
         existingUser &&
         await service.isAdmin(existingUser)
       ) {
-        window.location.replace(
-          "admin-dashboard.html"
-        );
-        return;
-      }
+        if (hasRecentAdminActivity()) {
+          rememberAdminActivity();
 
-      if (existingUser) {
-        await service.signOut();
+          window.location.replace(
+            "admin-dashboard.html"
+          );
+          return;
+        }
+
+        forgetAdminActivity();
+        await service.signOut({ scope: "local" });
+
+        if (!queryError) {
+          setStatus(
+            status,
+            "Your previous session expired after 15 minutes of inactivity. Please sign in again.",
+            "error"
+          );
+        }
+      } else if (existingUser) {
+        forgetAdminActivity();
+        await service.signOut({ scope: "local" });
       }
     } catch (error) {
       console.warn(
@@ -203,6 +265,8 @@
               "This account is not authorized to manage MOTIC news."
             );
           }
+
+          rememberAdminActivity();
 
           window.location.replace(
             "admin-dashboard.html"
@@ -310,6 +374,12 @@
         description:
           "Replace the current organizational chart shown under About Us.",
         action: "Update Chart",
+      },
+      contact: {
+        title: "Contact Us Management",
+        description:
+          "Update the public contact photos, email addresses and phone numbers.",
+        action: "Edit Contact",
       },
       admin_access: {
         title: "Manage Administrators",
@@ -454,6 +524,11 @@
         "[data-admin-logout]"
       );
 
+    const viewWebsiteLink =
+      dashboardPage.querySelector(
+        "[data-admin-view-website]"
+      );
+
     const list =
       dashboardPage.querySelector(
         "[data-admin-news-list]"
@@ -515,6 +590,9 @@
         "[data-poster-current-image]"
       );
 
+    let allowDashboardExit = false;
+    let stopSessionSecurity = () => {};
+
     let stories = [];
     let editingStory = null;
     let slugWasEdited = false;
@@ -566,6 +644,200 @@
       );
       return;
     }
+
+    function installDashboardHistoryGuard() {
+      const guardState = {
+        moticAdminGuard: true,
+      };
+
+      window.history.replaceState(
+        guardState,
+        document.title,
+        window.location.href
+      );
+
+      window.history.pushState(
+        guardState,
+        document.title,
+        window.location.href
+      );
+
+      window.addEventListener("popstate", () => {
+        if (allowDashboardExit) return;
+
+        window.history.pushState(
+          guardState,
+          document.title,
+          window.location.href
+        );
+
+        setStatus(
+          status,
+          "For security, use View website when you want to leave the admin dashboard.",
+          "info"
+        );
+      });
+    }
+
+    function startSessionSecurity() {
+      const warningPeriod = 60 * 1000;
+      const activityEvents = [
+        "pointerdown",
+        "keydown",
+        "touchstart",
+        "scroll",
+      ];
+
+      let warningTimer = null;
+      let logoutTimer = null;
+      let isSigningOut = false;
+      let lastRecordedAt = 0;
+
+      const storedActivity =
+        getAdminLastActivity();
+
+      let lastActivity = Date.now();
+
+      function clearTimers() {
+        window.clearTimeout(warningTimer);
+        window.clearTimeout(logoutTimer);
+      }
+
+      async function endInactiveSession() {
+        if (isSigningOut) return;
+
+        isSigningOut = true;
+        clearTimers();
+        allowDashboardExit = true;
+        forgetAdminActivity();
+
+        setStatus(
+          status,
+          "Your session ended after 15 minutes of inactivity.",
+          "info"
+        );
+
+        try {
+          await service.signOut({ scope: "local" });
+        } catch (error) {
+          console.warn(
+            "The inactive session could not be cleared remotely.",
+            error
+          );
+        } finally {
+          window.location.replace(
+            "admin.html?error=session-expired"
+          );
+        }
+      }
+
+      function scheduleTimers() {
+        clearTimers();
+
+        const elapsed = Date.now() - lastActivity;
+        const remaining =
+          ADMIN_INACTIVITY_LIMIT - elapsed;
+
+        if (remaining <= 0) {
+          endInactiveSession();
+          return;
+        }
+
+        if (remaining > warningPeriod) {
+          warningTimer = window.setTimeout(() => {
+            setStatus(
+              status,
+              "For your security, this session will end in one minute unless you continue working.",
+              "info"
+            );
+          }, remaining - warningPeriod);
+        }
+
+        logoutTimer = window.setTimeout(
+          endInactiveSession,
+          remaining
+        );
+      }
+
+      function recordActivity() {
+        const now = Date.now();
+
+        if (now - lastRecordedAt < 1000) return;
+
+        lastRecordedAt = now;
+        lastActivity = now;
+        rememberAdminActivity(lastActivity);
+
+        if (
+          status?.dataset.type === "info" &&
+          status.textContent.startsWith("For your security")
+        ) {
+          setStatus(status);
+        }
+
+        scheduleTimers();
+      }
+
+      function checkWhenVisible() {
+        if (document.visibilityState === "visible") {
+          scheduleTimers();
+        }
+      }
+
+      activityEvents.forEach((eventName) => {
+        window.addEventListener(
+          eventName,
+          recordActivity,
+          { passive: true }
+        );
+      });
+
+      document.addEventListener(
+        "visibilitychange",
+        checkWhenVisible
+      );
+
+      if (
+        !storedActivity ||
+        !hasRecentAdminActivity(lastActivity)
+      ) {
+        endInactiveSession();
+      } else {
+        rememberAdminActivity(lastActivity);
+        scheduleTimers();
+      }
+
+      return () => {
+        clearTimers();
+
+        activityEvents.forEach((eventName) => {
+          window.removeEventListener(
+            eventName,
+            recordActivity
+          );
+        });
+
+        document.removeEventListener(
+          "visibilitychange",
+          checkWhenVisible
+        );
+      };
+    }
+
+    installDashboardHistoryGuard();
+
+    viewWebsiteLink?.addEventListener("click", () => {
+      allowDashboardExit = true;
+      stopSessionSecurity();
+    });
+
+    window.addEventListener("pageshow", (event) => {
+      if (!event.persisted) return;
+
+      allowDashboardExit = false;
+      stopSessionSecurity();
+      stopSessionSecurity = startSessionSecurity();
+    });
 
     function formatDate(date) {
       return new Intl.DateTimeFormat(
@@ -2046,6 +2318,276 @@
       };
     }
 
+    function setupContactPanel() {
+      const panel = dashboardPage.querySelector(
+        '[data-admin-panel="contact"]'
+      );
+
+      if (!panel) {
+        return {
+          load: async () => {},
+          reset: () => {},
+        };
+      }
+
+      const contactForm = panel.querySelector(
+        "[data-contact-form]"
+      );
+
+      const contactList = panel.querySelector(
+        "[data-contact-list]"
+      );
+
+      const emptyMessage = panel.querySelector(
+        "[data-contact-empty]"
+      );
+
+      const currentPhoto = panel.querySelector(
+        "[data-contact-current-photo]"
+      );
+
+      const saveContactButton = contactForm.querySelector(
+        "button[type='submit']"
+      );
+
+      const blueprints = {
+        academic_leadership: {
+          roleLabel: "Dr",
+          kicker: "Academic leadership",
+          displayOrder: 1,
+        },
+        advisor: {
+          roleLabel: "Advisor",
+          kicker: "Club guidance",
+          displayOrder: 2,
+        },
+        president: {
+          roleLabel: "President",
+          kicker: "Student leadership",
+          displayOrder: 3,
+        },
+        vice_president: {
+          roleLabel: "Vice President",
+          kicker: "Student leadership",
+          displayOrder: 4,
+        },
+      };
+
+      let contacts = [];
+
+      function currentContact() {
+        return contacts.find(
+          (contact) =>
+            contact.id ===
+            contactForm.elements.contactPosition.value
+        ) || null;
+      }
+
+      function fillContactForm(contact = null) {
+        const selectedId = contact?.id ||
+          contactForm.elements.contactPosition.value ||
+          "academic_leadership";
+
+        contactForm.elements.contactPosition.value = selectedId;
+        contactForm.elements.contactName.value = contact?.name || "";
+        contactForm.elements.contactEmail.value = contact?.email || "";
+        contactForm.elements.contactPhone.value = contact?.phone || "";
+        contactForm.elements.contactPhoto.value = "";
+        contactForm.elements.contactPhotoAlt.value =
+          contact?.photoAlt || "";
+
+        currentPhoto.textContent = contact?.photo
+          ? "A current photo is attached. Choose a new file only if you want to replace it."
+          : "No contact photo is attached yet.";
+      }
+
+      function renderContacts() {
+        contactList.replaceChildren();
+        emptyMessage.hidden = contacts.length > 0;
+
+        contacts.forEach((contact) => {
+          const row = document.createElement("article");
+          row.className = "admin-poster-row";
+
+          const image = document.createElement("img");
+          image.src = contact.photo
+            ? resolvePosterImage(contact.photo)
+            : "../assets/images/contact-portrait-placeholder.svg";
+          image.alt = "";
+          image.loading = "lazy";
+
+          const information = document.createElement("div");
+          information.className = "admin-poster-row__content";
+
+          const name = document.createElement("h4");
+          name.textContent = contact.name;
+
+          const details = document.createElement("p");
+          details.textContent = [
+            contact.roleLabel,
+            contact.email || "Email not added",
+            contact.phone || "Phone not added",
+          ].join(" · ");
+
+          information.append(name, details);
+
+          const actions = document.createElement("div");
+          actions.className = "admin-news-row__actions";
+
+          const editButton = document.createElement("button");
+          editButton.className = "admin-text-button";
+          editButton.type = "button";
+          editButton.textContent = "Edit";
+
+          editButton.addEventListener("click", () => {
+            fillContactForm(contact);
+            contactForm.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            contactForm.elements.contactName.focus({
+              preventScroll: true,
+            });
+          });
+
+          actions.append(editButton);
+          row.append(image, information, actions);
+          contactList.append(row);
+        });
+      }
+
+      async function load() {
+        contacts = await service.getContactPeople({
+          allowFallback: false,
+        });
+
+        renderContacts();
+
+        const selected = currentContact() || contacts[0] || null;
+        fillContactForm(selected);
+      }
+
+      contactForm.elements.contactPosition.addEventListener(
+        "change",
+        () => fillContactForm(currentContact())
+      );
+
+      contactForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!contactForm.reportValidity()) return;
+
+        const selectedId =
+          contactForm.elements.contactPosition.value;
+
+        const blueprint = blueprints[selectedId];
+        const existingContact = currentContact();
+        const selectedPhoto =
+          contactForm.elements.contactPhoto.files[0];
+
+        if (!blueprint) {
+          setStatus(
+            status,
+            "Choose a valid Contact Us position.",
+            "error"
+          );
+          return;
+        }
+
+        saveContactButton.disabled = true;
+        saveContactButton.textContent = "Saving…";
+        setStatus(status, "Saving contact details…", "info");
+
+        let newUpload = null;
+
+        try {
+          if (selectedPhoto) {
+            newUpload = await service.uploadContactPhoto(
+              selectedPhoto
+            );
+          }
+
+          await service.saveContactPerson({
+            id: selectedId,
+            roleLabel: blueprint.roleLabel,
+            kicker: blueprint.kicker,
+            displayOrder: blueprint.displayOrder,
+            name: contactForm.elements.contactName.value,
+            email: contactForm.elements.contactEmail.value,
+            phone: contactForm.elements.contactPhone.value,
+            photo: newUpload?.image || existingContact?.photo || "",
+            photoPath:
+              newUpload?.imagePath ||
+              existingContact?.photoPath ||
+              "",
+            photoAlt:
+              contactForm.elements.contactPhotoAlt.value,
+          });
+
+          if (
+            newUpload &&
+            existingContact?.photoPath &&
+            existingContact.photoPath !== newUpload.imagePath
+          ) {
+            try {
+              await service.removeNewsImage(
+                existingContact.photoPath
+              );
+            } catch (imageError) {
+              console.warn(
+                "The old contact photo could not be removed.",
+                imageError
+              );
+            }
+          }
+
+          await load();
+
+          setStatus(
+            status,
+            `${blueprint.roleLabel} contact updated.`,
+            "success"
+          );
+        } catch (error) {
+          if (newUpload?.imagePath) {
+            try {
+              await service.removeNewsImage(
+                newUpload.imagePath
+              );
+            } catch (cleanupError) {
+              console.warn(
+                "An unused contact photo could not be removed.",
+                cleanupError
+              );
+            }
+          }
+
+          setStatus(
+            status,
+            errorMessage(error),
+            "error"
+          );
+        } finally {
+          saveContactButton.disabled = false;
+          saveContactButton.textContent = "Save Contact";
+        }
+      });
+
+      return {
+        load,
+        reset: () => {
+          fillContactForm(currentContact() || contacts[0] || null);
+          contactForm.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+          contactForm.elements.contactPosition.focus({
+            preventScroll: true,
+          });
+        },
+      };
+    }
+
     function setupAdminAccessPanel() {
       const panel = dashboardPage.querySelector('[data-admin-panel="admin_access"]');
       if (!panel) return { load: async () => {}, reset: () => {} };
@@ -2294,12 +2836,14 @@
     const presidentPanel = setupPresidentPanel();
     const teamPanel = setupTeamPanel();
     const organizationalChartPanel = setupOrganizationalChartPanel();
+    const contactPanel = setupContactPanel();
     const adminAccessPanel = setupAdminAccessPanel();
 
     const additionalPanels = {
       president: presidentPanel,
       team: teamPanel,
       organizational_chart: organizationalChartPanel,
+      contact: contactPanel,
       admin_access: adminAccessPanel,
     };
 
@@ -2521,9 +3065,12 @@
       "click",
       async () => {
         logoutButton.disabled = true;
+        allowDashboardExit = true;
+        stopSessionSecurity();
+        forgetAdminActivity();
 
         try {
-          await service.signOut();
+          await service.signOut({ scope: "local" });
         } finally {
           window.location.replace(
             "admin.html"
@@ -2678,10 +3225,32 @@
     );
 
     try {
+      if (!hasRecentAdminActivity()) {
+        allowDashboardExit = true;
+        forgetAdminActivity();
+
+        try {
+          await service.signOut({ scope: "local" });
+        } catch (error) {
+          console.warn(
+            "The expired session could not be cleared remotely.",
+            error
+          );
+        } finally {
+          window.location.replace(
+            "admin.html?error=session-expired"
+          );
+        }
+
+        return;
+      }
+
       const user =
         await service.getCurrentUser();
 
       if (!user) {
+        allowDashboardExit = true;
+
         window.location.replace(
           "admin.html?error=session-expired"
         );
@@ -2689,6 +3258,7 @@
       }
 
       if (!await service.isAdmin(user)) {
+        allowDashboardExit = true;
         await service.signOut();
 
         window.location.replace(
@@ -2700,6 +3270,27 @@
       accountEmail.textContent =
         user.email ||
         "Authorized administrator";
+
+      rememberAdminActivity();
+
+      service.onAuthStateChange?.((event) => {
+        if (
+          event !== "SIGNED_OUT" ||
+          allowDashboardExit
+        ) {
+          return;
+        }
+
+        allowDashboardExit = true;
+        stopSessionSecurity();
+        forgetAdminActivity();
+
+        window.location.replace(
+          "admin.html?error=session-expired"
+        );
+      });
+
+      stopSessionSecurity = startSessionSecurity();
 
       resetForm();
       resetPosterForm();
@@ -2713,6 +3304,7 @@
         presidentPanel.load(),
         teamPanel.load(),
         organizationalChartPanel.load(),
+        contactPanel.load(),
         adminAccessPanel.load(),
       ]);
     } catch (error) {

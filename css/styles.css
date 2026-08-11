@@ -4382,9 +4382,18 @@ button:not(:disabled) {
   order: 2;
 }
 
+.admin-dashboard-page #admin-panel-contact .admin-editor {
+  order: 1;
+}
+
+.admin-dashboard-page #admin-panel-contact .admin-story-list-panel {
+  order: 2;
+}
+
 /* Keep every creation/editing panel on the wider left side, like News. */
 @media (min-width: 1221px) {
   .admin-dashboard-page #admin-panel-news .admin-dashboard-grid,
+  .admin-dashboard-page .admin-contact-grid,
   .admin-dashboard-page .admin-poster-grid,
   .admin-dashboard-page .admin-team-grid {
     grid-template-columns: minmax(500px, 1.12fr) minmax(360px, 0.88fr);

@@ -9,19 +9,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/styles.css?v=16">
+  <link rel="stylesheet" href="../css/styles.css?v=17">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.min.js" defer></script>
   <script src="../js/supabase-config.js" defer></script>
-  <script src="../js/news-service.js?v=16" defer></script>
-  <script src="../js/admin.js?v=16" defer></script>
+  <script src="../js/news-service.js?v=18" defer></script>
+  <script src="../js/admin.js?v=18" defer></script>
 </head>
 
 <body class="admin-page admin-dashboard-page" data-admin-dashboard>
   <a class="skip-link" href="#dashboard-main">Skip to dashboard</a>
 
   <aside class="admin-sidebar" aria-label="Administration navigation">
-    <a class="admin-brand admin-brand--identity" href="../index.html" aria-label="Persatuan Pengurusan Teknologi UUM home">
+    <a class="admin-brand admin-brand--identity" href="admin-dashboard.html" aria-label="MOTIC administration dashboard">
       <img
         class="admin-brand__mark"
         src="../assets/images/motic-crest.png"
@@ -47,6 +47,7 @@
       <button class="admin-tab" id="admin-tab-president" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-president" tabindex="-1" data-admin-tab="president"><span class="admin-tab__icon" aria-hidden="true">♛</span><span>President</span></button>
       <button class="admin-tab" id="admin-tab-team" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-team" tabindex="-1" data-admin-tab="team"><span class="admin-tab__icon" aria-hidden="true">◉</span><span>Our Team</span></button>
       <button class="admin-tab" id="admin-tab-chart" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-organizational-chart" tabindex="-1" data-admin-tab="organizational_chart"><span class="admin-tab__icon" aria-hidden="true">⌘</span><span>Organizational Chart</span></button>
+      <button class="admin-tab" id="admin-tab-contact" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-contact" tabindex="-1" data-admin-tab="contact"><span class="admin-tab__icon" aria-hidden="true">✉</span><span>Contact Us</span></button>
       <button class="admin-tab" id="admin-tab-access" type="button" role="tab" aria-selected="false" aria-controls="admin-panel-admin-access" tabindex="-1" data-admin-tab="admin_access"><span class="admin-tab__icon" aria-hidden="true">＋</span><span>Manage Admins</span></button>
     </div>
 
@@ -57,7 +58,7 @@
         <span data-admin-email>Checking account…</span>
       </span>
       <span class="admin-account__links">
-        <a href="../index.html" target="_blank" rel="noopener">View website</a>
+        <a href="../index.html" data-admin-view-website>View website</a>
         <button type="button" data-admin-logout>Sign Out</button>
       </span>
     </div>
@@ -95,7 +96,7 @@
 
         <article class="admin-overview-card">
           <p>Manage Sections</p>
-          <strong>10</strong>
+          <strong>11</strong>
           <span>Content areas</span>
         </article>
       </section>
@@ -504,7 +505,7 @@
       <div class="admin-panel__heading">
         <p class="admin-kicker">About Us — President's Message</p>
         <h2 id="president-manager-title">Current President</h2>
-        <p>This edits the existing President record.</p>
+        <p>This edits the existing President record. Replacing the photo overwrites the same Supabase Storage file.</p>
       </div>
 
       <form class="admin-news-form admin-singleton-form" data-president-form>
@@ -545,7 +546,7 @@
       <div class="admin-panel__heading">
         <p class="admin-kicker">About Us — Our Team</p>
         <h2 id="team-manager-title">Committee Members</h2>
-        <p>Choose each role from the position dropdown.</p>
+        <p>Choose each role from the position dropdown. All former “Deputy” titles are now displayed as “Vice”.</p>
       </div>
 
       <div class="admin-session-editor">
@@ -628,6 +629,7 @@
       <div class="admin-panel__heading">
         <p class="admin-kicker">About Us — Organizational Chart</p>
         <h2 id="chart-manager-title">Current Organizational Chart</h2>
+        <p>Uploading a replacement updates the same Supabase record and Storage path instead of creating another chart.</p>
       </div>
 
       <form class="admin-news-form admin-singleton-form" data-organizational-chart-form>
@@ -658,6 +660,71 @@
         </div>
       </form>
     </section>
+
+    <div class="admin-dashboard-panel" id="admin-panel-contact" role="tabpanel" aria-labelledby="admin-tab-contact" data-admin-panel="contact" hidden>
+      <div class="admin-dashboard-grid admin-contact-grid">
+        <section class="admin-panel admin-editor" aria-labelledby="contact-form-title">
+          <div class="admin-panel__heading">
+            <p class="admin-kicker">Public Contact Us page</p>
+            <h2 id="contact-form-title">Update a contact</h2>
+            <p>Update the representative's name, email, phone number and photo.</p>
+          </div>
+
+          <form class="admin-news-form admin-contact-form" data-contact-form>
+            <div class="admin-field admin-field--full">
+              <label for="contact-position">Position</label>
+              <select id="contact-position" name="contactPosition" required>
+                <option value="academic_leadership">Dr / Academic Leadership</option>
+                <option value="advisor">Advisor</option>
+                <option value="president">President</option>
+                <option value="vice_president">Vice President</option>
+              </select>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="contact-name">Name</label>
+              <input id="contact-name" name="contactName" type="text" minlength="2" maxlength="180" required>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="contact-email">Email</label>
+              <input id="contact-email" name="contactEmail" type="email" maxlength="254" autocomplete="email" required>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="contact-phone">Phone number</label>
+              <input id="contact-phone" name="contactPhone" type="tel" minlength="7" maxlength="30" autocomplete="tel" placeholder="+60 12-345 6789" pattern="[0-9+() .-]{7,30}" required>
+              <small>Use digits with optional spaces, +, parentheses or hyphens.</small>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="contact-photo">Photo</label>
+              <input id="contact-photo" name="contactPhoto" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+              <small>Choose a file only when adding or replacing the photo. Maximum 8 MB.</small>
+              <p class="admin-current-image" data-contact-current-photo>No contact photo is attached yet.</p>
+            </div>
+
+            <div class="admin-field admin-field--full">
+              <label for="contact-photo-alt">Photo description</label>
+              <input id="contact-photo-alt" name="contactPhotoAlt" type="text" minlength="5" maxlength="240" placeholder="Portrait of the MOTIC representative" required>
+            </div>
+
+            <div class="admin-form-actions admin-field--full">
+              <button class="admin-primary-button" type="submit">Save Contact</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-panel admin-story-list-panel" aria-labelledby="current-contacts-title">
+          <div class="admin-panel__heading">
+            <p class="admin-kicker">Current directory</p>
+            <h2 id="current-contacts-title">Manage Contacts</h2>
+          </div>
+          <p class="admin-empty" data-contact-empty hidden>No contact records are available.</p>
+          <div class="admin-poster-list" data-contact-list></div>
+        </section>
+      </div>
+    </div>
 
     <section class="admin-panel admin-access-manager" id="admin-panel-admin-access" role="tabpanel" aria-labelledby="admin-tab-access admin-access-title" data-admin-panel="admin_access" hidden>
       <div class="admin-panel__heading">
