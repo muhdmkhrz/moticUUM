@@ -34,18 +34,6 @@
   function fallbackContacts() {
     return [
       {
-        id: "academic_leadership",
-        roleLabel: "Dr",
-        kicker: "Academic leadership",
-        name: "Academic Representative",
-        email: "",
-        phone: "",
-        photo: "",
-        photoPath: "",
-        photoAlt: "Portrait placeholder for the academic representative",
-        displayOrder: 1,
-      },
-      {
         id: "advisor",
         roleLabel: "Advisor",
         kicker: "Club guidance",
@@ -55,7 +43,7 @@
         photo: "",
         photoPath: "",
         photoAlt: "Portrait placeholder for the MOTIC Advisor",
-        displayOrder: 2,
+        displayOrder: 1,
       },
       {
         id: "president",
@@ -67,7 +55,7 @@
         photo: "",
         photoPath: "",
         photoAlt: "Portrait of MOTIC President Peek Zhen Nan",
-        displayOrder: 3,
+        displayOrder: 2,
       },
       {
         id: "vice_president",
@@ -79,7 +67,7 @@
         photo: "",
         photoPath: "",
         photoAlt: "Portrait of the MOTIC Vice President",
-        displayOrder: 4,
+        displayOrder: 3,
       },
     ];
   }
@@ -556,7 +544,9 @@
       throw error;
     }
 
-    return data.map(mapContactRow);
+    return data
+      .filter((row) => ["advisor", "president", "vice_president"].includes(row.id))
+      .map(mapContactRow);
   }
 
   async function saveContactPerson(contact) {

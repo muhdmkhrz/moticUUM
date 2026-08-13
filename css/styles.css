@@ -44,6 +44,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 128px;
+  font-size: 106.25%;
 }
 
 body {
@@ -1813,7 +1814,7 @@ button:not(:disabled) {
   width: min(calc(100% - 40px), var(--container-width));
   margin-inline: auto;
   display: grid;
-  grid-template-columns: minmax(240px, 0.72fr) minmax(300px, 0.88fr) minmax(420px, 1.4fr);
+  grid-template-columns: minmax(310px, 0.94fr) minmax(280px, 0.84fr) minmax(400px, 1.22fr);
   grid-template-areas: "facebook inhouse latest";
   align-items: start;
   gap: clamp(24px, 2.5vw, 42px);
@@ -1892,7 +1893,7 @@ button:not(:disabled) {
 }
 
 .facebook-panel__embed {
-  min-height: 420px;
+  min-height: 560px;
   margin-top: 8px;
   overflow: hidden;
   background: #f1f2f5;
@@ -2078,7 +2079,7 @@ button:not(:disabled) {
 
 @media (max-width: 1250px) {
   .news-showcase__container {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.75fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
       "latest latest"
       "inhouse facebook";
@@ -3405,7 +3406,7 @@ button:not(:disabled) {
   border-top: 1px solid rgb(242 235 229 / 13%);
 }
 
-.admin-dashboard-page .admin-account > .admin-account__avatar {
+.admin-dashboard-page .admin-account>.admin-account__avatar {
   display: grid;
   width: 42px;
   height: 42px;
@@ -3418,7 +3419,7 @@ button:not(:disabled) {
   font-weight: 700;
 }
 
-.admin-dashboard-page .admin-account > .admin-account__details {
+.admin-dashboard-page .admin-account>.admin-account__details {
   display: grid;
   align-content: center;
   min-width: 0;
@@ -3429,7 +3430,7 @@ button:not(:disabled) {
   font-size: 0.78rem;
 }
 
-.admin-dashboard-page .admin-account__details > span {
+.admin-dashboard-page .admin-account__details>span {
   margin-top: 3px;
   overflow: hidden;
   color: rgb(242 235 229 / 58%);
@@ -3439,7 +3440,7 @@ button:not(:disabled) {
   white-space: nowrap;
 }
 
-.admin-dashboard-page .admin-account > .admin-account__links {
+.admin-dashboard-page .admin-account>.admin-account__links {
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
@@ -3620,7 +3621,7 @@ button:not(:disabled) {
   color: #8c6b27;
 }
 
-.admin-dashboard-page .admin-panel__heading > p:last-child,
+.admin-dashboard-page .admin-panel__heading>p:last-child,
 .admin-dashboard-page .admin-current-image,
 .admin-dashboard-page .admin-field small {
   color: #817075;
@@ -3695,8 +3696,8 @@ button:not(:disabled) {
   box-shadow: none;
 }
 
-.admin-dashboard-page .admin-poster-manager > .admin-panel__heading,
-.admin-dashboard-page .admin-gallery-manager > .admin-panel__heading {
+.admin-dashboard-page .admin-poster-manager>.admin-panel__heading,
+.admin-dashboard-page .admin-gallery-manager>.admin-panel__heading {
   margin-bottom: 24px;
   padding: 0 0 18px;
   border-bottom-color: rgb(82 20 33 / 12%);
@@ -3725,7 +3726,7 @@ button:not(:disabled) {
 }
 
 .admin-dashboard-page .admin-poster-form h3,
-.admin-dashboard-page .admin-poster-list-section > h3 {
+.admin-dashboard-page .admin-poster-list-section>h3 {
   margin-bottom: 20px;
   color: var(--admin-maroon);
   font-family: var(--font-heading);
@@ -3837,18 +3838,18 @@ button:not(:disabled) {
     padding: 13px 0 0;
   }
 
-  .admin-dashboard-page .admin-account > .admin-account__avatar {
+  .admin-dashboard-page .admin-account>.admin-account__avatar {
     width: 42px;
     text-align: center;
   }
 
-  .admin-dashboard-page .admin-account > .admin-account__details {
+  .admin-dashboard-page .admin-account>.admin-account__details {
     width: auto;
     flex: 1 1 180px;
     text-align: left;
   }
 
-  .admin-dashboard-page .admin-account > .admin-account__links {
+  .admin-dashboard-page .admin-account>.admin-account__links {
     grid-column: auto;
     width: auto;
     margin-left: auto;
@@ -4134,10 +4135,7 @@ button:not(:disabled) {
 @media (min-width: 1181px) {
   .footer__grid {
     grid-template-columns:
-      minmax(330px, 1.5fr)
-      minmax(120px, 0.55fr)
-      minmax(210px, 0.9fr)
-      minmax(390px, 1.5fr);
+      minmax(330px, 1.5fr) minmax(120px, 0.55fr) minmax(210px, 0.9fr) minmax(390px, 1.5fr);
     gap: 28px;
   }
 
@@ -4209,7 +4207,7 @@ button:not(:disabled) {
   line-height: 1.15;
 }
 
-.contact-directory__intro > p {
+.contact-directory__intro>p {
   margin: 0;
   color: var(--colour-text-muted);
   font-size: 1rem;
@@ -4218,8 +4216,16 @@ button:not(:disabled) {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(20px, 3vw, 30px);
+}
+
+.contact-card {
+  grid-column: span 2;
+}
+
+.contact-card:nth-child(3) {
+  grid-column: 2 / span 2;
 }
 
 .contact-card {
@@ -4360,6 +4366,11 @@ button:not(:disabled) {
   .contact-grid {
     grid-template-columns: 1fr;
   }
+
+  .contact-card,
+  .contact-card:nth-child(3) {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 600px) {
@@ -4392,6 +4403,7 @@ button:not(:disabled) {
 
 /* Keep every creation/editing panel on the wider left side, like News. */
 @media (min-width: 1221px) {
+
   .admin-dashboard-page #admin-panel-news .admin-dashboard-grid,
   .admin-dashboard-page .admin-contact-grid,
   .admin-dashboard-page .admin-poster-grid,
@@ -4443,6 +4455,7 @@ button:not(:disabled) {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -4492,8 +4505,8 @@ button:not(:disabled) {
   border: 1px solid rgb(82 20 33 / 12%);
 }
 
-.admin-dashboard-page .admin-access-invite > h3,
-.admin-dashboard-page .admin-access-permission > h3,
+.admin-dashboard-page .admin-access-invite>h3,
+.admin-dashboard-page .admin-access-permission>h3,
 .admin-dashboard-page .admin-access-list-heading h3 {
   margin: 0;
   color: var(--admin-maroon);
@@ -4501,8 +4514,8 @@ button:not(:disabled) {
   font-size: clamp(1.35rem, 2vw, 1.7rem);
 }
 
-.admin-dashboard-page .admin-access-invite > p,
-.admin-dashboard-page .admin-access-permission > p {
+.admin-dashboard-page .admin-access-invite>p,
+.admin-dashboard-page .admin-access-permission>p {
   margin: 7px 0 0;
   color: #6d6063;
 }
@@ -4647,7 +4660,7 @@ button:not(:disabled) {
   border: 1px solid rgb(82 20 33 / 11%);
 }
 
-.admin-dashboard-page .admin-team-member-form > h3 {
+.admin-dashboard-page .admin-team-member-form>h3 {
   grid-column: 1 / -1;
   color: var(--admin-maroon);
   font-family: var(--font-heading);
@@ -4819,4 +4832,123 @@ button:not(:disabled) {
   .admin-dashboard-page .admin-status--toast {
     animation: none;
   }
+}
+
+/* ============================================================
+   FULL-VIEWPORT RESPONSIVE FIT
+   Public sections, header and footer fill the browser width while retaining
+   only a small safe gutter. These final rules intentionally override the
+   older centred 1200px container cap used throughout the original site.
+   ============================================================ */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.site-header,
+.institution-bar,
+.main-navigation,
+main,
+main>section,
+.site-footer,
+.footer__base {
+  width: 100%;
+  max-width: none;
+}
+
+.container,
+.news-showcase__container {
+  width: 100%;
+  max-width: none;
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: clamp(16px, 2.2vw, 38px);
+  padding-left: clamp(16px, 2.2vw, 38px);
+}
+
+.institution-bar__content,
+.main-navigation__content,
+.footer__grid,
+.footer__base-inner {
+  min-width: 0;
+}
+
+.institution-bar__content>*,
+.main-navigation__content>*,
+.footer__grid>*,
+.footer__base-inner>* {
+  min-width: 0;
+}
+
+img,
+svg,
+video,
+iframe {
+  max-width: 100%;
+}
+
+.club-brand__text,
+.footer__address,
+.footer__links,
+.footer__contact,
+.footer__map {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.club-brand--footer .club-brand__text small {
+  white-space: normal;
+}
+
+@media (max-width: 600px) {
+
+  .container,
+  .news-showcase__container {
+    width: 100%;
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .main-navigation__content {
+    gap: 12px;
+  }
+
+  .main-navigation .club-brand__logo {
+    min-width: 0;
+    max-width: calc(100vw - 126px);
+  }
+
+  .footer__legal {
+    gap: 12px;
+  }
+}
+
+.admin-sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+  display: none;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  display: none;
 }

@@ -2351,25 +2351,20 @@
       );
 
       const blueprints = {
-        academic_leadership: {
-          roleLabel: "Dr",
-          kicker: "Academic leadership",
-          displayOrder: 1,
-        },
         advisor: {
           roleLabel: "Advisor",
           kicker: "Club guidance",
-          displayOrder: 2,
+          displayOrder: 1,
         },
         president: {
           roleLabel: "President",
           kicker: "Student leadership",
-          displayOrder: 3,
+          displayOrder: 2,
         },
         vice_president: {
           roleLabel: "Vice President",
           kicker: "Student leadership",
-          displayOrder: 4,
+          displayOrder: 3,
         },
       };
 
@@ -2386,7 +2381,7 @@
       function fillContactForm(contact = null) {
         const selectedId = contact?.id ||
           contactForm.elements.contactPosition.value ||
-          "academic_leadership";
+          "advisor";
 
         contactForm.elements.contactPosition.value = selectedId;
         contactForm.elements.contactName.value = contact?.name || "";

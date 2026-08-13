@@ -824,10 +824,10 @@ on conflict (id) do nothing;
 -- ============================================================
 
 create table if not exists public.contact_people (
-  id text primary key
+  id text primary key,
+  constraint contact_people_position_check
     check (
       id in (
-        'academic_leadership',
         'advisor',
         'president',
         'vice_president'
@@ -852,14 +852,38 @@ create table if not exists public.contact_people (
   photo_path text,
   photo_alt text not null
     check (char_length(photo_alt) between 5 and 240),
-  display_order smallint not null
-    check (display_order between 1 and 4),
+  display_order smallint not null,
+  constraint contact_people_display_order_check
+    check (display_order between 1 and 3),
   updated_by uuid references auth.users(id) on delete set null,
   updated_at timestamptz not null default now()
 );
 
 alter table public.contact_people
   add column if not exists phone text;
+
+delete from public.contact_people
+where id = 'academic_leadership';
+
+update public.contact_people
+set display_order = case id
+  when 'advisor' then 1
+  when 'president' then 2
+  when 'vice_president' then 3
+  else display_order
+end
+where id in ('advisor', 'president', 'vice_president');
+
+alter table public.contact_people
+  drop constraint if exists contact_people_id_check,
+  drop constraint if exists contact_people_position_check,
+  drop constraint if exists contact_people_display_order_check;
+
+alter table public.contact_people
+  add constraint contact_people_position_check
+    check (id in ('advisor', 'president', 'vice_president')),
+  add constraint contact_people_display_order_check
+    check (display_order between 1 and 3);
 
 do $$
 begin
@@ -954,18 +978,6 @@ insert into public.contact_people (
 )
 values
   (
-    'academic_leadership',
-    'Dr',
-    'Academic leadership',
-    'Academic Representative',
-    null,
-    null,
-    null,
-    null,
-    'Portrait placeholder for the academic representative',
-    1
-  ),
-  (
     'advisor',
     'Advisor',
     'Club guidance',
@@ -975,7 +987,7 @@ values
     null,
     null,
     'Portrait placeholder for the MOTIC Advisor',
-    2
+    1
   ),
   (
     'president',
@@ -987,7 +999,7 @@ values
     null,
     null,
     'Portrait of MOTIC President Peek Zhen Nan',
-    3
+    2
   ),
   (
     'vice_president',
@@ -999,7 +1011,7 @@ values
     null,
     null,
     'Portrait of MOTIC Vice President Nur Adriana Amni Binti Mohd Asrol',
-    4
+    3
   )
 on conflict (id) do nothing;
 

@@ -214,7 +214,7 @@
     }
 
     document.title =
-      `${item.title} | MOTIC`;
+      `${item.title} | Management of Technology Intelligence Club | Universiti Utara Malaysia`;
 
     const article =
       document.createElement("article");
